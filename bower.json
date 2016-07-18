@@ -1,0 +1,23 @@
+{
+  "name": "pogomaps",
+  "homepage": "https://github.com/memelyfe/pokemongo-api-demo",
+  "authors": [
+    "Drian Naude <drian.naude@truescape.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "q": "~1.0",
+    "jquery": "^3.1.0",
+    "lodash": "^4.13.1"
+  }
+}
