@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PokeScanner</title>
+    <title>Christchurch Pokemon Go Spawns</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
@@ -118,7 +118,7 @@
             for (var i = 0; i < data.length; i++) {
               var p = data[i];
               if (!updated) {
-                map.setZoom(16);
+                map.setZoom(12);
                 map.panTo({lat: p.lat, lng: p.lng});
                 updated = true;
               }
@@ -198,8 +198,8 @@
         console.log("Initializing map");
 
         map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 0, lng: 0},
-          zoom: 4
+          center: {lat: -43.5321, lng: 172.6362},
+          zoom: 12
         });
 
         var legend = document.createElement('div');
