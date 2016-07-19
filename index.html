@@ -83,11 +83,12 @@
     </div>
     <div id="map"></div>
     <div id="capture"></div>
+
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/q.js/1.0.1/q.js"></script>
-
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
     <script>
       function loadScript(src) {
         var element = document.createElement("script");
@@ -142,7 +143,6 @@
             if(index > -1){
               hidden_layers.splice(index,1);
             }
-            console.log(index, hidden_layers.length, layers.length);
         }
         refreshData(null, true);
       };
@@ -173,8 +173,23 @@
 
       }
 
+      function killStalePokemon(){
+        var ts = moment();
+        _.each(data, function(p, index){
+          if(_.isUndefined(p)){
+            data.splice(index, 1);
+            return false;
+          }
+          var tsLeft = moment((p.timestamp + p.timeleft) * 1000);
+          var isFuture = tsLeft.isAfter(ts);
+          if(!isFuture){
+            data.splice(index, 1);
+          }
+        });
+      }
 
       function refreshData(response, actionable) {
+          killStalePokemon();
           if(actionable){
             $('#overlay').fadeIn('fast');
           }
@@ -200,6 +215,7 @@
             }
             listeners = [];
             markers = [];
+            $('#legend-list').html();
 
             // Add updated markers
             for (var i = 0; i < data.length; i++) {
@@ -221,12 +237,15 @@
                 });
 
                 var image = getImage(p);
-
+                var ts = moment();
+                var tsLeft = moment((p.timestamp + p.timeleft) * 1000);
+                var isFuture = tsLeft.isAfter(ts);
+                if(isFuture){
                 var marker = new google.maps.Marker({
                   map: map,
                   position: {lat: p.lat, lng: p.lng},
                   label: "",
-                  title: "<b>"+p.name+"</b><br>Time left: " + formatSeconds(p.timeleft) + "<br>Lat: "+p.lat+"<br>Long: "+p.lng,
+                  title: "<b>"+p.name+"</b><br>Time left: " + tsLeft.fromNow(ts) + "<br>Lat: "+p.lat+"<br>Long: "+p.lng,
                   icon: image
                 });
 
@@ -243,6 +262,7 @@
 
                 listeners.push(listenerPair);
                 markers.push(marker);
+                }
               }
             }
             layers = layers.sort();
@@ -252,7 +272,7 @@
             for (var id in layers) {
               var pkmn = layers[id];
               var checked = hidden_layers.indexOf(pkmn) != -1 ? "" : "checked";
-              content.push("<li class='col-xl-3 col-lg-4 col-md-4 col-xs-6'><input type='checkbox' id='" + pkmn +  "'" +
+              content.push("<li class='col-xl-3 col-lg-4 col-md-4 col-xs-6' id='list-item-" + pkmn + "'><input type='checkbox' id='" + pkmn +  "'" +
               " onclick='toggleLayer(this.checked, this.id)' "+checked+"\/>&nbsp;" +
               pkmn + "<\/li>");
             }
@@ -266,8 +286,6 @@
             } else if($('#overlay').is(':visible')) {
               $('#overlay').fadeOut('fast');
             }
-          } else {
-            console.log('likely the same data');
           }
 
       }

@@ -43,6 +43,8 @@ SESSION.headers.update({'User-Agent': 'Niantic App'})
 SESSION.verify = False
 
 DEBUG = False
+FAIL_COUNT = 15
+MAX_FAILS = 15
 COORDS_LATITUDE = 0
 COORDS_LONGITUDE = 0
 COORDS_ALTITUDE = 0
@@ -53,6 +55,22 @@ default_step = 0.001
 NUM_STEPS = 10
 DATA_FILE = 'data.sumner.json'
 DATA = []
+
+def restart_program():
+    """Restarts the current program, with file objects and descriptors
+       cleanup
+    """
+
+    try:
+        p = psutil.Process(os.getpid())
+        for handler in p.get_open_files() + p.connections():
+            os.close(handler.fd)
+    except Exception, e:
+        logging.error(e)
+        print('[!] Could not restart script');
+
+    python = sys.executable
+    os.execl(python, python, *sys.argv)
 
 def f2i(float):
   return struct.unpack('<Q', struct.pack('<d', float))[0]
@@ -153,13 +171,13 @@ def api_req(api_endpoint, access_token, *mehs, **kw):
 
             if DEBUG:
                 print("[ ] Sleeping for 5 seconds")
-            time.sleep(5)
+            time.sleep(1)
             return p_ret
         except Exception, e:
             if DEBUG:
                 print(e)
             print('[-] API request error, retrying')
-            time.sleep(60)
+            time.sleep(5)
             continue
 
 def get_profile(access_token, api, useauth, *reqq):
@@ -269,6 +287,7 @@ def raw_heartbeat(api_endpoint, access_token, response):
     return heartbeat
 
 def heartbeat(api_endpoint, access_token, response):
+    global FAIL_COUNT, MAX_FAILS
     while True:
         try:
             h = raw_heartbeat(api_endpoint, access_token, response)
@@ -276,8 +295,12 @@ def heartbeat(api_endpoint, access_token, response):
         except Exception, e:
             if DEBUG:
                 print(e)
-            print(e)
-            print('[-] Heartbeat missed, retrying')
+            if(FAIL_COUNT < MAX_FAILS):
+                print('[-] Heartbeat missed, retrying ' + str(FAIL_COUNT) + ' times...');
+                FAIL_COUNT -= FAIL_COUNT
+            else:
+                print('[!] Max Fail Count Reached - restarting...');
+                restart_program()
 
 
 def scan(api_endpoint, access_token, response, origin, pokemons):
