@@ -152,14 +152,14 @@ def api_req(api_endpoint, access_token, *mehs, **kw):
                 print("\n\n")
 
             if DEBUG:
-                print("[ ] Sleeping for 1 second")
-            time.sleep(1)
+                print("[ ] Sleeping for 5 seconds")
+            time.sleep(5)
             return p_ret
         except Exception, e:
             if DEBUG:
                 print(e)
             print('[-] API request error, retrying')
-            time.sleep(1)
+            time.sleep(60)
             continue
 
 def get_profile(access_token, api, useauth, *reqq):
