@@ -338,7 +338,7 @@
             } else {
                 config = configData;
             }
-            if (config.maintenanceMode) {
+            if (config.maintenanceMode === true) {
                 window.maintenanceMode = true;
                 $('#overlay').hide();
                 $('#map').hide();
