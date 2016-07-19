@@ -411,7 +411,6 @@ def main():
     response = get_profile(access_token, api_endpoint, None)
     if response is not None:
         print('[+] Login successful')
-
         payload = response.payload[0]
         profile = pokemon_pb2.ResponseEnvelop.ProfilePayload()
         profile.ParseFromString(payload)

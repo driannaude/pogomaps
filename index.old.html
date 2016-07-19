@@ -17,7 +17,6 @@
       }
       #overlay {
         position: fixed;
-        display:none;
         top: 0; left:0; right:0; bottom:250px;
         z-index: 999999;
         background: rgba(0,0,0,0.5);
@@ -77,12 +76,6 @@
     </style>
   </head>
   <body>
-    <div id="maintenance" class="row center-xs middle-xs" style="min-height: 100vh">
-      <div class="loading col-xs-12">
-        <h1>Pokemon Go Servers Are Having Trouble</h1>
-        <h1>We will put the map back up as soon as we get stable responses again :)</h1>
-      </div>
-    </div>
     <div id="overlay">
       <div class="loading row center-xs middle-xs">
         <h1>Loading...</h1>
@@ -312,18 +305,6 @@
           config = JSON.parse(configData);
         } else {
           config = configData;
-        }
-        if(config.maintenanceMode){
-            $('#overlay').hide();
-            $('#map').hide();
-            $('#capture').hide();
-            $('#maintenance').show();
-            return false;
-        } else {
-          $('#overlay').show();
-          $('#map').show();
-          $('#capture').show();
-          $('#maintenance').hide();
         }
         console.log("Using api key: " + config.GOOGLE_MAPS_API_KEY);
         loadScript("https://maps.googleapis.com/maps/api/js?key=" + config.GOOGLE_MAPS_API_KEY + "&libraries=drawing&callback=initMap");
