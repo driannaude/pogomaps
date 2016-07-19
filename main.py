@@ -50,7 +50,7 @@ FLOAT_LAT = 0
 FLOAT_LONG = 0
 deflat, deflng = 0, 0
 default_step = 0.001
-NUM_STEPS = 12
+NUM_STEPS = 10
 DATA_FILE = 'data.sumner.json'
 DATA = []
 
@@ -276,6 +276,7 @@ def heartbeat(api_endpoint, access_token, response):
         except Exception, e:
             if DEBUG:
                 print(e)
+            print(e)
             print('[-] Heartbeat missed, retrying')
 
 
