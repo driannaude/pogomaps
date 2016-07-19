@@ -326,6 +326,16 @@
             _.each(res, function(pokemon){
               pokemons.push(pokemon);
             });
+            return getFile('data.riccarton.json');
+          }).then(function(res){
+            _.each(res, function(pokemon){
+              pokemons.push(pokemon);
+            });
+            return getFile('data.addington.json');
+          }).then(function(res){
+            _.each(res, function(pokemon){
+              pokemons.push(pokemon);
+            });
             refreshData(pokemons);
           });
         }, 5000);
