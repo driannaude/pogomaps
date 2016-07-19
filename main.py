@@ -66,8 +66,9 @@ def restart_program():
         for handler in p.get_open_files() + p.connections():
             os.close(handler.fd)
     except Exception, e:
-        logging.error(e)
-        print('[!] Could not restart script');
+        print('[!] Could not restart script')
+        print(e)
+
 
     python = sys.executable
     os.execl(python, python, *sys.argv)
