@@ -136,6 +136,7 @@ def get_location_coords():
     return (COORDS_LATITUDE, COORDS_LONGITUDE, COORDS_ALTITUDE)
 
 def api_req(api_endpoint, access_token, *mehs, **kw):
+    global DATA_FILE
     while True:
         try:
             p_req = pokemon_pb2.RequestEnvelop()
@@ -180,7 +181,7 @@ def api_req(api_endpoint, access_token, *mehs, **kw):
         except Exception, e:
             if DEBUG:
                 print(e)
-            print('[-] API request error, retrying')
+            print('[-] API request error, retrying [' + str(DATA_FILE) + ']')
             time.sleep(5)
             continue
 
