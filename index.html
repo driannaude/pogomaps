@@ -5,6 +5,8 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
     <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.0/flexboxgrid.min.css">
     <meta charset="utf-8">
     <style>
       html, body {
@@ -12,20 +14,33 @@
         margin: 0;
         padding: 0;
       }
+      #overlay {
+        position: fixed;
+        top: 0; left:0; right:0; bottom:250px;
+        z-index: 999999;
+        background: rgba(0,0,0,0.5);
+      }
+      #overlay .loading {
+        height: 500px;
+      }
+      #overlay .loading h1 {
+        color: #fff;
+      }
       #map {
         height: 100%;
       }
       #legend {
         background: #FFF;
-        padding: 10px;
-        margin: 5px;
+        padding: 15px;
+        margin: 5px 5px 0 5px;
         font-size: 12px;
         font-family: Arial, sans-serif;
-        height: 255px;
-        width: 150px;
+        height: 250px;
+        width: 100%;
       }
-      #legend div {
+      #legend div#legend-list {
        height: 210px;
+       padding-bottom: 100px;
        overflow: auto;
       }
       #legend li {
@@ -34,9 +49,15 @@
     </style>
   </head>
   <body>
+    <div id="overlay">
+      <div class="loading row center-xs middle-xs">
+        <h1>Loading...</h1>
+      </div>
+    </div>
     <div id="map"></div>
     <div id="capture"></div>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/q.js/1.0.1/q.js"></script>
 
@@ -86,26 +107,48 @@
       }
 
       function toggleLayer(checked, pkmn) {
-        if (checked) {
+        console.log('is checked' + checked);
+        if (!checked) {
             hidden_layers.push(pkmn);
         } else {
             var index = hidden_layers.indexOf(pkmn);
             if(index > -1){
               hidden_layers.splice(index,1);
             }
+            console.log(index, hidden_layers.length, layers.length);
         }
-        refreshData();
+        refreshData(null, true);
+      };
+      function toggleAll(checked) {
+
+        if (!checked) {
+          _.each(layers, function(layer){
+            hidden_layers.push(layer);
+          });
+        } else {
+          hidden_layers = [];
+        }
+        refreshData(null, true);
       };
 
 
-      function refreshData(response) {
+      function refreshData(response, actionable) {
+          if(actionable){
+            $('#overlay').fadeIn('fast');
+          }
+          if(!response){
+            response = [];
+          }
           console.log("Refreshing data...");
           var preLength = data.length;
-          if(!_.isObject(response)){
+          if(!_.isObject(response) && !_.isEmpty(response)){
             data = JSON.parse(response);
+          } else if(response === null) {
+            data = [];
           } else {
             data = response;
           }
+          var dataLength = data.length || 0;
           if (preLength != data.length) {
             // Clear markers
             for (var i = 0; i < markers.length; i++) {
@@ -130,7 +173,7 @@
                 if(layers.indexOf(p.name) == -1){
                   layers.push(p.name);
                 }
-                console.log("Adding marker " + p.name);
+                // console.log("Adding marker " + p.name);
 
                 var infowindow = new google.maps.InfoWindow({
                 });
@@ -160,18 +203,29 @@
                 markers.push(marker);
               }
             }
-
+            layers = layers.sort();
             // Draw layer manager
             var list = document.getElementById('legend-list');
             var content = [];
             for (var id in layers) {
               var pkmn = layers[id];
-              var checked = hidden_layers.indexOf(pkmn) != -1 ? "checked": "";
-              content.push("<li><input type='checkbox' id='" + pkmn +  "'" +
-              " onclick='toggleLayer(this.checked, this.id)' "+checked+"\/>" +
+              var checked = hidden_layers.indexOf(pkmn) != -1 ? "" : "checked";
+              content.push("<li class='col-xl-3 col-lg-4 col-md-4 col-xs-6'><input type='checkbox' id='" + pkmn +  "'" +
+              " onclick='toggleLayer(this.checked, this.id)' "+checked+"\/>&nbsp;" +
               pkmn + "<\/li>");
             }
             list.innerHTML = content.join('');
+            if(actionable){
+
+              google.maps.event.addListenerOnce(window.map, 'idle', function(){
+                // do something only the first time the map is loaded
+                $('#overlay').fadeOut('fast');
+              });
+            } else if($('#overlay').is(':visible')) {
+              $('#overlay').fadeOut('fast');
+            }
+          } else {
+            console.log('likely the same data');
           }
 
       }
@@ -199,7 +253,7 @@
       function initMap() {
         console.log("Initializing map");
 
-        map = new google.maps.Map(document.getElementById('map'), {
+        window.map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: -43.5321, lng: 172.6362},
           zoom: 12
         });
@@ -207,26 +261,25 @@
         var legend = document.createElement('div');
         legend.id = 'legend';
         var content = [];
-        content.push('<h3>Hide Pokemon</h3>');
-        content.push('<div id="legend-list"></div>');
+        content.push('<div class="row"><h3 style="margin:0" class="col-xs-6">Show Pokemon</h3>');
+        content.push("<li class='col-xs-6 pull-right'><input type='checkbox' id='allcheck'" +
+        " onclick='toggleAll(this.checked)' checked \/>&nbsp;<strong>Toggle All</strong></li><\/div>");
+        content.push('<div id="legend-list" class="row"></li></div>');
         legend.innerHTML = content.join('');
         legend.index = 1;
-        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+        window.map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(legend);
 
         setInterval(function(){
           var pokemons = [];
-          console.log('sumner');
           getFile('data.sumner.json').then(function(res){
             pokemons = res;
             return getFile('data.brighton.json');
           }).then(function(res){
-            console.log('brighton');
             _.each(res, function(pokemon){
               pokemons.push(pokemon);
             });
             return getFile('data.hagley.json');
           }).then(function(res){
-            console.log('hagley');
             _.each(res, function(pokemon){
               pokemons.push(pokemon);
             });
@@ -234,6 +287,16 @@
           });
         }, 5000);
       }
+      function isPortrait() {
+        return window.innerHeight > window.innerWidth;
+      }
+      // Listen for orientation changes
+      window.addEventListener("orientationchange", function() {
+        // Announce the new orientation number
+        if(!isPortrait()){
+          alert('Portrait mode is the ideal orientation.');
+        }
+      }, false);
     </script>
 
   </body>
