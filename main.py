@@ -5,6 +5,10 @@ import json
 import argparse
 import pokemon_pb2
 import time
+import os
+import psutil
+import sys
+import logging
 
 from google.protobuf.internal import encoder
 
@@ -67,8 +71,7 @@ def restart_program():
             os.close(handler.fd)
     except Exception, e:
         print('[!] Could not restart script')
-        print(e)
-
+        logging.error(e)
 
     python = sys.executable
     os.execl(python, python, *sys.argv)
