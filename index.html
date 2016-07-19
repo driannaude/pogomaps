@@ -474,26 +474,30 @@
                  * Updates the status in the UI by the corresponding
                  * response time
                  */
+            self.successStatusCount = 0;
             self.updateStatus = function() {
                 pokemonGOServer.getResponseTime(function(time) {
                   console.log(time);
                   $('#timestatus').removeClass('label label-warning');
                   $('#timestatus').removeClass('label label-success');
                   $('#timestatus').removeClass('label label-danger');
-                    if (time < 800) {
+                    if (self.successStatusCount > 60 && time < 800) {
                         // Fine
+                        self.successStatusCount++;
                         $('#timestatus').text('Online');
                         $('#timestatus').addClass('label label-success');
                     }
 
-                    if (time >= 800 && time < 3000) {
+                    if ((self.successStatusCount < 60 && time <800) || (time >= 800 && time < 3000)) {
                         // Slow/Unstable
+                        self.successStatusCount = 0;
                         $('#timestatus').text('Unstable');
                         $('#timestatus').addClass('label label-warning');
                     }
 
                     if (time >= 3000) {
                         // Probably Down
+                        self.successStatusCount = 0;
                         $('#timestatus').text('Down');
                         $('#timestatus').addClass('label label-danger');
                     }
