@@ -182,6 +182,7 @@ def api_req(api_endpoint, access_token, *mehs, **kw):
             if DEBUG:
                 print(e)
             print('[-] API request error, retrying [' + str(DATA_FILE) + ']')
+            print(e)
             time.sleep(5)
             continue
 
