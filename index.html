@@ -97,6 +97,7 @@
       }
 
       function getFile(file) {
+        console.log('fetching file');
         var deferred = Q.defer();
         $.get(file, function(data){
           deferred.resolve(data);
@@ -299,7 +300,7 @@
       updated = false;
 
 
-      getFile("config.json").then(function(configData) {
+      getFile("/config.json").then(function(configData) {
         var config;
         if(!_.isObject(configData)){
           config = JSON.parse(configData);
