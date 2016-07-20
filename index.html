@@ -101,8 +101,8 @@
         var deferred = Q.defer();
         $.get(file, function(data){
           deferred.resolve(data);
-        }).fail(function() {
-          deferred.reject('ERR_HTTP');
+        }).fail(function(err) {
+          deferred.reject(err);
         });
         return deferred.promise;
       }
