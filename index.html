@@ -145,7 +145,7 @@
               hidden_layers.splice(index,1);
             }
         }
-        refreshData(null, true);
+        fetchData();
       };
       function toggleAll(checked) {
 
@@ -156,7 +156,7 @@
         } else {
           hidden_layers = [];
         }
-        refreshData(null, true);
+        fetchData();
       };
       var panelState = true;
       function togglePanel(){
@@ -278,17 +278,18 @@
               pkmn + "<\/li>");
             }
             list.innerHTML = content.join('');
-            if(actionable){
 
-              google.maps.event.addListenerOnce(window.map, 'idle', function(){
-                // do something only the first time the map is loaded
-                $('#overlay').fadeOut('fast');
-              });
-            } else if($('#overlay').is(':visible')) {
-              $('#overlay').fadeOut('fast');
-            }
           }
+          if(actionable){
+            google.maps.event.addListenerOnce(window.map, 'idle', function(){
+              // do something only the first time the map is loaded
+              $('#overlay').fadeOut('fast');
+            });
+          } else if($('#overlay').is(':visible')) {
+            $('#overlay').fadeOut('fast');
+          } else {
 
+          }
       }
 
       data = {};
