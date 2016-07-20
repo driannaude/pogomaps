@@ -313,6 +313,34 @@
         console.error(err);
       });
 
+      function fetchData(){
+        var pokemons = [];
+        getFile('data.sumner.json').then(function(res){
+          pokemons = res;
+          return getFile('data.brighton.json');
+        }).then(function(res){
+          _.each(res, function(pokemon){
+            pokemons.push(pokemon);
+          });
+          return getFile('data.hagley.json');
+        }).then(function(res){
+          _.each(res, function(pokemon){
+            pokemons.push(pokemon);
+          });
+          return getFile('data.riccarton.json');
+        }).then(function(res){
+          _.each(res, function(pokemon){
+            pokemons.push(pokemon);
+          });
+          return getFile('data.addington.json');
+        }).then(function(res){
+          _.each(res, function(pokemon){
+            pokemons.push(pokemon);
+          });
+          refreshData(pokemons);
+        });
+      }
+
       function initMap() {
         console.log("Initializing map");
 
@@ -333,33 +361,9 @@
         legend.index = 1;
         window.map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(legend);
 
-        setInterval(function(){
-          var pokemons = [];
-          getFile('data.sumner.json').then(function(res){
-            pokemons = res;
-            return getFile('data.brighton.json');
-          }).then(function(res){
-            _.each(res, function(pokemon){
-              pokemons.push(pokemon);
-            });
-            return getFile('data.hagley.json');
-          }).then(function(res){
-            _.each(res, function(pokemon){
-              pokemons.push(pokemon);
-            });
-            return getFile('data.riccarton.json');
-          }).then(function(res){
-            _.each(res, function(pokemon){
-              pokemons.push(pokemon);
-            });
-            return getFile('data.addington.json');
-          }).then(function(res){
-            _.each(res, function(pokemon){
-              pokemons.push(pokemon);
-            });
-            refreshData(pokemons);
-          });
-        }, 1000);
+        fetchData();
+
+        setInterval(fetchData, 30000);
       }
       function isPortrait() {
         return window.innerHeight > window.innerWidth;
