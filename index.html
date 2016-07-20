@@ -20,7 +20,6 @@
 
         #overlay {
             position: fixed;
-            display: none;
             top: 0;
             left: 0;
             right: 0;
@@ -30,6 +29,7 @@
         }
         #maintenance {
           display: none;
+          z-index: 99999999999;
         }
 
         #overlay .loading {
@@ -115,6 +115,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/q.js/1.0.1/q.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
     <script>
+    (function(){
         window.maintenanceMode = true;
         function loadScript(src) {
             var element = document.createElement("script");
@@ -333,6 +334,7 @@
 
         getFile("config.json").then(function(configData) {
             var config;
+            console.log(configData);
             if (!_.isObject(configData)) {
                 config = JSON.parse(configData);
             } else {
@@ -341,9 +343,6 @@
             if (config.maintenanceMode === true) {
                 window.maintenanceMode = true;
                 console.log('maintenance mode: on');
-                $('#overlay').hide();
-                $('#map').hide();
-                $('#capture').hide();
                 $('#maintenance').show();
                 return false;
             } else {
@@ -352,11 +351,7 @@
                 if(window.statusInterval){
                   window.clearInterval(window.statusInterval);
                 }
-                $('#overlay').show();
-                $('#map').show();
-                $('#capture').show();
                 $('#maintenance').hide();
-                window.initMap();
             }
             console.log("Using api key: " + config.GOOGLE_MAPS_API_KEY);
             loadScript("https://maps.googleapis.com/maps/api/js?key=" + config.GOOGLE_MAPS_API_KEY + "&libraries=drawing&callback=initMap");
@@ -424,6 +419,7 @@
                 alert('Portrait mode is the ideal orientation.');
             }
         }, false);
+      }());
     </script>
     <script>
         // Status
