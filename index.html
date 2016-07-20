@@ -340,12 +340,14 @@
             }
             if (config.maintenanceMode === true) {
                 window.maintenanceMode = true;
+                console.log('maintenance mode: on');
                 $('#overlay').hide();
                 $('#map').hide();
                 $('#capture').hide();
                 $('#maintenance').show();
                 return false;
             } else {
+              console.log('maintenance mode: off');
                 window.maintenanceMode = false;
                 if(window.statusInterval){
                   window.clearInterval(window.statusInterval);
