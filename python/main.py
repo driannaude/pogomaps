@@ -57,7 +57,7 @@ FLOAT_LONG = 0
 deflat, deflng = 0, 0
 default_step = 0.001
 NUM_STEPS = 10
-DATA_FILE = 'data.sumner.json'
+DATA_FILE = '../data.sumner.json'
 DATA = []
 
 def restart_program():
