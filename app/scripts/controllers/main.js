@@ -125,13 +125,13 @@ angular.module('ngApp')
 
     function _getPokemonData() {
       var pokemons = [];
-      $http.get('./data.sumner.json').then(function(res) {
+      $http.get('https://pokemongomap.notanengineer.com/data.sumner.json').then(function(res) {
         var data = res.data;
         pokemons = data;
         return $http.get('https://pokemongomap.notanengineer.com/data.hagley.json');
       }, function(err) {
         console.error(err);
-        return $http.get('https://pokemongomap.notanengineer.com//data.hagley.json?callback=?');
+        return $http.get('https://pokemongomap.notanengineer.com/data.hagley.json?callback=?');
       }).then(function(res) {
         var data = res.data;
         _.each(data, function(pokemon) {
