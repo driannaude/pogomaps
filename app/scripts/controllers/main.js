@@ -139,40 +139,41 @@ angular.module('ngApp')
 
     function _getPokemonData() {
       var pokemons = [];
-      $http.get('https://pokemongomap.notanengineer.com/data.sumner.json').then(function(res) {
+      var ts = new Date().getTime().toString();
+      $http.get('https://pokemongomap.notanengineer.com/data.sumner.json?t=' + ts).then(function(res) {
         var data = res.data;
         pokemons = data;
-        return $http.get('https://pokemongomap.notanengineer.com/data.hagley.json');
+        return $http.get('https://pokemongomap.notanengineer.com/data.hagley.json?t=' + ts);
       }, function(err) {
         console.error(err);
-        return $http.get('https://pokemongomap.notanengineer.com/data.hagley.json?callback=?');
+        return $http.get('https://pokemongomap.notanengineer.com/data.hagley.json?t=' + ts);
       }).then(function(res) {
         var data = res.data;
         _.each(data, function(pokemon) {
           pokemons.push(pokemon);
         });
-        return $http.get('https://pokemongomap.notanengineer.com/data.riccarton.json?callback=?');
+        return $http.get('https://pokemongomap.notanengineer.com/data.riccarton.json?t=' + ts);
       }, function(err) {
         console.error(err);
-        return $http.get('https://pokemongomap.notanengineer.com/data.riccarton.json?callback=?');
+        return $http.get('https://pokemongomap.notanengineer.com/data.riccarton.json?t=' + ts);
       }).then(function(res) {
         var data = res.data;
         _.each(data, function(pokemon) {
           pokemons.push(pokemon);
         });
-        return $http.get('https://pokemongomap.notanengineer.com/data.brighton.json?callback=?');
+        return $http.get('https://pokemongomap.notanengineer.com/data.brighton.json?t=' + ts);
       }, function(err) {
         console.error(err);
-        return $http.get('https://pokemongomap.notanengineer.com/data.brighton.json?callback=?');
+        return $http.get('https://pokemongomap.notanengineer.com/data.brighton.json?t=' + ts);
       }).then(function(res) {
         var data = res.data;
         _.each(data, function(pokemon) {
           pokemons.push(pokemon);
         });
-        return $http.get('https://pokemongomap.notanengineer.com/data.addington.json?callback=?');
+        return $http.get('https://pokemongomap.notanengineer.com/data.addington.json?t=' + ts);
       }, function(err) {
         console.error(err);
-        return $http.get('https://pokemongomap.notanengineer.com/data.addington.json?callback=?');
+        return $http.get('https://pokemongomap.notanengineer.com/data.addington.json?t=' + ts);
       }).then(function(res) {
         var data = res.data;
         _.each(data, function(pokemon) {
