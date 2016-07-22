@@ -19,8 +19,17 @@ angular.module('ngApp')
         latitude: -43.5321,
         longitude: 172.6362
       },
+      options: {
+        disableDefaultUI: true
+      },
       zoom: 12
     };
+    $scope.$on('location:coords', function(evt, coords, location){
+      console.log(location);
+      $scope.map.center.latitude = coords.lat;
+      $scope.map.center.longitude = coords.long;
+      $scope.map.zoom = 17;
+    });
     $scope.markers = [];
     $scope.infoWindows = [];
     $scope.pokemonList = [];

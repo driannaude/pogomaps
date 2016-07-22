@@ -8,9 +8,9 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="../bower_components/flexboxgrid/dist/flexboxgrid.css" />
-    <link rel="stylesheet" href="../bower_components/angular-snap/angular-snap.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/flexboxgrid/dist/flexboxgrid.css" />
+    <link rel="stylesheet" href="bower_components/angular-snap/angular-snap.css" />
     <!-- endbower -->
     <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css" />
     <!-- endbuild -->
@@ -38,41 +38,48 @@
       </div>
     </div>
     <div class="footer {{serverStatus}}">
-     <div class="row center-xs middle-xs">
-       <div class="col-xs-12">
+     <div class="row middle-xs">
+       <div class="col-xs-7 start-xs">
          <p><i class="fa fa-heartbeat"
                   ng-class="{'text-danger': serverStatus === 'CRITICAL',
                              'text-warning': serverStatus === 'UNSTABLE',
-                             'text-success': serverStatus === 'STABLE'}"></i> SERVER STATUS: <strong>{{serverStatus}}</strong></p>
+                             'text-success': serverStatus === 'STABLE'}"></i> SERVERS: <strong>{{serverStatus}}</strong></p>
+       </div>
+       <div class="col-xs end-xs">
+          <p><button type="button" class="btn btn-default btn-sm" ng-disabled="geolocationTimeout()" ng-click="getMyLocation()">
+           <i class="fa" ng-class="{'fa-location-arrow': !geoLocationInProgress, 'fa-cog fa-spin': geoLocationInProgress}"></i>&nbsp;Find Me
+         </button></p>
        </div>
      </div>
    </div>
     <div ui-view></div>
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="../bower_components/jquery/dist/jquery.js"></script>
-    <script src="../bower_components/angular/angular.js"></script>
-    <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="../bower_components/angular-animate/angular-animate.js"></script>
-    <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="../bower_components/angular-resource/angular-resource.js"></script>
-    <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="../bower_components/angular-touch/angular-touch.js"></script>
-    <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="../bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
-    <script src="../bower_components/lodash/lodash.js"></script>
-    <script src="../bower_components/markerclustererplus/src/markerclusterer.js"></script>
-    <script src="../bower_components/google-maps-utility-library-v3-markerwithlabel/dist/markerwithlabel.js"></script>
-    <script src="../bower_components/google-maps-utility-library-v3-infobox/dist/infobox.js"></script>
-    <script src="../bower_components/google-maps-utility-library-v3-keydragzoom/dist/keydragzoom.js"></script>
-    <script src="../bower_components/js-rich-marker/src/richmarker.js"></script>
-    <script src="../bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
-    <script src="../bower_components/moment/moment.js"></script>
-    <script src="../bower_components/angular-moment/angular-moment.js"></script>
-    <script src="../bower_components/snapjs/snap.js"></script>
-    <script src="../bower_components/angular-snap/angular-snap.js"></script>
-    <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="../bower_components/ngFuzzySearch/ngFuzzySearch.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
+    <script src="bower_components/lodash/lodash.js"></script>
+    <script src="bower_components/markerclustererplus/src/markerclusterer.js"></script>
+    <script src="bower_components/google-maps-utility-library-v3-markerwithlabel/dist/markerwithlabel.js"></script>
+    <script src="bower_components/google-maps-utility-library-v3-infobox/dist/infobox.js"></script>
+    <script src="bower_components/google-maps-utility-library-v3-keydragzoom/dist/keydragzoom.js"></script>
+    <script src="bower_components/js-rich-marker/src/richmarker.js"></script>
+    <script src="bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/angular-moment/angular-moment.js"></script>
+    <script src="bower_components/snapjs/snap.js"></script>
+    <script src="bower_components/angular-snap/angular-snap.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/ngFuzzySearch/ngFuzzySearch.js"></script>
+    <script src="bower_components/angularjs-geolocation/src/geolocation.js"></script>
+    <script src="bower_components/ngstorage/ngStorage.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

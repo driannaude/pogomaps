@@ -44,6 +44,8 @@ module.exports = function(config) {
       'bower_components/angular-snap/angular-snap.js',
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'bower_components/ngFuzzySearch/ngFuzzySearch.js',
+      'bower_components/angularjs-geolocation/src/geolocation.js',
+      'bower_components/ngstorage/ngStorage.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

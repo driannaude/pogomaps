@@ -19,7 +19,9 @@ angular
     'angularMoment',
     'snap',
     'ui.bootstrap',
-    'ngFuzzySearch'
+    'ngFuzzySearch',
+    'geolocation',
+    'ngStorage'
   ]).config(function($urlRouterProvider, $stateProvider, uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
       key: 'AIzaSyB1xmk0SgauBGotpGglRs6DOohSzN2DGUw',

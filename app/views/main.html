@@ -1,7 +1,7 @@
 
 <div snap-content snap-opt-disable="'left'" snap-opt-tap-to-close="true">
   <div class="map-container">
-    <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+    <ui-gmap-google-map center='map.center' zoom='map.zoom' options='map.options'>
       <ui-gmap-marker ng-repeat="marker in visiblePokemon()" coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
         <ui-gmap-window show="marker.infoWindow.show" options="marker.infoWindow.options">
           <div>{{marker.infoWindow.content}}</div>
