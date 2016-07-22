@@ -40,7 +40,6 @@ angular
     $rootScope.serverStats = null;
     $http.get('https://go.jooas.com/status').then(function(res) {
       var status = res.data;
-      console.log(status);
       if(status !== $rootScope.serverStats){
           $rootScope.serverStats = status;
           $rootScope.$broadcast('server:statusChange' , status);
@@ -55,7 +54,6 @@ angular
       $interval(function() {
         $http.get('https://go.jooas.com/status').then(function(res) {
           var status = res.data;
-          console.log(status);
           if(status !== $rootScope.serverStats){
               $rootScope.serverStats = status;
               $rootScope.$broadcast('server:statusChange' , status);

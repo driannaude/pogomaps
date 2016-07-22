@@ -11,6 +11,7 @@ angular.module('ngApp')
     $localStorage.geoTimeout = 0;
     // Do server status things
     $scope.serversAreDown = false;
+    $scope.geoLocationError = false;
     $scope.serverStatus = 'CHECKING...';
     $scope.onlineCount = 0;
     $scope.$on('server:statusChange', function(event, status) {
@@ -64,6 +65,8 @@ angular.module('ngApp')
         $rootScope.$broadcast('location:coords', coords, suburb);
         // jscs:enable
       }, function(err){
+        $scope.geoLocationInProgress = false;
+        $scope.geoLocationError = true;
         console.error(err);
       });
     };

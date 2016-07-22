@@ -47,8 +47,17 @@
                              'text-success': serverStatus === 'STABLE'}"></i> SERVERS: <strong>{{serverStatus}}</strong></p>
        </div>
        <div class="col-xs end-xs">
-          <p><button type="button" class="btn btn-default btn-sm" ng-disabled="geolocationTimeout()" ng-click="getMyLocation()">
-           <i class="fa" ng-class="{'fa-location-arrow': !geoLocationInProgress, 'fa-cog fa-spin': geoLocationInProgress}"></i>&nbsp;Find Me
+          <p><button type="button" class="btn btn-default btn-sm"
+                     ng-disabled="geolocationTimeout()" ng-click="getMyLocation()"
+                     uib-tooltip="Unable to get your Location"
+                     tooltip-placement="top"
+                     tooltip-trigger="'outsideClick'"
+                     tooltip-popup-close-delay="1000"
+                     tooltip-popup-delay="0"
+                     tooltip-enable="geoLocationError">
+           <i class="fa" ng-class="{'fa-location-arrow': !geoLocationInProgress && !geoLocationError,
+                                    'fa-cog fa-spin': geoLocationInProgress,
+                                    'fa-exclamation-triangle': !geoLocationInProgress && geoLocationError === true}"></i>&nbsp;Find Me
          </button></p>
        </div>
      </div>

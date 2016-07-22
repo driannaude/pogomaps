@@ -56,7 +56,7 @@ FLOAT_LAT = 0
 FLOAT_LONG = 0
 deflat, deflng = 0, 0
 default_step = 0.001
-NUM_STEPS = 10
+NUM_STEPS = 8
 DATA_FILE = '../data.sumner.json'
 DATA = []
 
