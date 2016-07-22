@@ -1,3 +1,5 @@
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,700';
+@import "https://fonts.googleapis.com/css?family=Press+Start+2P";
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -6,6 +8,7 @@
 }
 body {
   padding: 0;
+  font-family: 'Open Sans', sans-serif;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -37,7 +40,7 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  padding-top: 19px;
+  padding-top: 10px;
   background: #efefef;
   color: #777;
   border-top: 1px solid #ccc;
@@ -121,7 +124,6 @@ body {
     float: left;
     width: 100%;
     background: #fff;
-    border-bottom: 1px solid #ccc;
 }
 
 .navbar-toggle {
@@ -135,4 +137,27 @@ body {
     background-image: none;
     border: 1px solid transparent;
     border-radius: 4px;
+}
+
+.navbar {
+  border-bottom: 2px solid #ccc;
+  box-shadow: 0 0 2px -1px #444;
+}
+.footer.STABLE {
+  border-top: 2px solid #3c763d;
+}
+.footer.CRITICAL {
+  border-top: 2px solid #d04038;
+}
+.footer.UNSTABLE {
+  border-top: 2px solid #f3b344;
+}
+
+.navbar-brand {
+  font-size: 16px;
+  color: #444 !important;
+}
+
+.text-warning {
+  color: #f3b344;
 }
