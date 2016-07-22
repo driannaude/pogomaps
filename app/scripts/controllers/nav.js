@@ -67,4 +67,5 @@ angular.module('ngApp')
         console.error(err);
       });
     };
+    $scope.getMyLocation();
   });

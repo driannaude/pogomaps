@@ -8,7 +8,6 @@
  */
 angular.module('ngApp')
   .controller('MainCtrl', function($rootScope, $scope, $http, $interval, $timeout, $q, uiGmapGoogleMapApi, moment) {
-
     // uiGmapGoogleMapApi is a promise.
     // The "then" callback function provides the google.maps object.
     uiGmapGoogleMapApi.then(function() {
@@ -24,19 +23,52 @@ angular.module('ngApp')
       },
       zoom: 12
     };
-    $scope.$on('location:coords', function(evt, coords, location){
-      console.log(location);
-      $scope.map.center.latitude = coords.lat;
-      $scope.map.center.longitude = coords.long;
-      $scope.map.zoom = 17;
-    });
     $scope.markers = [];
     $scope.infoWindows = [];
     $scope.pokemonList = [];
+    $scope.areaList = [{
+      name: 'hagley',
+      active: false
+    }, {
+      name: 'riccarton',
+      active: false
+    }, {
+      name: 'addington',
+      active: false
+    }, {
+      name: 'sumner',
+      active: false
+    }, {
+      name: 'brighton',
+      active: false
+    }];
+    $scope.$on('location:coords', function(evt, coords, suburb) {
+      // jscs:disable
+      var subby = suburb.long_name.toLowerCase();
+      var areaIndex = _.findIndex($scope.areaList, {
+        name: subby
+      });
+      if (areaIndex >= 0) {
+        $scope.areaList[areaIndex].active = true;
+      } else {
+        console.warn('AREA NOT ADDED');
+      }
+      $scope.map.center.latitude = coords.lat;
+      $scope.map.center.longitude = coords.long;
+      $scope.map.zoom = 16;
+      _getPokemonData();
+      // jscs:enable
+    });
     $scope.radioModel = 'All';
+    $scope.radioModelArea = 'None';
     $scope.select = function(value) {
       _.each($scope.pokemonList, function(pokemon) {
         pokemon.active = value;
+      });
+    };
+    $scope.selectArea = function(value) {
+      _.each($scope.areaList, function(area) {
+        area.active = value;
       });
     };
     $scope.visiblePokemon = function() {
@@ -50,6 +82,9 @@ angular.module('ngApp')
       });
       return returnList;
     };
+    $scope.redrawAreas = function() {
+      $timeout(_getPokemonData, 0);
+    };
 
     function _cap(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
@@ -62,10 +97,12 @@ angular.module('ngApp')
     }
 
     function main() {
-      _getPokemonData();
       $interval(function() {
         _getPokemonData();
       }, 5000);
+      // $interval(function(){
+      //   _processPokemons($scope.pokemons);
+      // }, 1000);
     }
 
     function _getPokemonIcon(p) {
@@ -81,7 +118,7 @@ angular.module('ngApp')
     function removeStalePokemonMarkers() {
       var ts = moment();
       _.each($scope.markers, function(marker, index) {
-        if(!marker){
+        if (!marker) {
           return;
         }
         var pokemon = marker.pokemon;
@@ -101,6 +138,9 @@ angular.module('ngApp')
         if (!tsLeft.isAfter(ts)) {
           return false;
         }
+        var countdownTimer = moment.duration(tsLeft - ts).format('mm:ss', {
+          trim: false
+        });
         var pokeId = $scope.markers.length - 1;
         if (pokeId < 0) {
           pokeId = 0;
@@ -113,13 +153,15 @@ angular.module('ngApp')
           },
           options: {
             draggable: false,
-            icon: _getPokemonIcon(pokemon)
+            icon: _getPokemonIcon(pokemon),
+            labelContent: countdownTimer,
+            labelClass: 'poke-label'
           },
           pokemon: pokemon,
           infoWindow: {
             show: false,
             options: {
-              content: '<strong>' + pokemon.name + '</strong><br />' + tsLeft.fromNow(ts) + ' until despawn<br /><span class="text-muted">Lat: ' + pokemon.lat + '</span><br /><span class="text-muted">Lng: ' + pokemon.lng + '</span>',
+              content: '<strong>' + pokemon.name + '</strong><br />' + countdownTimer + ' until despawn<br /><span class="text-muted">Lat: ' + pokemon.lat + '</span><br /><span class="text-muted">Lng: ' + pokemon.lng + '</span>',
             }
           },
         };
@@ -137,62 +179,43 @@ angular.module('ngApp')
               name: pokemon.name,
               active: true
             };
+            if (_.includes([16, 19, 41, 84, 98], pokemon.id)) {
+              pkmn.active = false;
+            }
             $scope.pokemonList.push(pkmn);
           } else {
             $scope.pokemonList[indexInList].count++;
           }
         } else {
-          $scope.markers[existingMarkerIndex].infoWindow.options.content = '<strong>' + pokemon.name + '</strong><br />' + tsLeft.fromNow(ts) + ' until despawn<br /><span class="text-muted">Lat: ' + pokemon.lat + '</span><br /><span class="text-muted">Lng: ' + pokemon.lng + '</span>';
+          $scope.markers[existingMarkerIndex].options.labelContent = countdownTimer;
+          $scope.markers[existingMarkerIndex].infoWindow.options.content = '<strong>' + pokemon.name + '</strong><br />' + countdownTimer + ' until despawn<br /><span class="text-muted">Lat: ' + pokemon.lat + '</span><br /><span class="text-muted">Lng: ' + pokemon.lng + '</span>';
         }
       });
     }
 
     function _getPokemonData() {
-      var pokemons = [];
-      var ts = new Date().getTime().toString();
-      $http.get('https://pokemongomap.notanengineer.com/data.sumner.json?t=' + ts).then(function(res) {
-        var data = res.data;
-        pokemons = data;
-        return $http.get('https://pokemongomap.notanengineer.com/data.hagley.json?t=' + ts);
-      }, function(err) {
-        console.error(err);
-        return $http.get('https://pokemongomap.notanengineer.com/data.hagley.json?t=' + ts);
-      }).then(function(res) {
-        var data = res.data;
-        _.each(data, function(pokemon) {
-          pokemons.push(pokemon);
+        var pokemons = [];
+        var ts = new Date().getTime().toString();
+        var requestUrls = [];
+        _.each($scope.areaList, function(area) {
+          if (area.active === true) {
+            console.log('Looking in ' + area.name);
+            var uri = 'https://pokemongomap.notanengineer.com/data.' + area.name + '.json?t=' + ts;
+            requestUrls.push(uri);
+          }
         });
-        return $http.get('https://pokemongomap.notanengineer.com/data.riccarton.json?t=' + ts);
-      }, function(err) {
-        console.error(err);
-        return $http.get('https://pokemongomap.notanengineer.com/data.riccarton.json?t=' + ts);
-      }).then(function(res) {
-        var data = res.data;
-        _.each(data, function(pokemon) {
-          pokemons.push(pokemon);
+        $q.all(requestUrls.map(function(request) {
+          return $http.get(request);
+        })).then(function(results) {
+          console.log(results);
+          // parse results array
+          _.each(results, function(payload) {
+            _.each(payload.data, function(p) {
+              pokemons.push(p);
+            });
+          });
+          _processPokemons(pokemons);
         });
-        return $http.get('https://pokemongomap.notanengineer.com/data.brighton.json?t=' + ts);
-      }, function(err) {
-        console.error(err);
-        return $http.get('https://pokemongomap.notanengineer.com/data.brighton.json?t=' + ts);
-      }).then(function(res) {
-        var data = res.data;
-        _.each(data, function(pokemon) {
-          pokemons.push(pokemon);
-        });
-        return $http.get('https://pokemongomap.notanengineer.com/data.addington.json?t=' + ts);
-      }, function(err) {
-        console.error(err);
-        return $http.get('https://pokemongomap.notanengineer.com/data.addington.json?t=' + ts);
-      }).then(function(res) {
-        var data = res.data;
-        _.each(data, function(pokemon) {
-          pokemons.push(pokemon);
-        });
-        _processPokemons(pokemons);
-      }, function(err) {
-        console.error(err);
-        _processPokemons(pokemons);
-      });
+
     }
   });

@@ -1,4 +1,3 @@
-
 <div snap-content snap-opt-disable="'left'" snap-opt-tap-to-close="true">
   <div class="map-container">
     <ui-gmap-google-map center='map.center' zoom='map.zoom' options='map.options'>
@@ -10,33 +9,78 @@
     </ui-gmap-google-map>
   </div>
 </div>
-<div snap-drawer="right" class="sidebar">
-  <div class="row" style="">
-    <div class="col-xs-12">
-        <input type="text" class="form-control" ng-model="fuzzySearchValue" placeholder="Search..." />
-    </div>
-  </div>
-  <hr />
-  <div class="row center-xs middle-xs">
-    <div class="col-xs-12">
-      <div class="btn-group">
+<div snap-drawer="right" class="sidebar" ng-init="activeTabs = 0">
+  <uib-tabset active="activeTabs">
+    <uib-tab index="0" heading="Pokemon">
+      <div class="row padding-vertical">
+        <div class="col-xs-12">
+          <div class="form-group has-feedback" style="margin:0">
+            <input type="text" class="form-control" ng-model="fuzzySearchValue" placeholder="Search" />
+            <i class="glyphicon glyphicon-search form-control-feedback"></i>
+          </div>
+        </div>
+      </div>
+      <div class="row padding-vertical center-xs middle-xs">
+        <div class="col-xs-12">
+          <div class="btn-group">
             <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'All'" ng-click="select(true)">Select All</label>
             <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'None'" ng-click="select(false)">Select None</label>
+          </div>
         </div>
-    </div>
-  </div>
-  <hr />
-  <ul class="list-group">
-    <li class="list-group-item" ng-repeat="pokemon in pokemonList | fuzzyFilter:fuzzySearchValue:'name' | orderBy:'name'">
-
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" ng-model="pokemon.active"> {{pokemon.name}}
-        </label>
-        <span class="badge badge-success pull-right">{{pokemon.count}}</span>
       </div>
-    </li>
-  </ul>
+      <div class="row padding-vertical start-xs middle-xs">
+        <ul class="list-group col-xs-12">
+          <li class="list-group-item pokemon-list" ng-repeat="pokemon in pokemonList | fuzzyFilter:fuzzySearchValue:'name' | orderBy:'name'">
+            <label>
+              <switch id="area-sw-{{$index}}" name="area-sw-{{$index}}" ng-model="pokemon.active" ng-change="redrawAreas" class="green pull-left"></switch>
+              <p class="pull-left pokemon-list-name" style="margin: 5px 5px 0 15px; font-weight: normal" ng-class="{'muted': !pokemon.active}">
+                {{pokemon.name | ucfirst}}
+              </p>
+            </label>
+            <span class="badge badge-success pull-right" ng-class="{muted: !pokemon.active}">{{pokemon.count}}</span>
+          </li>
+          <hr />
+          <li class="list-group-item pokemon-list center-xs middle-xs">
+            <i class="fa fa-code"></i> with <i class="fa fa-heart"></i> in Christchurch.
+          </li>
+        </ul>
+      </div>
+    </uib-tab>
+    <uib-tab index="1" heading="Areas">
+      <div class="row padding-vertical">
+        <div class="col-xs-12">
+          <div class="form-group has-feedback" style="margin:0">
+            <input type="text" class="form-control" ng-model="fuzzySearchValueArea" placeholder="Search" />
+            <i class="glyphicon glyphicon-search form-control-feedback"></i>
+          </div>
+        </div>
+      </div>
+      <div class="row padding-vertical center-xs middle-xs">
+        <div class="col-xs-12">
+          <div class="btn-group">
+            <label class="btn btn-default" ng-model="radioModelArea" uib-btn-radio="'All'" ng-click="selectArea(true)">Select All</label>
+            <label class="btn btn-default" ng-model="radioModelArea" uib-btn-radio="'None'" ng-click="selectArea(false)">Select None</label>
+          </div>
+        </div>
+      </div>
+      <div class="row padding-vertical start-xs middle-xs">
+        <ul class="list-group col-xs-12">
+          <li class="list-group-item pokemon-list" ng-repeat="area in areaList | fuzzyFilter:fuzzySearchValueArea:'name' | orderBy:'name'">
+            <label>
+              <switch id="area-sw-{{$index}}" name="area-sw-{{$index}}" ng-model="area.active" ng-change="redrawAreas" class="green pull-left"></switch>
+              <p class="pull-left" style="margin: 5px 5px 0 15px;">
+                {{area.name | ucfirst}}
+              </p>
+            </label>
+          </li>
+          <hr />
+          <li class="list-group-item pokemon-list center-xs middle-xs">
+            <i class="fa fa-code"></i> with <i class="fa fa-heart"></i> in Christchurch.
+          </li>
+        </ul>
+      </div>
+    </uib-tab>
+  </uib-tabset>
   <!-- <div class="footer">
     <div class="container center-xs middle-xs">
       <p><span class="fa fa-code"></span> with <span class="fa fa-heart"></span> in Christchurch, New Zealand</p>

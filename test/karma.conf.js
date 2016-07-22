@@ -46,6 +46,9 @@ module.exports = function(config) {
       'bower_components/ngFuzzySearch/ngFuzzySearch.js',
       'bower_components/angularjs-geolocation/src/geolocation.js',
       'bower_components/ngstorage/ngStorage.js',
+      'bower_components/moment-duration-format/lib/moment-duration-format.js',
+      'bower_components/angular-filter/dist/angular-filter.js',
+      'bower_components/angular-ui-switch/angular-ui-switch.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

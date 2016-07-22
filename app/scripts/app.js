@@ -21,7 +21,9 @@ angular
     'ui.bootstrap',
     'ngFuzzySearch',
     'geolocation',
-    'ngStorage'
+    'ngStorage',
+    'angular.filter',
+    'uiSwitch'
   ]).config(function($urlRouterProvider, $stateProvider, uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
       key: 'AIzaSyB1xmk0SgauBGotpGglRs6DOohSzN2DGUw',
