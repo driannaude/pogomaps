@@ -84,7 +84,7 @@
   "name": "Sandslash"
 }, {
   "id": 29,
-  "name": "Nidoran♀"
+  "name": "Nidoran F"
 }, {
   "id": 30,
   "name": "Nidorina"
@@ -93,7 +93,7 @@
   "name": "Nidoqueen"
 }, {
   "id": 32,
-  "name": "Nidoran♂"
+  "name": "Nidoran M"
 }, {
   "id": 33,
   "name": "Nidorino"
@@ -246,7 +246,7 @@
   "name": "Magneton"
 }, {
   "id": 83,
-  "name": "Farfetch'd"
+  "name": "Farfetchd"
 }, {
   "id": 84,
   "name": "Doduo"
@@ -363,7 +363,7 @@
   "name": "Starmie"
 }, {
   "id": 122,
-  "name": "Mr. Mime"
+  "name": "Mr-Mime"
 }, {
   "id": 123,
   "name": "Scyther"

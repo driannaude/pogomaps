@@ -21,13 +21,17 @@ pokemons.forEach(function(pokemon){
     name = 'Nidorano';
   }
   var url = 'http://icons.iconarchive.com/icons/hektakun/pokemon/72/' + _pad(pokemon.id, 3) + '-' + _cap(name) + '-icon.png';
+  // console.log(url);
   var request = http.get(url, function(response) {
     if (response.statusCode === 200) {
       var file = fs.createWriteStream("images/icons/"+pokemon.id+".png");
+      
       response.pipe(file);
+    } else {
+      console.log(url);
     }
     // Add timeout.
-    request.setTimeout(12000, function() {
+    request.setTimeout(30000, function() {
       request.abort();
     });
   });
