@@ -12,6 +12,8 @@ data.addington.json
 data.json
 config.json
 
+# Database files
+scanner/*.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
