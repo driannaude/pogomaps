@@ -13,7 +13,7 @@ python ./runserver.py -a google -u pokegochchaddington@gmail.com -p addingtoncle
 sleep 5
 python ./runserver.py -a google -u pokegochchcbdeast@gmail.com -p cbdeastoddish -P 9006 -l "339 Gloucester St, Christchurch Central, Christchurch, New Zealand" -k AIzaSyCMmq_Tl5DiJ4807HKNLld9DreLut938Mw -st 8 -D "centralmid.db" &
 sleep 5
-python ./runserver.py -a google -u pokegochchara@gmail.com -p aragastley -P 9007 -l "144 Gloucester St, Christchurch Central, Christchurch, New Zealand" -k AIzaSyCMmq_Tl5DiJ4807HKNLld9DreLut938Mw -st 8 -D "centraleast.db" &
+python ./runserver.py -a google -u pokegochchara@gmail.com -p aragastley -P 9007 -l "5 Cass St, Sydenham, Christchurch, New Zealand" -k AIzaSyCMmq_Tl5DiJ4807HKNLld9DreLut938Mw -st 8 -D "centraleast.db" &
 sleep 5
 python ./runserver.py -a google -u pokegochchuc@gmail.com -p ucexeggcute -P 9008 -l "90 Ilam Road, Ilam, Christchurch, New Zealand" -k AIzaSyAcD4X9FSOmCPvT9cSfgmEH6iSYdgM-CVw -st 8 -D "ilam.db" &
 sleep 5

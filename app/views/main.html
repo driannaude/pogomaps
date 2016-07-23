@@ -11,7 +11,43 @@
 </div>
 <div snap-drawer="right" class="sidebar" ng-init="activeTabs = 0">
   <uib-tabset active="activeTabs">
-    <uib-tab index="0" heading="Pokemon">
+    <uib-tab index="0" heading="Areas">
+      <div class="row padding-vertical">
+        <div class="col-xs-12">
+          <div class="form-group has-feedback" style="margin:0">
+            <input type="text" class="form-control" ng-model="fuzzySearchValueArea" placeholder="Search" />
+            <i class="glyphicon glyphicon-search form-control-feedback"></i>
+          </div>
+        </div>
+      </div>
+      <div class="row padding-vertical center-xs middle-xs">
+        <div class="col-xs-12">
+          <button class="btn btn-link" ng-click="selectNoAreas()">Unselect All</button>
+        </div>
+      </div>
+      <div class="row padding-vertical start-xs middle-xs">
+        <ul class="list-group col-xs-12">
+          <li class="list-group-item pokemon-list" ng-repeat="area in areaList | fuzzyFilter:fuzzySearchValueArea:'name' | orderBy:'name'">
+            <label>
+              <switch id="area-sw-{{$index}}" name="area-sw-{{$index}}" ng-model="area.active" ng-change="redrawAreas(area)" class="green pull-left"></switch>
+              <p class="pull-left" style="margin: 5px 5px 0 10px;">
+                {{area.name | ucfirst}}
+              </p>
+            </label>
+          </li>
+          <hr />
+          <li class="list-group-item pokemon-list center-xs middle-xs">
+            <i class="fa fa-code"></i> with <i class="fa fa-heart"></i> in Christchurch.
+          </li>
+        </ul>
+      </div>
+    </uib-tab>
+    <uib-tab index="1" heading="Pokemon" disable="markers.length <= 0" uib-tooltip="Please select an area first"
+             tooltip-placement="bottom"
+             tooltip-trigger="'outsideClick'"
+             tooltip-popup-close-delay="1000"
+             tooltip-popup-delay="0"
+             tooltip-enable="markers.length <= 0">
       <div class="row padding-vertical">
         <div class="col-xs-12">
           <div class="form-group has-feedback" style="margin:0">
@@ -38,40 +74,6 @@
               </p>
             </label>
             <span class="badge badge-success pull-right" ng-class="{muted: !pokemon.active}">{{pokemon.count}}</span>
-          </li>
-          <hr />
-          <li class="list-group-item pokemon-list center-xs middle-xs">
-            <i class="fa fa-code"></i> with <i class="fa fa-heart"></i> in Christchurch.
-          </li>
-        </ul>
-      </div>
-    </uib-tab>
-    <uib-tab index="1" heading="Areas">
-      <div class="row padding-vertical">
-        <div class="col-xs-12">
-          <div class="form-group has-feedback" style="margin:0">
-            <input type="text" class="form-control" ng-model="fuzzySearchValueArea" placeholder="Search" />
-            <i class="glyphicon glyphicon-search form-control-feedback"></i>
-          </div>
-        </div>
-      </div>
-      <div class="row padding-vertical center-xs middle-xs">
-        <div class="col-xs-12">
-          <div class="btn-group">
-            <label class="btn btn-default" ng-model="radioModelArea" uib-btn-radio="'All'" ng-click="selectArea(true)">Select All</label>
-            <label class="btn btn-default" ng-model="radioModelArea" uib-btn-radio="'None'" ng-click="selectArea(false)">Select None</label>
-          </div>
-        </div>
-      </div>
-      <div class="row padding-vertical start-xs middle-xs">
-        <ul class="list-group col-xs-12">
-          <li class="list-group-item pokemon-list" ng-repeat="area in areaList | fuzzyFilter:fuzzySearchValueArea:'name' | orderBy:'name'">
-            <label>
-              <switch id="area-sw-{{$index}}" name="area-sw-{{$index}}" ng-model="area.active" ng-change="redrawAreas" class="green pull-left"></switch>
-              <p class="pull-left" style="margin: 5px 5px 0 15px;">
-                {{area.name | ucfirst}}
-              </p>
-            </label>
           </li>
           <hr />
           <li class="list-group-item pokemon-list center-xs middle-xs">

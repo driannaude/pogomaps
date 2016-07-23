@@ -26,7 +26,7 @@ angular
     'uiSwitch'
   ]).config(function($urlRouterProvider, $stateProvider, uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
-      key: 'AIzaSyB1xmk0SgauBGotpGglRs6DOohSzN2DGUw',
+      key: 'AIzaSyDSdEhxozcqjVzZLQ3fi5BfgtfMsBPIBAw',
       v: '3.23', //defaults to latest 3.X anyhow
       libraries: 'weather,geometry,visualization'
     });

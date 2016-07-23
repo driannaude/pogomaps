@@ -7,7 +7,7 @@
  * Controller of the ngApp
  */
 angular.module('ngApp')
-  .controller('MainCtrl', function($rootScope, $scope, $http, $interval, $timeout, $q, uiGmapGoogleMapApi, moment) {
+  .controller('MainCtrl', function($rootScope, $scope, $http, $interval, $uibModal, $timeout, $q, uiGmapGoogleMapApi, moment) {
     // Magic sauce, imediate so the value is stored and we don't need to lookup every check
     $scope.isNotMobile = function() {
       //jshint ignore:start
@@ -51,9 +51,34 @@ angular.module('ngApp')
     }, {
       name: 'brighton',
       active: false
-    }];
+    }, {
+      name: 'Central (East)',
+      alt: 'cbdeast',
+      active: false
+    }, {
+      name: 'Central (South)',
+      alt: 'cbdsouth',
+      active: false
+    }, {
+      name: 'ilam',
+      active: false
+    }, {
+      name: 'hornby',
+      active: false
+    }, {
+      name: 'yaldhurst',
+      active: false
+    }, {
+      name: 'prebbleton',
+      active: false
+    }, {
+      name: 'ferrymead',
+      active: false
+    }, {
+      name: 'halswell',
+      active: false
+    }, ];
     $scope.$on('location:coords', function(evt, coords, suburb) {
-      // jscs:disable
       var subby = suburb.long_name.toLowerCase();
       var areaIndex = _.findIndex($scope.areaList, {
         name: subby
@@ -67,7 +92,6 @@ angular.module('ngApp')
       $scope.map.center.longitude = coords.long;
       $scope.map.zoom = 16;
       _getPokemonData();
-      // jscs:enable
     });
     $scope.radioModel = 'All';
     $scope.radioModelArea = 'None';
@@ -76,25 +100,47 @@ angular.module('ngApp')
         pokemon.active = value;
       });
     };
-    $scope.selectArea = function(value) {
+    $scope.selectNoAreas = function() {
       _.each($scope.areaList, function(area) {
-        area.active = value;
+        area.active = false;
       });
     };
     $scope.visiblePokemon = function() {
       var returnList = [];
       _.each($scope.markers, function(marker) {
         _.each($scope.pokemonList, function(pokemon) {
-          if (pokemon.name === marker.pokemon.name && pokemon.active === true) {
+          if (pokemon.name === marker.pokemon.pokemon_name && pokemon.active === true) {
             returnList.push(marker);
           }
         });
       });
       return returnList;
     };
-    $scope.redrawAreas = function() {
-      $timeout(_getPokemonData(true), 0);
-    };
+    $scope.redrawAreas = _.debounce(function(lastArea){
+      var activeAreaCount = 0;
+      _.each($scope.areaList, function(area) {
+        if (area.active) {
+          activeAreaCount++;
+        }
+      });
+      if (activeAreaCount > 3) {
+        var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'areaLimitExceededModal.html',
+          controller: 'AreaLimitExceededModal'
+        });
+        modalInstance.result.then(function() {
+          $timeout(_getPokemonData(true), 0);
+        }, function() {
+          var lastIndex = _.findIndex($scope.areaList, lastArea);
+          console.warn(lastIndex);
+          $scope.areaList[lastIndex].active = false;
+          console.log('Phew, that was close!');
+        });
+      } else {
+        $timeout(_getPokemonData(true), 0);
+      }
+    },500);
 
     function main() {
       _getPokemonData(true);
@@ -113,7 +159,7 @@ angular.module('ngApp')
       } else if (name === 'Nidoran M') {
         name = 'Nidorano';
       }
-      return 'images/icons/' + p.id + '.png';
+      return 'images/icons/' + p.pokemon_id + '.png';
     }
 
     function removeStalePokemonMarkers() {
@@ -124,15 +170,19 @@ angular.module('ngApp')
         }
         var pokemon = marker.pokemon;
         var originArea = pokemon.area;
-        var area = _.find($scope.areaList, {
-          name: originArea
+        var area = _.find($scope.areaList, function(o) {
+          if (o.hasOwnProperty('alt')) {
+            return o.alt === originArea;
+          }
+          return o.name === originArea;
         });
         if (!area.active) {
           $scope.markers.splice(index, 1);
         } else {
-          var tsLeft = moment((pokemon.timestamp + pokemon.timeleft) * 1000);
+          var tsLeft = moment(pokemon.disappear_time);
+          //jscs:enable
           if (!tsLeft.isAfter(ts)) {
-            console.log('Removing ' + pokemon.name);
+            console.log('Removing ' + pokemon.pokemon_name);
             $scope.markers.splice(index, 1);
           }
         }
@@ -143,7 +193,7 @@ angular.module('ngApp')
       removeStalePokemonMarkers();
       _.each(pokemons, function(pokemon) {
         var ts = moment();
-        var tsLeft = moment((pokemon.timestamp + pokemon.timeleft) * 1000);
+        var tsLeft = moment(pokemon.disappear_time);
         if (!tsLeft.isAfter(ts)) {
           return false;
         }
@@ -157,8 +207,8 @@ angular.module('ngApp')
         var newMarker = {
           id: pokeId,
           coords: {
-            latitude: pokemon.lat,
-            longitude: pokemon.lng
+            latitude: pokemon.latitude,
+            longitude: pokemon.longitude
           },
           options: {
             draggable: false,
@@ -170,7 +220,7 @@ angular.module('ngApp')
           infoWindow: {
             show: false,
             options: {
-              content: '<strong>' + pokemon.name + '</strong><br />' + countdownTimer + ' until despawn<br /><span class="text-muted">Lat: ' + pokemon.lat + '</span><br /><span class="text-muted">Lng: ' + pokemon.lng + '</span>',
+              content: '<strong>' + pokemon.pokemon_name + '</strong><br />' + countdownTimer + ' until despawn<br /><span class="text-muted">Lat: ' + pokemon.latitude + '</span><br /><span class="text-muted">Lng: ' + pokemon.longitude + '</span>',
             }
           },
         };
@@ -180,15 +230,15 @@ angular.module('ngApp')
         if (existingMarkerIndex < 0) {
           $scope.markers.push(newMarker);
           var indexInList = _.findIndex($scope.pokemonList, {
-            name: pokemon.name
+            name: pokemon.pokemon_name
           });
           if (indexInList < 0) {
             var pkmn = {
               count: 1,
-              name: pokemon.name,
+              name: pokemon.pokemon_name,
               active: true
             };
-            if (_.includes([16, 19, 41, 84, 98], pokemon.id)) {
+            if (_.includes([16, 19, 41, 84, 98], pokemon.pokemon_id)) {
               pkmn.active = false;
             }
             $scope.pokemonList.push(pkmn);
@@ -197,26 +247,33 @@ angular.module('ngApp')
           }
         } else {
           $scope.markers[existingMarkerIndex].options.labelContent = countdownTimer;
-          $scope.markers[existingMarkerIndex].infoWindow.options.content = '<strong>' + pokemon.name + '</strong><br />' + countdownTimer + ' until despawn<br /><span class="text-muted">Lat: ' + pokemon.lat + '</span><br /><span class="text-muted">Lng: ' + pokemon.lng + '</span>';
+          $scope.markers[existingMarkerIndex].infoWindow.options.content = '<strong>' + pokemon.pokemon_name + '</strong><br />' + countdownTimer + ' until despawn<br /><span class="text-muted">Lat: ' + pokemon.latitude + '</span><br /><span class="text-muted">Lng: ' + pokemon.lng + '</span>';
         }
       });
     }
     var _iterations = 0;
     var pokemons = [];
+
     function _getPokemonData(init) {
       // Only fetch new pokemon every 30 secs to save battery/data
-      if(_iterations <= 5 && !init){
+      if (_iterations <= 5 && !init) {
         _iterations++;
         _processPokemons(pokemons);
         return false;
       }
       pokemons = [];
-      var ts = new Date().getTime().toString();
+      // var ts = new Date().getTime().toString();
       var requestUrls = [];
       _.each($scope.areaList, function(area) {
         if (area.active === true) {
-          console.log('Looking in ' + area.name);
-          var uri = 'https://pokemongomap.notanengineer.com/data.' + area.name + '.json?t=' + ts;
+          var name;
+          if (area.hasOwnProperty('alt')) {
+            name = area.alt;
+          } else {
+            name = area.name;
+          }
+          console.log('Looking in ' + name);
+          var uri = 'https://pokemongomap.notanengineer.com/api/' + name;
           requestUrls.push(uri);
         }
       });
@@ -225,8 +282,9 @@ angular.module('ngApp')
       })).then(function(results) {
         // parse results array
         _.each(results, function(payload) {
-          var origin = payload.config.url.split('.')[3];
-          _.each(payload.data, function(p) {
+          var endpoint = payload.config.url.split('.')[2];
+          var origin = endpoint.split('/').pop();
+          _.each(payload.data.pokemons, function(p) {
             p.area = origin;
             pokemons.push(p);
           });
@@ -235,4 +293,13 @@ angular.module('ngApp')
         _processPokemons(pokemons);
       });
     }
+  })
+  .controller('AreaLimitExceededModal', function($scope, $uibModalInstance) {
+    console.log('inited');
+    $scope.ok = function() {
+      $uibModalInstance.close();
+    };
+    $scope.cancel = function() {
+      $uibModalInstance.dismiss('cancel');
+    };
   });

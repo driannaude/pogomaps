@@ -63,6 +63,23 @@
      </div>
    </div>
     <div ui-view></div>
+    <script type="text/ng-template" id="areaLimitExceededModal.html">
+        <div class="modal-header">
+            <h3 class="modal-title"><i class="fa fa-exclamation-triangle"></i>Danger</h3>
+        </div>
+        <div class="modal-body">
+            <p>
+              The maximum recommended number of active areas is 3. Exceeding this limit could lessen the experience and cause your battery to drain much faster.
+              <strong>Are you sure you want to continue?</strong>
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+            <button class="btn btn-danger" type="button" ng-click="ok()">Continue</button>
+        </div>
+    </script>
+    <script src='//maps.googleapis.com/maps/api/js?key=AIzaSyDSdEhxozcqjVzZLQ3fi5BfgtfMsBPIBAw'></script>
+
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="../bower_components/jquery/dist/jquery.js"></script>
