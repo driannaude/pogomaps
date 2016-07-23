@@ -96,16 +96,6 @@ angular.module('ngApp')
       $timeout(_getPokemonData(true), 0);
     };
 
-    function _cap(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    }
-
-    function _pad(n, width, z) {
-      z = z || '0';
-      n = n + '';
-      return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-    }
-
     function main() {
       _getPokemonData(true);
       $interval(function() {
@@ -123,7 +113,7 @@ angular.module('ngApp')
       } else if (name === 'Nidoran M') {
         name = 'Nidorano';
       }
-      return 'http://icons.iconarchive.com/icons/hektakun/pokemon/72/' + _pad(p.id, 3) + '-' + _cap(name) + '-icon.png';
+      return 'images/icons/' + p.id + '.png';
     }
 
     function removeStalePokemonMarkers() {
