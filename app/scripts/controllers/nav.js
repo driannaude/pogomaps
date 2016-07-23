@@ -23,9 +23,9 @@ angular.module('ngApp')
         $scope.onlineCount++;
       }
       var pogoStabilityAvg = (status.go_response + status.ptc_response) / 2;
-      if (pogoStabilityAvg < 0.8 && $scope.onlineCount >= 1) {
+      if (pogoStabilityAvg < 1.5 && $scope.onlineCount >= 1) {
         $scope.serverStatus = 'STABLE';
-      } else if (pogoStabilityAvg > 0.8 && pogoStabilityAvg < 3.0 && $scope.onlineCount >= 1) {
+      } else if (pogoStabilityAvg >= 1.5 && pogoStabilityAvg < 8.0 && $scope.onlineCount >= 1) {
         $scope.serverStatus = 'UNSTABLE';
       } else {
         $scope.serverStatus = 'CRITICAL';
