@@ -12,24 +12,31 @@ from flask_cors import CORS, cross_origin
 from pogom import config
 from pogom.app import Pogom
 from pogom.utils import get_args, insert_mock_data, load_credentials
-from pogom.search import search_loop
-from pogom.models import create_tables, Pokemon, Pokestop, Gym
+from pogom.search import search_loop, fake_search_loop
+from pogom.models import init_database, create_tables, Pokemon, Pokestop, Gym
 
 from pogom.pgoapi.utilities import get_pos_by_name
 
 log = logging.getLogger(__name__)
 
-search_thread = Thread()
-
 def start_locator_thread(args):
-    search_thread = Thread(target=search_loop, args=(args,))
+    if not args.mock:
+        log.debug('Starting a real search thread')
+        search_thread = Thread(target=search_loop, args=(args,))
+    else:
+        log.debug('Starting a fake search thread')
+        insert_mock_data()
+        search_thread = Thread(target=fake_search_loop, args=(args,))
+
     search_thread.daemon = True
     search_thread.name = 'search_thread'
     search_thread.start()
 
+    return search_thread
+
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(module)11s] [%(levelname)7s] %(message)s')
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(module)14s] [%(levelname)7s] %(message)s')
 
     logging.getLogger("peewee").setLevel(logging.INFO)
     logging.getLogger("requests").setLevel(logging.WARNING)
@@ -39,12 +46,17 @@ if __name__ == '__main__':
 
     args = get_args()
 
+    config['parse_pokemon'] = not args.no_pokemon
+    config['parse_pokestops'] = not args.no_pokestops
+    config['parse_gyms'] = not args.no_gyms
+
     if args.debug:
         logging.getLogger("requests").setLevel(logging.DEBUG)
         logging.getLogger("pgoapi").setLevel(logging.DEBUG)
         logging.getLogger("rpc_api").setLevel(logging.DEBUG)
 
-    create_tables()
+    db = init_database()
+    create_tables(db)
 
     position = get_pos_by_name(args.location)
     if not any(position):
@@ -53,16 +65,21 @@ if __name__ == '__main__':
 
     log.info('Parsed location is: {:.4f}/{:.4f}/{:.4f} (lat/lng/alt)'.
              format(*position))
+    if args.no_pokemon:
+        log.info('Parsing of Pokemon disabled.')
+    if args.no_pokestops:
+        log.info('Parsing of Pokestops disabled.')
+    if args.no_gyms:
+        log.info('Parsing of Gyms disabled.')
 
     config['ORIGINAL_LATITUDE'] = position[0]
     config['ORIGINAL_LONGITUDE'] = position[1]
     config['LOCALE'] = args.locale
     config['CHINA'] = args.china
 
-    if not args.mock:
-        start_locator_thread(args)
-    else:
-        insert_mock_data()
+    if not args.only_server:
+        # Gather the pokemons!
+        search_thread = start_locator_thread(args)
 
     app = Pogom(__name__)
 
@@ -76,8 +93,8 @@ if __name__ == '__main__':
         config['GMAPS_KEY'] = load_credentials(os.path.dirname(os.path.realpath(__file__)))['gmaps_key']
 
     if args.no_server:
-        while not search_thread.isAlive():
-            time.sleep(1)
-        search_thread.join()
+        # This loop allows for ctrl-c interupts to work since flask won't be holding the program open
+        while search_thread.is_alive():
+            time.sleep(60)
     else:
-        app.run(threaded=True, debug=args.debug, host=args.host, port=args.port)
+        app.run(threaded=True, use_reloader=False, debug=args.debug, host=args.host, port=args.port)
