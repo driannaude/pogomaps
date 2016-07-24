@@ -45,7 +45,7 @@ python ./runserver.py -a google -u pokegochchsomerfield@gmail.com -p somerfieldd
 sleep 5
 python ./runserver.py -a google -u pokegochchbecknham@gmail.com -p beckenhampidgey -P 9021 -l "41 Martin Ave, Beckenham, Christchurch, New Zealand" -k AIzaSyCDmEeCbrdrhYkcW46GDREidSLiveslGtE -st 8 -D "beckenham.db" &
 sleep 5
-python ./runserver.py -a google -u pokegochchrolleston@gmail.com -p rollestongeodude -P 9022 -l "755 Weedons Road, Rolleston, New Zealand" -k AIzaSyDYdIyZwTD31xuyYMB_lEuF42d_r3CEzgQ -st 12 -D "rolleston.db" &
+python ./runserver.py -a google -u pokegochchrolleston@gmail.com -p rollestongeodude -P 9022 -l "94 Rolleston Drive, Rolleston, New Zealand" -k AIzaSyDYdIyZwTD31xuyYMB_lEuF42d_r3CEzgQ -st 12 -D "rolleston.db" &
 sleep 5
 python ./runserver.py -a google -u pokegochchbryndwr@gmail.com -p bryndwrvulpix -P 9023 -l "68 Brookside Terrace, Bryndwr, Christchurch, New Zealand" -k AIzaSyBl4hLpE5X_Qix5gAUZ-uwQAVh47nSLRwo -st 10 -D "bryndwr.db" &
 sleep 5
