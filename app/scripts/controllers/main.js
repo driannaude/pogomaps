@@ -266,10 +266,11 @@ angular.module('ngApp')
     }
     var _iterations = 0;
     var pokemons = [];
-
+    var requestActive = false;
     function _getPokemonData(init) {
+
       // Only fetch new pokemon every 30 secs to save battery/data
-      if (_iterations <= 5 && !init) {
+      if (_iterations < 30 && !init) {
         _iterations++;
         _processPokemons(pokemons);
         return false;
@@ -290,7 +291,9 @@ angular.module('ngApp')
           requestUrls.push(uri);
         }
       });
+      if(!requestActive){
       $q.all(requestUrls.map(function(request) {
+        requestActive = true;
         return $http.get(request);
       })).then(function(results) {
         // parse results array
@@ -302,8 +305,10 @@ angular.module('ngApp')
             pokemons.push(p);
           });
         });
+        requestActive = false;
         _iterations = 0;
         _processPokemons(pokemons);
       });
+      }
     }
   });
