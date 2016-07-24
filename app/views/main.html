@@ -1,6 +1,7 @@
 <div snap-content snap-opt-disable="'left'" snap-opt-tap-to-close="!isNotMobile()">
   <div class="map-container">
     <ui-gmap-google-map center='map.center' zoom='map.zoom' options='map.options'>
+      <ui-gmap-marker coords="userMarker.coords" options="userMarker.options" events="userMarker.events" idkey="'userMarker'">
       <ui-gmap-marker ng-repeat="marker in visiblePokemon()" coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
         <ui-gmap-window show="marker.infoWindow.show" options="marker.infoWindow.options">
           <div>{{marker.infoWindow.content}}</div>
@@ -42,12 +43,7 @@
         </ul>
       </div>
     </uib-tab>
-    <uib-tab index="1" heading="Pokemon" disable="markers.length <= 0" uib-tooltip="Please select an area first"
-             tooltip-placement="bottom"
-             tooltip-trigger="'outsideClick'"
-             tooltip-popup-close-delay="1000"
-             tooltip-popup-delay="0"
-             tooltip-enable="markers.length <= 0">
+    <uib-tab index="1" heading="Pokemon">
       <div class="row padding-vertical">
         <div class="col-xs-12">
           <div class="form-group has-feedback" style="margin:0">
@@ -66,6 +62,14 @@
       </div>
       <div class="row padding-vertical start-xs middle-xs">
         <ul class="list-group col-xs-12">
+          <li class="list-group-item pokemon-list">
+            <label>
+              <p class="pull-left pokemon-list-name muted center-xs" ng-if="markers.length <=0" style="margin: 5px 5px 0 15px; font-weight: normal">
+                There are no pokemon on the map right now. :( <br />Have you turned on at least one Area?
+              </p>
+            </label>
+            <span class="badge badge-success pull-right" ng-class="{muted: !pokemon.active}">{{pokemon.count}}</span>
+          </li>
           <li class="list-group-item pokemon-list" ng-repeat="pokemon in pokemonList | fuzzyFilter:fuzzySearchValue:'name' | orderBy:'name'">
             <label>
               <switch id="area-sw-{{$index}}" name="area-sw-{{$index}}" ng-model="pokemon.active" ng-change="redrawAreas" class="green pull-left"></switch>
