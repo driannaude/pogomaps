@@ -8,14 +8,14 @@ from datetime import datetime
 from s2sphere import *
 
 from . import config
-from .models import Pokemon, Gym, Pokestop
+from .models import Pokemon, Gym, Pokestop, ScannedLocation
 
 
 class Pogom(Flask):
     def __init__(self, import_name, **kwargs):
         super(Pogom, self).__init__(import_name, **kwargs)
         self.json_encoder = CustomJSONEncoder
-        #self.route("/", methods=['GET'])(self.fullmap)
+        self.route("/", methods=['GET'])(self.fullmap)
         self.route("/raw_data", methods=['GET'])(self.raw_data)
         self.route("/loc", methods=['GET'])(self.loc)
         self.route("/next_loc", methods=['POST'])(self.next_loc)
@@ -38,6 +38,9 @@ class Pogom(Flask):
 
         if request.args.get('gyms', 'true') == 'true':
             d['gyms'] = Gym.get_all()
+
+        if request.args.get('scanned', 'true') == 'true':
+            d['scanned'] = ScannedLocation.get_recent()
 
         return jsonify(d)
 
