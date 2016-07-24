@@ -7,7 +7,7 @@
  * Controller of the ngApp
  */
 angular.module('ngApp')
-  .controller('MainCtrl', function($rootScope, $scope, $http, $interval, $uibModal, $timeout, $q, uiGmapGoogleMapApi, moment) {
+  .controller('MainCtrl', function($rootScope, $scope, $http, $interval, $timeout, $q, uiGmapGoogleMapApi, moment) {
     // Magic sauce, imediate so the value is stored and we don't need to lookup every check
     $scope.isNotMobile = function() {
       //jshint ignore:start
@@ -77,6 +77,41 @@ angular.module('ngApp')
     }, {
       name: 'halswell',
       active: false
+    },{
+      name: 'Hoon Hay',
+      alt: 'hoonhay',
+      active: false
+    },{
+      name: 'lyttleton',
+      active: false
+    },{
+      name: 'St Albans',
+      alt: 'stalbans',
+      active: false
+    },{
+      name: 'edgeware',
+      active: false
+    },{
+      name: 'sydenham',
+      active: false
+    },{
+      name: 'spreydon',
+      active: false
+    },{
+      name: 'somerfield',
+      active: false
+    },{
+      name: 'beckenham',
+      active: false
+    },{
+      name: 'rolleston',
+      active: false
+    },{
+      name: 'bryndwr',
+      active: false
+    },{
+      name: 'papanui',
+      active: false
     }, ];
     $scope.$on('location:coords', function(evt, coords, suburb) {
       var subby = suburb.long_name.toLowerCase();
@@ -116,30 +151,8 @@ angular.module('ngApp')
       });
       return returnList;
     };
-    $scope.redrawAreas = _.debounce(function(lastArea){
-      var activeAreaCount = 0;
-      _.each($scope.areaList, function(area) {
-        if (area.active) {
-          activeAreaCount++;
-        }
-      });
-      if (activeAreaCount > 3) {
-        var modalInstance = $uibModal.open({
-          animation: true,
-          templateUrl: 'areaLimitExceededModal.html',
-          controller: 'AreaLimitExceededModal'
-        });
-        modalInstance.result.then(function() {
-          $timeout(_getPokemonData(true), 0);
-        }, function() {
-          var lastIndex = _.findIndex($scope.areaList, lastArea);
-          console.warn(lastIndex);
-          $scope.areaList[lastIndex].active = false;
-          console.log('Phew, that was close!');
-        });
-      } else {
+    $scope.redrawAreas = _.debounce(function(){
         $timeout(_getPokemonData(true), 0);
-      }
     },500);
 
     function main() {
@@ -293,13 +306,4 @@ angular.module('ngApp')
         _processPokemons(pokemons);
       });
     }
-  })
-  .controller('AreaLimitExceededModal', function($scope, $uibModalInstance) {
-    console.log('inited');
-    $scope.ok = function() {
-      $uibModalInstance.close();
-    };
-    $scope.cancel = function() {
-      $uibModalInstance.dismiss('cancel');
-    };
   });
