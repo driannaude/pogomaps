@@ -38,80 +38,104 @@ angular.module('ngApp')
     $scope.pokemonList = [];
     $scope.areaList = [{
       name: 'hagley',
-      active: false
+      active: false,
+      lastUpdate: null
     }, {
       name: 'riccarton',
-      active: false
+      active: false,
+      lastUpdate: null
     }, {
       name: 'addington',
-      active: false
+      active: false,
+      lastUpdate: null
     }, {
       name: 'sumner',
-      active: false
+      active: false,
+      lastUpdate: null
     }, {
       name: 'brighton',
-      active: false
+      active: false,
+      lastUpdate: null
     }, {
       name: 'Central (East)',
       alt: 'cbdeast',
-      active: false
+      active: false,
+      lastUpdate: null
     }, {
       name: 'Central (South)',
       alt: 'cbdsouth',
-      active: false
+      active: false,
+      lastUpdate: null
     }, {
       name: 'ilam',
-      active: false
+      active: false,
+      lastUpdate: null
     }, {
       name: 'hornby',
-      active: false
+      active: false,
+      lastUpdate: null
     }, {
       name: 'yaldhurst',
-      active: false
+      active: false,
+      lastUpdate: null
     }, {
       name: 'prebbleton',
-      active: false
+      active: false,
+      lastUpdate: null
     }, {
       name: 'ferrymead',
-      active: false
+      active: false,
+      lastUpdate: null
     }, {
       name: 'halswell',
-      active: false
+      active: false,
+      lastUpdate: null
     },{
       name: 'Hoon Hay',
       alt: 'hoonhay',
-      active: false
+      active: false,
+      lastUpdate: null
     },{
       name: 'lyttleton',
-      active: false
+      active: false,
+      lastUpdate: null
     },{
       name: 'St Albans',
       alt: 'stalbans',
-      active: false
+      active: false,
+      lastUpdate: null
     },{
       name: 'edgeware',
-      active: false
+      active: false,
+      lastUpdate: null
     },{
       name: 'sydenham',
-      active: false
+      active: false,
+      lastUpdate: null
     },{
       name: 'spreydon',
-      active: false
+      active: false,
+      lastUpdate: null
     },{
       name: 'somerfield',
-      active: false
+      active: false,
+      lastUpdate: null
     },{
       name: 'beckenham',
-      active: false
+      active: false,
+      lastUpdate: null
     },{
       name: 'rolleston',
-      active: false
+      active: false,
+      lastUpdate: null
     },{
       name: 'bryndwr',
-      active: false
+      active: false,
+      lastUpdate: null
     },{
       name: 'papanui',
-      active: false
+      active: false,
+      lastUpdate: null
     }, ];
     $scope.userMarker = {
       coords: {},
@@ -171,9 +195,6 @@ angular.module('ngApp')
       $interval(function() {
         _getPokemonData();
       }, 1000);
-      // $interval(function(){
-      //   _processPokemons($scope.pokemons);
-      // }, 1000);
     }
 
     function _getPokemonIcon(p) {
@@ -289,6 +310,7 @@ angular.module('ngApp')
     var _iterations = 0;
     var pokemons = [];
     var requestActive = false;
+
     function _getPokemonData(init) {
 
       // Only fetch new pokemon every 30 secs to save battery/data
@@ -297,7 +319,7 @@ angular.module('ngApp')
         _processPokemons(pokemons);
         return false;
       }
-      pokemons = [];
+
       // var ts = new Date().getTime().toString();
       var requestUrls = [];
       _.each($scope.areaList, function(area) {
@@ -309,7 +331,12 @@ angular.module('ngApp')
             name = area.name;
           }
           console.log('Looking in ' + name);
-          var uri = 'https://pokemongomap.notanengineer.com/api/' + name;
+          // var uri = 'https://pokemongomap.notanengineer.com/api/' + name;
+          var uri = 'http://localhost:9024/raw_data?area='+name;
+
+          if(area.lastUpdate !== null){
+            uri += '&lastUpdate=' + area.lastUpdate;
+          }
           requestUrls.push(uri);
         }
       });
@@ -320,8 +347,23 @@ angular.module('ngApp')
       })).then(function(results) {
         // parse results array
         _.each(results, function(payload) {
-          var endpoint = payload.config.url.split('.')[2];
-          var origin = endpoint.split('/').pop();
+          console.log(payload);
+          // lastUpdateISO = payload.data.updateTime();
+          // var endpoint = payload.config.url.split('.')[2];
+          // var origin = endpoint.split('/').pop();
+          var endpoint = payload.config.url.split('?')[1];
+          var origin  = endpoint.split('=')[1];
+          if(origin.indexOf('&') > -1){
+            origin = origin.split('&').shift();
+          }
+          console.warn(origin);
+          var areaIndex = _.findIndex($scope.areaList, function(o){
+            if(o.hasOwnProperty('alt')){
+              return o.alt === origin;
+            }
+            return o.name === origin;
+          });
+          $scope.areaList[areaIndex].lastUpdate = payload.data.updateTime;
           _.each(payload.data.pokemons, function(p) {
             p.area = origin;
             pokemons.push(p);
@@ -330,6 +372,7 @@ angular.module('ngApp')
         requestActive = false;
         _iterations = 0;
         _processPokemons(pokemons);
+
       }, function(err){
         requestActive = false;
         _iterations = 0;
