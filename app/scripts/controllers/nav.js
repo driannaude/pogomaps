@@ -45,7 +45,7 @@ angular.module('ngApp')
           long: data.coords.longitude
         };
         // get the suburb with reverse-geocoding api
-        return $http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng='+coords.lat+','+coords.long+'&key=AIzaSyB1xmk0SgauBGotpGglRs6DOohSzN2DGUw');
+        return $http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng='+coords.lat+','+coords.long+'&key=AIzaSyBrKIantJrntUGd4L3CQ7pmmkJ-qUMFWxc');
       }, function(err){
         return $q.reject(err);
       }).then(function(res){
