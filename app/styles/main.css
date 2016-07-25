@@ -246,3 +246,7 @@ body {
     margin: 50% 10px;
     transform: translateY(-50%);
 }
+.adcontainer {
+  z-index: 999999999999;
+  border: 1px solid red;
+}
