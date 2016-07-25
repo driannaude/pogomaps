@@ -70,5 +70,7 @@ angular.module('ngApp')
         console.error(err);
       });
     };
-    $scope.getMyLocation();
+    uiGmapGoogleMapApi.then(function() {
+      $scope.getMyLocation();
+    });
   });
