@@ -7,7 +7,7 @@
  * Controller of the ngApp
  */
 angular.module('ngApp')
-  .controller('NavCtrl', function($rootScope, $scope, $http, $q, geolocation, $localStorage) {
+  .controller('NavCtrl', function($rootScope, $scope, $http, $q, geolocation, $localStorage, uiGmapGoogleMapApi) {
     $localStorage.geoTimeout = 0;
     // Do server status things
     $scope.serversAreDown = false;
