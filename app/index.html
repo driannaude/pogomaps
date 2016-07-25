@@ -132,23 +132,6 @@
   <script src="scripts/controllers/main.js"></script>
   <script src="scripts/controllers/nav.js"></script>
   <!-- endbuild -->
-  
-  <script type="text/javascript" src="http://soma-assets.smaato.net/js/smaatoAdTag.js"></script>
-  <script>
-  	function callBackForSmaato(status){
-  		if(status == "SUCCESS"){
-  			console.log("callBack is being called with status : " + status);
-  		} else if (status == "ERROR"){
-  			console.log("callBack is being called with status : " + status);
-  		}
-  	};
-  	SomaJS.loadAd({
-  		adDivId : "smt-130164563",
-  		publisherId: 1100024968,
-  		adSpaceId: 130164563,
-  		format: "all",formatstrict: true,dimension: "full_320x480",width: 320,height: 480,
-  	sync: false,},callBackForSmaato);
-  </script>
 </body>
 
 </html>
