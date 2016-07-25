@@ -2,6 +2,7 @@
 <html>
 
 <head>
+
   <meta charset="utf-8">
   <title>Pok&eacute;Map Christchurch</title>
   <meta name="description" content="">
@@ -131,16 +132,24 @@
   <script src="scripts/controllers/main.js"></script>
   <script src="scripts/controllers/nav.js"></script>
   <!-- endbuild -->
-  <div id="startappContainer" class="adcontainer"></div>
-<script type="text/javascript">
-// Required parameters.
-var publisherId = '106626237';
-var productId ='206480152';
-var width = '320px';
-var height ='480px';
-// Optional parameters.
-</script>
-<script type="text/javascript" src="https://www.startappexchange.com/js/startapp-tag.js"></script>
+  <div id="smt-130164563" style="padding: 0px"></div>
+  <div id="smt-130164563" style="padding: 0px"></div>
+  <script type="text/javascript" src="http://soma-assets.smaato.net/js/smaatoAdTag.js"></script>
+  <script>
+  	function callBackForSmaato(status){
+  		if(status == "SUCCESS"){
+  			console.log("callBack is being called with status : " + status);
+  		} else if (status == "ERROR"){
+  			console.log("callBack is being called with status : " + status);
+  		}
+  	};
+  	SomaJS.loadAd({
+  		adDivId : "smt-130164563",
+  		publisherId: 1100024968,
+  		adSpaceId: 130164563,
+  		format: "all",formatstrict: true,dimension: "full_320x480",width: 320,height: 480,
+  	sync: false,},callBackForSmaato);
+  </script>
 </body>
 
 </html>
