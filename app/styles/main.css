@@ -270,3 +270,15 @@ body {
 .btn-donate:focus {
   color: #fff;
 }
+
+snap-drawer,
+[snap\:drawer],
+[snap-drawer],
+[data-snap-drawer],
+[x-snap-drawer],
+.snap-drawer,
+.x-snap-drawer,
+.snap-drawer {
+
+  width: 275px;
+}

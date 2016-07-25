@@ -9,6 +9,11 @@
 angular.module('ngApp')
   .controller('MainCtrl', function($rootScope, $scope, $http, $interval, $timeout, $q, uiGmapGoogleMapApi, moment) {
     // Magic sauce, imediate so the value is stored and we don't need to lookup every check
+    $scope.snapOpts = {
+      disable: 'left',
+      maxPosition: 275,
+      minPosition: -275,
+    };
     $scope.isNotMobile = function() {
       //jshint ignore:start
       var check = false;
