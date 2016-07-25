@@ -34,6 +34,11 @@ angular
       url: '/',
       templateUrl: 'views/main.html',
       controller: 'MainCtrl'
+    })
+    .state('thanks', {
+      url: '/thankyou',
+      templateUrl: 'views/thankyou.html',
+      controller: 'ThankYouCtrl'
     });
     $urlRouterProvider.otherwise('/');
   }).run(function($rootScope, $interval, $http) {
