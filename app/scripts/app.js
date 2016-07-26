@@ -31,23 +31,23 @@ angular
       libraries: 'weather,geometry,visualization'
     });
     $stateProvider.state('main', {
-      url: '/',
-      templateUrl: 'views/main.html',
-      controller: 'MainCtrl'
-    })
-    .state('thanks', {
-      url: '/thankyou',
-      templateUrl: 'views/thankyou.html',
-      controller: 'ThankYouCtrl'
-    });
+        url: '/',
+        templateUrl: 'views/main.html',
+        controller: 'MainCtrl'
+      })
+      .state('thanks', {
+        url: '/thankyou',
+        templateUrl: 'views/thankyou.html',
+        controller: 'ThankYouCtrl'
+      });
     $urlRouterProvider.otherwise('/');
-  }).run(function($rootScope, $interval, $http) {
+  }).run(function($rootScope, $interval, $timeout, $http) {
     $rootScope.serverStats = null;
     $http.get('https://go.jooas.com/status').then(function(res) {
       var status = res.data;
-      if(status !== $rootScope.serverStats){
-          $rootScope.serverStats = status;
-          $rootScope.$broadcast('server:statusChange' , status);
+      if (status !== $rootScope.serverStats) {
+        $rootScope.serverStats = status;
+        $rootScope.$broadcast('server:statusChange', status);
       } else {
         $rootScope.serversAreDown = status;
       }
@@ -55,13 +55,33 @@ angular
     }, function(err) {
       console.error(err);
     });
+    var adsLoaded = false;
+    $rootScope.$on('$viewContentLoaded', function() {
+      if (!adsLoaded) {
+          try {
+            // jshint ignore:start
+            (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: 'ca-pub-2131940670944575',
+              enable_page_level_ads: true
+            });
+            adsLoaded = true;
+            console.log('loaded ads', window.adsbygoogle);
+            //jshint ignore:end
+
+          } catch (e) {
+            console.error('Could Not Load Adsense');
+            console.error(e);
+          }
+      }
+    });
+
     function _startPolling() {
       $interval(function() {
         $http.get('https://go.jooas.com/status').then(function(res) {
           var status = res.data;
-          if(status !== $rootScope.serverStats){
-              $rootScope.serverStats = status;
-              $rootScope.$broadcast('server:statusChange' , status);
+          if (status !== $rootScope.serverStats) {
+            $rootScope.serverStats = status;
+            $rootScope.$broadcast('server:statusChange', status);
           } else {
             $rootScope.serversAreDown = status;
           }
@@ -70,4 +90,21 @@ angular
         });
       }, 60000);
     }
+  })
+  .directive('script', function() {
+    // jshint ignore:start
+    return {
+      restrict: 'E',
+      scope: false,
+      link: function(scope, elem, attr) {
+        if (attr.type==='text/javascript-lazy') {
+          var code = elem.text();
+
+          var f = new Function(code);
+
+          f();
+        }
+      }
+    };
+    // jshint ignore:end
   });
