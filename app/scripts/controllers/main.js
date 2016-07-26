@@ -11,11 +11,9 @@ angular.module('ngApp')
     // Register event listeners on snap events so we can add/remove classes
     snapRemote.getSnapper().then(function(snapper) {
       snapper.on('open', function() {
-        console.log('Drawer opened!');
         $('.toggle-with-snap').addClass('open');
       });
       snapper.on('close', function() {
-        console.log('Drawer closed!');
         $('.toggle-with-snap').removeClass('open');
       });
     });
@@ -55,7 +53,6 @@ angular.module('ngApp')
       $scope.areaList = $localStorage.pokemonList || [];
     if (!$localStorage.pokemonList || $localStorage.pokemonList.length < 151) {
       $http.get('../pokemon.json').then(function(res) {
-        console.log(res);
         $localStorage.pokemonList = res.data;
         $scope.pokemonList = $localStorage.pokemonList;
       }, function(err) {
@@ -148,7 +145,6 @@ angular.module('ngApp')
     }];
       $scope.areaList = $localStorage.areaList;
     } else {
-      console.log($localStorage.areaList);
       $scope.areaList = $localStorage.areaList;
     }
     $scope.userMarker = {
