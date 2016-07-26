@@ -52,7 +52,7 @@ angular.module('ngApp')
     // Get full list of pokemon defaults
       $scope.areaList = $localStorage.pokemonList || [];
     if (!$localStorage.pokemonList || $localStorage.pokemonList.length < 151) {
-      $http.get('../pokemon.json').then(function(res) {
+      $http.get('pokemon.json').then(function(res) {
         $localStorage.pokemonList = res.data;
         $scope.pokemonList = $localStorage.pokemonList;
       }, function(err) {
