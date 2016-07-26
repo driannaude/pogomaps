@@ -48,7 +48,7 @@
 
   <!-- Add your site or application content here -->
   <div class="header">
-    <div class="navbar navbar-default navbar-fixed-top" ng-class="{'server-down': serversAreDown}" role="navigation">
+    <div class="navbar navbar-default navbar-fixed-top toggle-with-snap" ng-class="{'server-down': serversAreDown}" role="navigation">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" snap-toggle="right">
           <i class="fa fa-filter"></i>&nbsp;Filter
@@ -57,7 +57,7 @@
       </div>
     </div>
   </div>
-  <div class="footer {{serverStatus}}">
+  <div class="footer {{serverStatus}} toggle-with-snap">
     <div class="row middle-xs">
       <div class="col-xs-7 start-xs">
         <p><i class="fa fa-heartbeat" ng-class="{'text-danger': serverStatus === 'CRITICAL',

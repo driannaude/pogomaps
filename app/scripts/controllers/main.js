@@ -7,13 +7,24 @@
  * Controller of the ngApp
  */
 angular.module('ngApp')
-  .controller('MainCtrl', function($rootScope, $scope, $http, $interval, $timeout, $q, $localStorage, uiGmapGoogleMapApi, moment) {
-    // Magic sauce, imediate so the value is stored and we don't need to lookup every check
+  .controller('MainCtrl', function($rootScope, $scope, $http, $interval, $timeout, $q, $localStorage, uiGmapGoogleMapApi, moment, snapRemote) {
+    // Register event listeners on snap events so we can add/remove classes
+    snapRemote.getSnapper().then(function(snapper) {
+      snapper.on('open', function() {
+        console.log('Drawer opened!');
+        $('.toggle-with-snap').addClass('open');
+      });
+      snapper.on('close', function() {
+        console.log('Drawer closed!');
+        $('.toggle-with-snap').removeClass('open');
+      });
+    });
     $scope.snapOpts = {
       disable: 'left',
       maxPosition: 275,
       minPosition: -275,
     };
+    // Magic sauce, imediate so the value is stored and we don't need to lookup every check
     $scope.isNotMobile = function() {
       //jshint ignore:start
       var check = false;
@@ -41,7 +52,7 @@ angular.module('ngApp')
     $scope.markers = [];
     $scope.infoWindows = [];
     // Get full list of pokemon defaults
-    $scope.pokemonList = [];
+      $scope.areaList = $localStorage.pokemonList || [];
     if (!$localStorage.pokemonList || $localStorage.pokemonList.length < 151) {
       $http.get('../pokemon.json').then(function(res) {
         console.log(res);
@@ -52,94 +63,94 @@ angular.module('ngApp')
       });
     } else {
       $scope.pokemonList = $localStorage.pokemonList;
-      _.each($scope.pokemonList, function(p){
+      _.each($scope.pokemonList, function(p) {
         p.count = 0;
       });
     }
-    $scope.areaList = [];
-    if(!$localStorage.areaList){
-
-    $localStorage.areaList = [{
-      name: 'hagley',
-      active: false
+    $scope.areaList = $localStorage.areaList || [];
+    if (!$localStorage.areaList) {
+      $localStorage.areaList = [{
+        name: 'hagley',
+        active: false
     }, {
-      name: 'riccarton',
-      active: false
+        name: 'riccarton',
+        active: false
     }, {
-      name: 'addington',
-      active: false
+        name: 'addington',
+        active: false
     }, {
-      name: 'sumner',
-      active: false
+        name: 'sumner',
+        active: false
     }, {
-      name: 'brighton',
-      active: false
+        name: 'brighton',
+        active: false
     }, {
-      name: 'Central (East)',
-      alt: 'cbdeast',
-      active: false
+        name: 'Central (East)',
+        alt: 'cbdeast',
+        active: false
     }, {
-      name: 'Central (South)',
-      alt: 'cbdsouth',
-      active: false
+        name: 'Central (South)',
+        alt: 'cbdsouth',
+        active: false
     }, {
-      name: 'ilam',
-      active: false
+        name: 'ilam',
+        active: false
     }, {
-      name: 'hornby',
-      active: false
+        name: 'hornby',
+        active: false
     }, {
-      name: 'yaldhurst',
-      active: false
+        name: 'yaldhurst',
+        active: false
     }, {
-      name: 'prebbleton',
-      active: false
+        name: 'prebbleton',
+        active: false
     }, {
-      name: 'ferrymead',
-      active: false
+        name: 'ferrymead',
+        active: false
     }, {
-      name: 'halswell',
-      active: false
+        name: 'halswell',
+        active: false
     }, {
-      name: 'Hoon Hay',
-      alt: 'hoonhay',
-      active: false
+        name: 'Hoon Hay',
+        alt: 'hoonhay',
+        active: false
     }, {
-      name: 'lyttleton',
-      active: false
+        name: 'lyttleton',
+        active: false
     }, {
-      name: 'St Albans',
-      alt: 'stalbans',
-      active: false
+        name: 'St Albans',
+        alt: 'stalbans',
+        active: false
     }, {
-      name: 'edgeware',
-      active: false
+        name: 'edgeware',
+        active: false
     }, {
-      name: 'sydenham',
-      active: false
+        name: 'sydenham',
+        active: false
     }, {
-      name: 'spreydon',
-      active: false
+        name: 'spreydon',
+        active: false
     }, {
-      name: 'somerfield',
-      active: false
+        name: 'somerfield',
+        active: false
     }, {
-      name: 'beckenham',
-      active: false
+        name: 'beckenham',
+        active: false
     }, {
-      name: 'rolleston',
-      active: false
+        name: 'rolleston',
+        active: false
     }, {
-      name: 'bryndwr',
-      active: false
+        name: 'bryndwr',
+        active: false
     }, {
-      name: 'papanui',
-      active: false
+        name: 'papanui',
+        active: false
     }];
-    $scope.areaList = $localStorage.areaList;
-  } else {
-    $scope.areaList = $localStorage.areaList;
-  }
+      $scope.areaList = $localStorage.areaList;
+    } else {
+      console.log($localStorage.areaList);
+      $scope.areaList = $localStorage.areaList;
+    }
     $scope.userMarker = {
       coords: {},
       options: {},
@@ -190,7 +201,9 @@ angular.module('ngApp')
       return returnList;
     };
     $scope.redrawAreas = _.debounce(function() {
-      $timeout(_getPokemonData(true), 0);
+      $timeout(function(){
+        _getPokemonData(true);
+      }, 0);
     }, 500);
 
     function main() {
@@ -298,7 +311,7 @@ angular.module('ngApp')
           if (_.includes([16, 19, 41, 84, 98], pokemon.pokemon_id)) {
             $scope.pokemonList[indexInList].count++;
           } else {
-            if(!$scope.pokemonList[indexInList].encountered){
+            if (!$scope.pokemonList[indexInList].encountered) {
               $scope.pokemonList[indexInList].active = true;
               $scope.pokemonList[indexInList].encountered = true;
             }

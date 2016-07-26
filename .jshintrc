@@ -13,6 +13,7 @@
   "globals": {
     "angular": false,
     "_": false,
-    "adsbygoogle": false
+    "adsbygoogle": false,
+    "$": false
   }
 }

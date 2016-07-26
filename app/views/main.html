@@ -13,15 +13,15 @@
 <div snap-drawer="right" class="sidebar" ng-init="activeTabs = 0">
   <uib-tabset active="activeTabs">
     <uib-tab index="0" heading="Areas">
-      <div class="row padding-vertical">
-        <div class="col-xs-12">
+      <div class="row padding-vertical search-box-container">
+        <div class="col-xs-12 search-box">
           <div class="form-group has-feedback" style="margin:0">
             <input type="text" class="form-control" ng-model="fuzzySearchValueArea" placeholder="Search" />
             <i class="glyphicon glyphicon-search form-control-feedback"></i>
           </div>
         </div>
       </div>
-      <div class="row padding-vertical center-xs middle-xs">
+      <div class="row padding-vertical-plus center-xs middle-xs">
         <div class="col-xs-12">
           <button class="btn btn-link" ng-click="selectNoAreas()">Unselect All</button>
         </div>
@@ -44,15 +44,15 @@
       </div>
     </uib-tab>
     <uib-tab index="1" heading="Pokemon">
-      <div class="row padding-vertical">
-        <div class="col-xs-12">
+      <div class="row padding-vertical search-box-container">
+        <div class="col-xs-12 search-box">
           <div class="form-group has-feedback" style="margin:0">
-            <input type="text" class="form-control" ng-model="fuzzySearchValue" placeholder="Search" />
+            <input type="text" class="form-control" ng-model="fuzzySearchValueArea" placeholder="Search" />
             <i class="glyphicon glyphicon-search form-control-feedback"></i>
           </div>
         </div>
       </div>
-      <div class="row padding-vertical center-xs middle-xs">
+      <div class="row padding-vertical-plus center-xs middle-xs">
         <div class="col-xs-12">
           <div class="btn-group">
             <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'All'" ng-click="select(true)">Select All</label>
@@ -62,9 +62,9 @@
       </div>
       <div class="row padding-vertical start-xs middle-xs">
         <ul class="list-group col-xs-12">
-          <li class="list-group-item pokemon-list">
+          <li class="list-group-item pokemon-list" ng-if="markers.length <=0">
             <label>
-              <p class="pull-left pokemon-list-name muted center-xs" ng-if="markers.length <=0" style="margin: 5px 5px 0 15px; font-weight: normal">
+              <p class="pull-left pokemon-list-name muted center-xs" style="margin: 5px 5px 0 15px; font-weight: normal">
                 There are no pokemon on the map right now. :( <br />Have you turned on at least one Area?
               </p>
             </label>
@@ -93,7 +93,7 @@
             <li class="list-group-item pokemon-list center-xs middle-xs">
               <p class="lead text-muted">
                 PokeMap App<br/>
-                Version 0.10.1<br />
+                Version 0.10.3<br />
                 Last Update 26 July, 2016
               </p>
             </li>
