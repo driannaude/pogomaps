@@ -7,7 +7,7 @@
  * Controller of the ngApp
  */
 angular.module('ngApp')
-  .controller('MainCtrl', function($rootScope, $scope, $http, $interval, $timeout, $q, uiGmapGoogleMapApi, moment) {
+  .controller('MainCtrl', function($rootScope, $scope, $http, $interval, $timeout, $q, $localStorage, uiGmapGoogleMapApi, moment) {
     // Magic sauce, imediate so the value is stored and we don't need to lookup every check
     $scope.snapOpts = {
       disable: 'left',
@@ -40,8 +40,26 @@ angular.module('ngApp')
     };
     $scope.markers = [];
     $scope.infoWindows = [];
+    // Get full list of pokemon defaults
     $scope.pokemonList = [];
-    $scope.areaList = [{
+    if (!$localStorage.pokemonList || $localStorage.pokemonList.length < 151) {
+      $http.get('../pokemon.json').then(function(res) {
+        console.log(res);
+        $localStorage.pokemonList = res.data;
+        $scope.pokemonList = $localStorage.pokemonList;
+      }, function(err) {
+        console.error(err);
+      });
+    } else {
+      $scope.pokemonList = $localStorage.pokemonList;
+      _.each($scope.pokemonList, function(p){
+        p.count = 0;
+      });
+    }
+    $scope.areaList = [];
+    if(!$localStorage.areaList){
+
+    $localStorage.areaList = [{
       name: 'hagley',
       active: false
     }, {
@@ -82,51 +100,55 @@ angular.module('ngApp')
     }, {
       name: 'halswell',
       active: false
-    },{
+    }, {
       name: 'Hoon Hay',
       alt: 'hoonhay',
       active: false
-    },{
+    }, {
       name: 'lyttleton',
       active: false
-    },{
+    }, {
       name: 'St Albans',
       alt: 'stalbans',
       active: false
-    },{
+    }, {
       name: 'edgeware',
       active: false
-    },{
+    }, {
       name: 'sydenham',
       active: false
-    },{
+    }, {
       name: 'spreydon',
       active: false
-    },{
+    }, {
       name: 'somerfield',
       active: false
-    },{
+    }, {
       name: 'beckenham',
       active: false
-    },{
+    }, {
       name: 'rolleston',
       active: false
-    },{
+    }, {
       name: 'bryndwr',
       active: false
-    },{
+    }, {
       name: 'papanui',
       active: false
-    }, ];
+    }];
+    $scope.areaList = $localStorage.areaList;
+  } else {
+    $scope.areaList = $localStorage.areaList;
+  }
     $scope.userMarker = {
       coords: {},
       options: {},
       events: {}
     };
     $scope.$on('location:coords', function(evt, coords, suburb) {
-      var subby = suburb.long_name.toLowerCase().replace(' ','');
-      var areaIndex = _.findIndex($scope.areaList, function(o){
-        if(o.hasOwnProperty('alt')){
+      var subby = suburb.long_name.toLowerCase().replace(' ', '');
+      var areaIndex = _.findIndex($scope.areaList, function(o) {
+        if (o.hasOwnProperty('alt')) {
           return o.alt === subby;
         }
         return o.name === subby;
@@ -167,9 +189,9 @@ angular.module('ngApp')
       });
       return returnList;
     };
-    $scope.redrawAreas = _.debounce(function(){
-        $timeout(_getPokemonData(true), 0);
-    },500);
+    $scope.redrawAreas = _.debounce(function() {
+      $timeout(_getPokemonData(true), 0);
+    }, 500);
 
     function main() {
       _getPokemonData(true);
@@ -191,12 +213,14 @@ angular.module('ngApp')
       return 'images/icons/' + p.pokemon_id + '.png';
     }
 
-    function removeStalePokemonListItem(pokemon){
-      var pIndex = _.findIndex($scope.pokemonList, {id: pokemon.pokemon_id});
-      if(pIndex > -1){
+    function removeStalePokemonListItem(pokemon) {
+      var pIndex = _.findIndex($scope.pokemonList, {
+        id: pokemon.pokemon_id
+      });
+      if (pIndex > -1) {
         $scope.pokemonList[pIndex].count--;
-        if($scope.pokemonList[pIndex].count <= 0){
-          $scope.pokemonList.splice(pIndex,1);
+        if ($scope.pokemonList[pIndex].count <= 0) {
+          $scope.pokemonList[pIndex].count = 0;
         }
       }
     }
@@ -271,18 +295,13 @@ angular.module('ngApp')
           var indexInList = _.findIndex($scope.pokemonList, {
             name: pokemon.pokemon_name
           });
-          if (indexInList < 0) {
-            var pkmn = {
-              id: pokemon.pokemon_id,
-              count: 1,
-              name: pokemon.pokemon_name,
-              active: true
-            };
-            if (_.includes([16, 19, 41, 84, 98], pokemon.pokemon_id)) {
-              pkmn.active = false;
-            }
-            $scope.pokemonList.push(pkmn);
+          if (_.includes([16, 19, 41, 84, 98], pokemon.pokemon_id)) {
+            $scope.pokemonList[indexInList].count++;
           } else {
+            if(!$scope.pokemonList[indexInList].encountered){
+              $scope.pokemonList[indexInList].active = true;
+              $scope.pokemonList[indexInList].encountered = true;
+            }
             $scope.pokemonList[indexInList].count++;
           }
         } else {
@@ -294,8 +313,8 @@ angular.module('ngApp')
     var _iterations = 0;
     var pokemons = [];
     var requestActive = false;
-    function _getPokemonData(init) {
 
+    function _getPokemonData(init) {
       // Only fetch new pokemon every 30 secs to save battery/data
       if (_iterations < 30 && !init) {
         _iterations++;
@@ -318,28 +337,28 @@ angular.module('ngApp')
           requestUrls.push(uri);
         }
       });
-      if(!requestActive){
-      $q.all(requestUrls.map(function(request) {
-        requestActive = true;
-        return $http.get(request);
-      })).then(function(results) {
-        // parse results array
-        _.each(results, function(payload) {
-          var endpoint = payload.config.url.split('.')[2];
-          var origin = endpoint.split('/').pop();
-          _.each(payload.data.pokemons, function(p) {
-            p.area = origin;
-            pokemons.push(p);
+      if (!requestActive) {
+        $q.all(requestUrls.map(function(request) {
+          requestActive = true;
+          return $http.get(request);
+        })).then(function(results) {
+          // parse results array
+          _.each(results, function(payload) {
+            var endpoint = payload.config.url.split('.')[2];
+            var origin = endpoint.split('/').pop();
+            _.each(payload.data.pokemons, function(p) {
+              p.area = origin;
+              pokemons.push(p);
+            });
           });
+          requestActive = false;
+          _iterations = 0;
+          _processPokemons(pokemons);
+        }, function(err) {
+          requestActive = false;
+          _iterations = 0;
+          console.error(err);
         });
-        requestActive = false;
-        _iterations = 0;
-        _processPokemons(pokemons);
-      }, function(err){
-        requestActive = false;
-        _iterations = 0;
-        console.error(err);
-      });
       }
     }
   });

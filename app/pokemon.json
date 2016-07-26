@@ -1,454 +1,907 @@
 [{
   "id": 1,
-  "name": "Bulbasaur"
+  "name": "Bulbasaur",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 2,
-  "name": "Ivysaur"
+  "name": "Ivysaur",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 3,
-  "name": "Venusaur"
+  "name": "Venusaur",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 4,
-  "name": "Charmander"
+  "name": "Charmander",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 5,
-  "name": "Charmeleon"
+  "name": "Charmeleon",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 6,
-  "name": "Charizard"
+  "name": "Charizard",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 7,
-  "name": "Squirtle"
+  "name": "Squirtle",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 8,
-  "name": "Wartortle"
+  "name": "Wartortle",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 9,
-  "name": "Blastoise"
+  "name": "Blastoise",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 10,
-  "name": "Caterpie"
+  "name": "Caterpie",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 11,
-  "name": "Metapod"
+  "name": "Metapod",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 12,
-  "name": "Butterfree"
+  "name": "Butterfree",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 13,
-  "name": "Weedle"
+  "name": "Weedle",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 14,
-  "name": "Kakuna"
+  "name": "Kakuna",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 15,
-  "name": "Beedrill"
+  "name": "Beedrill",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 16,
-  "name": "Pidgey"
+  "name": "Pidgey",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 17,
-  "name": "Pidgeotto"
+  "name": "Pidgeotto",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 18,
-  "name": "Pidgeot"
+  "name": "Pidgeot",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 19,
-  "name": "Rattata"
+  "name": "Rattata",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 20,
-  "name": "Raticate"
+  "name": "Raticate",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 21,
-  "name": "Spearow"
+  "name": "Spearow",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 22,
-  "name": "Fearow"
+  "name": "Fearow",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 23,
-  "name": "Ekans"
+  "name": "Ekans",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 24,
-  "name": "Arbok"
+  "name": "Arbok",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 25,
-  "name": "Pikachu"
+  "name": "Pikachu",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 26,
-  "name": "Raichu"
+  "name": "Raichu",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 27,
-  "name": "Sandshrew"
+  "name": "Sandshrew",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 28,
-  "name": "Sandslash"
+  "name": "Sandslash",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 29,
-  "name": "Nidoran F"
+  "name": "Nidoran♀",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 30,
-  "name": "Nidorina"
+  "name": "Nidorina",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 31,
-  "name": "Nidoqueen"
+  "name": "Nidoqueen",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 32,
-  "name": "Nidoran M"
+  "name": "Nidoran♂",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 33,
-  "name": "Nidorino"
+  "name": "Nidorino",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 34,
-  "name": "Nidoking"
+  "name": "Nidoking",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 35,
-  "name": "Clefairy"
+  "name": "Clefairy",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 36,
-  "name": "Clefable"
+  "name": "Clefable",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 37,
-  "name": "Vulpix"
+  "name": "Vulpix",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 38,
-  "name": "Ninetales"
+  "name": "Ninetales",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 39,
-  "name": "Jigglypuff"
+  "name": "Jigglypuff",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 40,
-  "name": "Wigglytuff"
+  "name": "Wigglytuff",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 41,
-  "name": "Zubat"
+  "name": "Zubat",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 42,
-  "name": "Golbat"
+  "name": "Golbat",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 43,
-  "name": "Oddish"
+  "name": "Oddish",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 44,
-  "name": "Gloom"
+  "name": "Gloom",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 45,
-  "name": "Vileplume"
+  "name": "Vileplume",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 46,
-  "name": "Paras"
+  "name": "Paras",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 47,
-  "name": "Parasect"
+  "name": "Parasect",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 48,
-  "name": "Venonat"
+  "name": "Venonat",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 49,
-  "name": "Venomoth"
+  "name": "Venomoth",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 50,
-  "name": "Diglett"
+  "name": "Diglett",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 51,
-  "name": "Dugtrio"
+  "name": "Dugtrio",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 52,
-  "name": "Meowth"
+  "name": "Meowth",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 53,
-  "name": "Persian"
+  "name": "Persian",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 54,
-  "name": "Psyduck"
+  "name": "Psyduck",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 55,
-  "name": "Golduck"
+  "name": "Golduck",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 56,
-  "name": "Mankey"
+  "name": "Mankey",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 57,
-  "name": "Primeape"
+  "name": "Primeape",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 58,
-  "name": "Growlithe"
+  "name": "Growlithe",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 59,
-  "name": "Arcanine"
+  "name": "Arcanine",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 60,
-  "name": "Poliwag"
+  "name": "Poliwag",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 61,
-  "name": "Poliwhirl"
+  "name": "Poliwhirl",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 62,
-  "name": "Poliwrath"
+  "name": "Poliwrath",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 63,
-  "name": "Abra"
+  "name": "Abra",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 64,
-  "name": "Kadabra"
+  "name": "Kadabra",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 65,
-  "name": "Alakazam"
+  "name": "Alakazam",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 66,
-  "name": "Machop"
+  "name": "Machop",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 67,
-  "name": "Machoke"
+  "name": "Machoke",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 68,
-  "name": "Machamp"
+  "name": "Machamp",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 69,
-  "name": "Bellsprout"
+  "name": "Bellsprout",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 70,
-  "name": "Weepinbell"
+  "name": "Weepinbell",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 71,
-  "name": "Victreebel"
+  "name": "Victreebel",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 72,
-  "name": "Tentacool"
+  "name": "Tentacool",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 73,
-  "name": "Tentacruel"
+  "name": "Tentacruel",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 74,
-  "name": "Geodude"
+  "name": "Geodude",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 75,
-  "name": "Graveler"
+  "name": "Graveler",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 76,
-  "name": "Golem"
+  "name": "Golem",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 77,
-  "name": "Ponyta"
+  "name": "Ponyta",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 78,
-  "name": "Rapidash"
+  "name": "Rapidash",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 79,
-  "name": "Slowpoke"
+  "name": "Slowpoke",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 80,
-  "name": "Slowbro"
+  "name": "Slowbro",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 81,
-  "name": "Magnemite"
+  "name": "Magnemite",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 82,
-  "name": "Magneton"
+  "name": "Magneton",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 83,
-  "name": "Farfetchd"
+  "name": "Farfetchd",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 84,
-  "name": "Doduo"
+  "name": "Doduo",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 85,
-  "name": "Dodrio"
+  "name": "Dodrio",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 86,
-  "name": "Seel"
+  "name": "Seel",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 87,
-  "name": "Dewgong"
+  "name": "Dewgong",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 88,
-  "name": "Grimer"
+  "name": "Grimer",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 89,
-  "name": "Muk"
+  "name": "Muk",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 90,
-  "name": "Shellder"
+  "name": "Shellder",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 91,
-  "name": "Cloyster"
+  "name": "Cloyster",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 92,
-  "name": "Gastly"
+  "name": "Gastly",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 93,
-  "name": "Haunter"
+  "name": "Haunter",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 94,
-  "name": "Gengar"
+  "name": "Gengar",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 95,
-  "name": "Onix"
+  "name": "Onix",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 96,
-  "name": "Drowzee"
+  "name": "Drowzee",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 97,
-  "name": "Hypno"
+  "name": "Hypno",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 98,
-  "name": "Krabby"
+  "name": "Krabby",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 99,
-  "name": "Kingler"
+  "name": "Kingler",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 100,
-  "name": "Voltorb"
+  "name": "Voltorb",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 101,
-  "name": "Electrode"
+  "name": "Electrode",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 102,
-  "name": "Exeggcute"
+  "name": "Exeggcute",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 103,
-  "name": "Exeggutor"
+  "name": "Exeggutor",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 104,
-  "name": "Cubone"
+  "name": "Cubone",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 105,
-  "name": "Marowak"
+  "name": "Marowak",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 106,
-  "name": "Hitmonlee"
+  "name": "Hitmonlee",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 107,
-  "name": "Hitmonchan"
+  "name": "Hitmonchan",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 108,
-  "name": "Lickitung"
+  "name": "Lickitung",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 109,
-  "name": "Koffing"
+  "name": "Koffing",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 110,
-  "name": "Weezing"
+  "name": "Weezing",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 111,
-  "name": "Rhyhorn"
+  "name": "Rhyhorn",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 112,
-  "name": "Rhydon"
+  "name": "Rhydon",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 113,
-  "name": "Chansey"
+  "name": "Chansey",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 114,
-  "name": "Tangela"
+  "name": "Tangela",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 115,
-  "name": "Kangaskhan"
+  "name": "Kangaskhan",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 116,
-  "name": "Horsea"
+  "name": "Horsea",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 117,
-  "name": "Seadra"
+  "name": "Seadra",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 118,
-  "name": "Goldeen"
+  "name": "Goldeen",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 119,
-  "name": "Seaking"
+  "name": "Seaking",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 120,
-  "name": "Staryu"
+  "name": "Staryu",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 121,
-  "name": "Starmie"
+  "name": "Starmie",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 122,
-  "name": "Mr-Mime"
+  "name": "Mr-Mime",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 123,
-  "name": "Scyther"
+  "name": "Scyther",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 124,
-  "name": "Jynx"
+  "name": "Jynx",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 125,
-  "name": "Electabuzz"
+  "name": "Electabuzz",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 126,
-  "name": "Magmar"
+  "name": "Magmar",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 127,
-  "name": "Pinsir"
+  "name": "Pinsir",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 128,
-  "name": "Tauros"
+  "name": "Tauros",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 129,
-  "name": "Magikarp"
+  "name": "Magikarp",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 130,
-  "name": "Gyarados"
+  "name": "Gyarados",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 131,
-  "name": "Lapras"
+  "name": "Lapras",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 132,
-  "name": "Ditto"
+  "name": "Ditto",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 133,
-  "name": "Eevee"
+  "name": "Eevee",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 134,
-  "name": "Vaporeon"
+  "name": "Vaporeon",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 135,
-  "name": "Jolteon"
+  "name": "Jolteon",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 136,
-  "name": "Flareon"
+  "name": "Flareon",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 137,
-  "name": "Porygon"
+  "name": "Porygon",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 138,
-  "name": "Omanyte"
+  "name": "Omanyte",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 139,
-  "name": "Omastar"
+  "name": "Omastar",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 140,
-  "name": "Kabuto"
+  "name": "Kabuto",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 141,
-  "name": "Kabutops"
+  "name": "Kabutops",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 142,
-  "name": "Aerodactyl"
+  "name": "Aerodactyl",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 143,
-  "name": "Snorlax"
+  "name": "Snorlax",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 144,
-  "name": "Articuno"
+  "name": "Articuno",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 145,
-  "name": "Zapdos"
+  "name": "Zapdos",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 146,
-  "name": "Moltres"
+  "name": "Moltres",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 147,
-  "name": "Dratini"
+  "name": "Dratini",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 148,
-  "name": "Dragonair"
+  "name": "Dragonair",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 149,
-  "name": "Dragonite"
+  "name": "Dragonite",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 150,
-  "name": "Mewtwo"
+  "name": "Mewtwo",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }, {
   "id": 151,
-  "name": "Mew"
+  "name": "Mew",
+	"count": 0,
+	"active": false,
+	"encountered": false
 }]
