@@ -8,6 +8,11 @@
  */
 angular.module('ngApp')
   .controller('MainCtrl', function($rootScope, $scope, $http, $interval, $timeout, $q, $localStorage, uiGmapGoogleMapApi, moment, snapRemote) {
+    // Adblocker detection
+    $scope.$on('adblock:state', function(evt, state) {
+      console.log('Adblock state change.');
+      $scope.hasAdblocker = $rootScope.hasAdblocker;
+    });
     // Register event listeners on snap events so we can add/remove classes
     snapRemote.getSnapper().then(function(snapper) {
       snapper.on('open', function() {
@@ -50,7 +55,7 @@ angular.module('ngApp')
     $scope.markers = [];
     $scope.infoWindows = [];
     // Get full list of pokemon defaults
-      $scope.areaList = $localStorage.pokemonList || [];
+    $scope.areaList = $localStorage.pokemonList || [];
     if (!$localStorage.pokemonList || $localStorage.pokemonList.length < 151) {
       $http.get('pokemon.json').then(function(res) {
         $localStorage.pokemonList = res.data;
@@ -197,7 +202,7 @@ angular.module('ngApp')
       return returnList;
     };
     $scope.redrawAreas = _.debounce(function() {
-      $timeout(function(){
+      $timeout(function() {
         _getPokemonData(true);
       }, 0);
     }, 500);

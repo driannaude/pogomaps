@@ -23,6 +23,12 @@
       </div>
 
       <div class="row padding-vertical-plus center-xs middle-xs">
+        <div class="col-xs-12" ng-if="hasAdblocker && isNotMobile()">
+          <h1 class="text-muted"><i class="fa fa-frown-o"></i></h1>
+          <p class="lead text-muted">
+            We know ads suck, but it helps us keep PokeMap running. Please consider disabling your ad blocker for this site.
+          </p>
+        </div>
         <div class="col-xs-12 ad-block" ng-if="isNotMobile()">
           <!-- Adsense -->
           <div google-adsense>
@@ -66,6 +72,12 @@
       </div>
       <div class="row padding-vertical-plus center-xs middle-xs">
         <!-- Banner -->
+        <div class="col-xs-12" ng-if="hasAdblocker && isNotMobile()">
+          <h1 class="text-muted"><i class="fa fa-frown-o"></i></h1>
+          <p class="lead text-muted">
+            We know ads suck, but it helps us keep PokeMap running. Please consider disabling your ad blocker for this site.
+          </p>
+        </div>
         <div class="col-xs-12 ad-block" ng-if="isNotMobile()">
           <!-- Adsense -->
             <div google-adsense>
