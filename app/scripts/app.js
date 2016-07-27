@@ -129,7 +129,6 @@ angular
         $timeout(function() {
           //jshint ignore:start
           try {
-            console.log(window.adsbygoogle);
             (adsbygoogle = window.adsbygoogle || []).push({});
             console.log(window.adsbygoogle);
           } catch (ex) {

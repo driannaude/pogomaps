@@ -8,8 +8,10 @@
  */
 angular.module('ngApp')
   .controller('MainCtrl', function($rootScope, $scope, $http, $interval, $timeout, $q, $localStorage, uiGmapGoogleMapApi, moment, snapRemote) {
+    // Proper localStorage Sync
+    $scope.$storage = $localStorage;
     // Adblocker detection
-    $scope.$on('adblock:state', function(evt, state) {
+    $scope.$on('adblock:state', function() {
       console.log('Adblock state change.');
       $scope.hasAdblocker = $rootScope.hasAdblocker;
     });
@@ -55,23 +57,23 @@ angular.module('ngApp')
     $scope.markers = [];
     $scope.infoWindows = [];
     // Get full list of pokemon defaults
-    $scope.areaList = $localStorage.pokemonList || [];
-    if (!$localStorage.pokemonList || $localStorage.pokemonList.length < 151) {
+    $scope.areaList = $scope.$storage.pokemonList || [];
+    if (!$scope.$storage.pokemonList || $scope.$storage.pokemonList.length < 151) {
       $http.get('pokemon.json').then(function(res) {
-        $localStorage.pokemonList = res.data;
-        $scope.pokemonList = $localStorage.pokemonList;
+        $scope.$storage.pokemonList = res.data;
+        $scope.pokemonList = $scope.$storage.pokemonList;
       }, function(err) {
         console.error(err);
       });
     } else {
-      $scope.pokemonList = $localStorage.pokemonList;
+      $scope.pokemonList = $scope.$storage.pokemonList;
       _.each($scope.pokemonList, function(p) {
         p.count = 0;
       });
     }
-    $scope.areaList = $localStorage.areaList || [];
-    if (!$localStorage.areaList) {
-      $localStorage.areaList = [{
+    $scope.areaList = $scope.$storage.areaList || [];
+    if (!$scope.$storage.areaList) {
+      $scope.$storage.areaList = [{
         name: 'hagley',
         active: false
     }, {
@@ -148,9 +150,9 @@ angular.module('ngApp')
         name: 'papanui',
         active: false
     }];
-      $scope.areaList = $localStorage.areaList;
+      $scope.areaList = $scope.$storage.areaList;
     } else {
-      $scope.areaList = $localStorage.areaList;
+      $scope.areaList = $scope.$storage.areaList;
     }
     $scope.userMarker = {
       coords: {},
