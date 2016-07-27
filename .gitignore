@@ -2,7 +2,7 @@
 /dist
 /.tmp
 /.sass-cache
-app/bower_components
+/app/bower_components
 
 data.hagley.json
 data.sumner.json
