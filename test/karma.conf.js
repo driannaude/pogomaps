@@ -49,7 +49,6 @@ module.exports = function(config) {
       'app/bower_components/moment-duration-format/lib/moment-duration-format.js',
       'app/bower_components/angular-filter/dist/angular-filter.js',
       'app/bower_components/angular-ui-switch/angular-ui-switch.js',
-      'app/bower_components/ngAdsense/src/ng-adsense.js',
       'app/bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

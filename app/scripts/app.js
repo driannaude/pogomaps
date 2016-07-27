@@ -24,7 +24,6 @@ angular
     'ngStorage',
     'angular.filter',
     'uiSwitch',
-    'ngAdsense'
   ]).config(function($urlRouterProvider, $stateProvider, uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
       key: 'AIzaSyBrKIantJrntUGd4L3CQ7pmmkJ-qUMFWxc',
@@ -59,20 +58,19 @@ angular
     var adsLoaded = false;
     $rootScope.$on('$viewContentLoaded', function() {
       if (!adsLoaded) {
-          try {
-            // jshint ignore:start
-            (adsbygoogle = window.adsbygoogle || []).push({
-              google_ad_client: 'ca-pub-2131940670944575',
-              enable_page_level_ads: true
-            });
-            adsLoaded = true;
-            console.log('loaded ads', window.adsbygoogle);
-            //jshint ignore:end
-
-          } catch (e) {
-            console.error('Could Not Load Adsense');
-            console.error(e);
-          }
+        try {
+          // jshint ignore:start
+          (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: 'ca-pub-2131940670944575',
+            enable_page_level_ads: true
+          });
+          adsLoaded = true;
+          console.log('loaded ads', window.adsbygoogle);
+          //jshint ignore:end
+        } catch (e) {
+          console.error('Could Not Load Adsense');
+          console.error(e);
+        }
       }
     });
 
@@ -98,14 +96,32 @@ angular
       restrict: 'E',
       scope: false,
       link: function(scope, elem, attr) {
-        if (attr.type==='text/javascript-lazy') {
+        if (attr.type === 'text/javascript-lazy') {
           var code = elem.text();
-
           var f = new Function(code);
-
           f();
         }
       }
     };
     // jshint ignore:end
+  }).directive('googleAdsense', function($timeout) {
+    return {
+      restrict: 'AE',
+      transclude: true,
+      replace: true,
+      template: '<div ng-transclude></div>',
+      link: function() {
+        $timeout(function() {
+          //jshint ignore:start
+          try {
+            console.log(window.adsbygoogle);
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            console.log(window.adsbygoogle);
+          } catch (ex) {
+            console.warn(ex);
+          }
+          //jshint ignore:end
+        },0);
+      }
+    };
   });

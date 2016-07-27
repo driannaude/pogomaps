@@ -24,12 +24,14 @@
 
       <div class="row padding-vertical-plus center-xs middle-xs">
         <div class="col-xs-12" ng-if="isNotMobile()">
-          <!-- Banner -->
-          <adsense-directive
-                ad-client="ca-pub-2131940670944575"
-                ad-slot="1054953974"
-                css-style="display:inline-block;width:270px;height:50px;">
-            </adsense-directive>
+          <!-- Adsense -->
+          <div google-adsense>
+
+            <ins class="adsbygoogle"
+                style="display:inline-block;width:728px;height:90px;float:right;"
+                data-ad-client="ca-pub-2131940670944575"
+                data-ad-slot="1054953974"></ins>
+          </div>
         </div>
         <div class="col-xs-12">
           <button class="btn btn-link" ng-click="selectNoAreas()">Unselect All</button>
@@ -65,11 +67,14 @@
       <div class="row padding-vertical-plus center-xs middle-xs">
         <!-- Banner -->
         <div class="col-xs-12" ng-if="isNotMobile()">
-          <adsense-directive
-                ad-client="ca-pub-2131940670944575"
-                ad-slot="2671287977"
-                css-style="display:inline-block;width:270px;height:50px;">
-            </adsense-directive>
+          <!-- Adsense -->
+            <div google-adsense>
+
+              <ins class="adsbygoogle"
+                  style="display:inline-block;width:728px;height:90px;float:right;"
+                  data-ad-client="ca-pub-2131940670944575"
+                  data-ad-slot="2671287977"></ins>
+            </div>
         </div>
         <div class="col-xs-12">
           <div class="btn-group">
@@ -126,11 +131,7 @@
                 <input type="hidden" name="hosted_button_id" value="2W7UGG6QGZ5HL">
                 <button class="btn btn-donate btn-lg"><i class="fa fa-money" type="submit"></i>&nbsp;Donate</button>
                 <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-
               </form>
-
-
-
             </li>
             <hr />
             <li class="list-group-item pokemon-list center-xs middle-xs text-muted">
@@ -138,7 +139,6 @@
             </li>
           </ul>
         </div>
-        <!-- Square -->
       </div>
 
     </uib-tab>

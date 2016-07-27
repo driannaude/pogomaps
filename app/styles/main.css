@@ -335,3 +335,9 @@ body > .footer.open {
 .navbar-toggle:focus {
     background-color: transparent !important;
 }
+.ads {
+  position:relative;
+  display:block;
+  width:270px;
+  height:50px;
+}
