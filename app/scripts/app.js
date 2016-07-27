@@ -23,7 +23,8 @@ angular
     'geolocation',
     'ngStorage',
     'angular.filter',
-    'uiSwitch'
+    'uiSwitch',
+    'ngAdsense'
   ]).config(function($urlRouterProvider, $stateProvider, uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
       key: 'AIzaSyBrKIantJrntUGd4L3CQ7pmmkJ-qUMFWxc',

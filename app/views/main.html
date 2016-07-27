@@ -2,11 +2,11 @@
   <div class="map-container">
     <ui-gmap-google-map center='map.center' zoom='map.zoom' options='map.options'>
       <ui-gmap-marker coords="userMarker.coords" options="userMarker.options" events="userMarker.events" idkey="'userMarker'">
-      <ui-gmap-marker ng-repeat="marker in visiblePokemon()" coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
-        <ui-gmap-window show="marker.infoWindow.show" options="marker.infoWindow.options">
-          <div>{{marker.infoWindow.content}}</div>
-        </ui-gmap-window>
-      </ui-gmap-marker>
+        <ui-gmap-marker ng-repeat="marker in visiblePokemon()" coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
+          <ui-gmap-window show="marker.infoWindow.show" options="marker.infoWindow.options">
+            <div>{{marker.infoWindow.content}}</div>
+          </ui-gmap-window>
+        </ui-gmap-marker>
     </ui-gmap-google-map>
   </div>
 </div>
@@ -21,7 +21,16 @@
           </div>
         </div>
       </div>
+
       <div class="row padding-vertical-plus center-xs middle-xs">
+        <div class="col-xs-12" ng-if="isNotMobile()">
+          <!-- Banner -->
+          <adsense-directive
+                ad-client="ca-pub-2131940670944575"
+                ad-slot="1054953974"
+                css-style="display:inline-block;width:270px;height:50px;">
+            </adsense-directive>
+        </div>
         <div class="col-xs-12">
           <button class="btn btn-link" ng-click="selectNoAreas()">Unselect All</button>
         </div>
@@ -42,6 +51,7 @@
           </li>
         </ul>
       </div>
+
     </uib-tab>
     <uib-tab index="1" heading="Pokemon">
       <div class="row padding-vertical search-box-container">
@@ -53,6 +63,14 @@
         </div>
       </div>
       <div class="row padding-vertical-plus center-xs middle-xs">
+        <!-- Banner -->
+        <div class="col-xs-12" ng-if="isNotMobile()">
+          <adsense-directive
+                ad-client="ca-pub-2131940670944575"
+                ad-slot="2671287977"
+                css-style="display:inline-block;width:270px;height:50px;">
+            </adsense-directive>
+        </div>
         <div class="col-xs-12">
           <div class="btn-group">
             <label class="btn btn-default" ng-model="radioModel" uib-btn-radio="'All'" ng-click="select(true)">Select All</label>
@@ -65,7 +83,8 @@
           <li class="list-group-item pokemon-list" ng-if="markers.length <=0">
             <label>
               <p class="pull-left pokemon-list-name muted center-xs" style="margin: 5px 5px 0 15px; font-weight: normal">
-                There are no pokemon on the map right now. :( <br />Have you turned on at least one Area?
+                There are no pokemon on the map right now. :(
+                <br />Have you turned on at least one Area?
               </p>
             </label>
             <span class="badge badge-success pull-right" ng-class="{muted: !pokemon.active}">{{pokemon.count}}</span>
@@ -92,14 +111,14 @@
           <ul class="list-group col-xs-12">
             <li class="list-group-item pokemon-list center-xs middle-xs">
               <p class="lead text-muted">
-                PokeMap App<br/>
-                Version 0.10.4<br />
-                Last Update 26 July, 2016
+                PokeMap App
+                <br/> Version 0.10.4
+                <br /> Last Update 26 July, 2016
               </p>
             </li>
             <li class="list-group-item pokemon-list center-xs middle-xs">
-              If you would like to help out, or just want to buy me a beer to say thanks, you can do so using the Paypal donation button below.
-              Thanks for your support in advance!<br/>
+              If you would like to help out, or just want to buy me a beer to say thanks, you can do so using the Paypal donation button below. Thanks for your support in advance!
+              <br/>
             </li>
             <li class="list-group-item pokemon-list center-xs middle-xs">
               <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
@@ -119,12 +138,10 @@
             </li>
           </ul>
         </div>
+        <!-- Square -->
       </div>
+
     </uib-tab>
   </uib-tabset>
-  <!-- <div class="footer">
-    <div class="container center-xs middle-xs">
-      <p><span class="fa fa-code"></span> with <span class="fa fa-heart"></span> in Christchurch, New Zealand</p>
-    </div>
-  </div> -->
+
 </div>
