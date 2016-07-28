@@ -111,7 +111,7 @@ body {
 }
 .sidebar {
   padding: 50px 10px 10px 10px;
-  background: #f5f5f5;
+  background: #f1f1f1;
   border-left: 1px solid #ccc;
 }
 @media (min-width: 768px) {
@@ -315,7 +315,7 @@ body > .footer.open {
   right:0;
   padding:15px 10px 10px 10px !important;
   margin:0;
-  background: #f5f5f5;
+  background: #f1f1f1;
   z-index:1040;
   border-bottom:1px solid #ccc;
 
