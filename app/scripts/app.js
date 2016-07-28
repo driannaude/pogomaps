@@ -44,15 +44,24 @@ angular
   }).run(function($rootScope, $interval, $timeout, $http) {
     // Detect adblockers
     $rootScope.hasAdblocker = false;
+    
+    var adDetector = new BlockAdBlock({
+      checkOnLoad: true,
+      resetOnEnd: true
+    });
+    adDetector.on(true, function(){
+      $rootScope.hasAdblocker = true;
+      $rootScope.$broadcast('adblock:state', $rootScope.hasAdblocker);
+    });
+    $rootScope.$broadcast('adblock:state', $rootScope.hasAdblocker);
     (function() {
       var test = document.createElement('div');
       test.innerHTML = '&nbsp;';
       test.className = 'adsbox';
       document.body.appendChild(test);
       window.setTimeout(function() {
-        if (test.offsetHeight === 0) {
-          $rootScope.hasAdblocker = true;
-          $rootScope.$broadcast('adblock:state', $rootScope.hasAdblocker);
+        if (test.offsetHeight === 0 || test.css()) {
+
         }
         test.remove();
       }, 100);
