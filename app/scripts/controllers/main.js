@@ -24,6 +24,10 @@ angular.module('ngApp')
         $('.toggle-with-snap').removeClass('open');
       });
     });
+    $scope.clearCache = function(){
+      $localStorage.$reset();
+      window.location.reload();
+    }
     $scope.snapOpts = {
       disable: 'left',
       maxPosition: 275,
