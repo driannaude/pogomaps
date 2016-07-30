@@ -55,8 +55,10 @@ angular.module('ngApp')
       zoom: 12
     };
     $scope.markers = [];
+    $scope.appConfig = {};
     $http.get('config.json').then(function(res) {
       var config = res.data;
+      $scope.appConfig = config;
       var ts = moment($scope.$storage.lastUpdated);
       var updated = moment(config.lastUpdated);
       if (config.dev || updated.isAfter(ts)) {

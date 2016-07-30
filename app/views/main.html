@@ -131,8 +131,11 @@
             <li class="list-group-item pokemon-list center-xs middle-xs">
               <p class="lead text-muted">
                 PokeMap App
-                <br/> Version 0.10.4
-                <br /> Last Update 26 July, 2016
+                <br/> {{appConfig.version}}
+              </p>
+              <p>
+                <small>Last Updated <span am-time-ago="appConfig.lastUpdated"></span></small>
+              </p>
               </p>
             </li>
             <li class="list-group-item pokemon-list center-xs middle-xs">
