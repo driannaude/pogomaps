@@ -26,7 +26,7 @@ angular.module('ngApp')
     });
     $scope.clearCache = function(){
       $localStorage.$reset();
-      window.location.reload();
+      window.location.reload(true);
     }
     $scope.snapOpts = {
       disable: 'left',
