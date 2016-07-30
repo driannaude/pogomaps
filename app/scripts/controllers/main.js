@@ -78,7 +78,7 @@ angular.module('ngApp')
       $scope.areaList = $scope.$storage.pokemonList || [];
       if (!$scope.$storage.pokemonList || $scope.$storage.pokemonList.length < 151 || reload) {
         $http.get('pokemon.json').then(function(res) {
-          $scope.$storage.pokemonList = _.merge($scope.$storage.pokemonList, res.data);
+          $scope.$storage.pokemonList = res.data;
           $scope.pokemonList = $scope.$storage.pokemonList;
         }, function(err) {
           console.error(err);

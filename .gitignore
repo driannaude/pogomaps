@@ -10,7 +10,6 @@ data.brighton.json
 data.riccarton.json
 data.addington.json
 data.json
-config.json
 
 # Database files
 scanner/*.db
