@@ -107,4 +107,32 @@
   "name": "Phillipstown/Linwood",
   "alt": "phillipstown",
   "active": false
+},{
+  "name": "opawa",
+  "active": false
+},{
+  "name": "hillsborough",
+  "active": false
+},{
+  "name": "heathcote",
+  "active": false
+},{
+  "name": "St Martins",
+  "alt": "stmartins",
+  "active": false
+},{
+  "name": "bromley",
+  "active": false
+},{
+  "name": "parklands",
+  "active": false
+},{
+  "name": "lincoln",
+  "active": false
+},{
+  "name": "northwood",
+  "active": false
+},{
+  "name": "casebrook",
+  "active": false
 }]
