@@ -1,0 +1,110 @@
+[{
+  "name": "hagley",
+  "active": false
+}, {
+  "name": "riccarton",
+  "active": false
+}, {
+  "name": "addington",
+  "active": false
+}, {
+  "name": "sumner",
+  "active": false
+}, {
+  "name": "brighton",
+  "active": false
+}, {
+  "name": "Central (East)",
+  "alt": "cbdeast",
+  "active": false
+}, {
+  "name": "ilam",
+  "active": false
+}, {
+  "name": "hornby",
+  "active": false
+}, {
+  "name": "yaldhurst",
+  "active": false
+}, {
+  "name": "prebbleton",
+  "active": false
+}, {
+  "name": "ferrymead",
+  "active": false
+}, {
+  "name": "halswell",
+  "active": false
+}, {
+  "name": "Hoon Hay",
+  "alt": "hoonhay",
+  "active": false
+}, {
+  "name": "lyttleton",
+  "active": false
+}, {
+  "name": "St Albans",
+  "alt": "stalbans",
+  "active": false
+}, {
+  "name": "edgeware",
+  "active": false
+}, {
+  "name": "sydenham",
+  "active": false
+}, {
+  "name": "spreydon",
+  "active": false
+}, {
+  "name": "somerfield",
+  "active": false
+}, {
+  "name": "beckenham",
+  "active": false
+}, {
+  "name": "rolleston",
+  "active": false
+}, {
+  "name": "bryndwr",
+  "active": false
+}, {
+  "name": "papanui",
+  "active": false
+},{
+  "name": "sockburn",
+  "active": false
+},{
+  "name": "cashmere",
+  "active": false
+},{
+  "name": "shirley",
+  "active": false
+},{
+  "name": "redwood",
+  "active": false
+},{
+  "name": "wigram",
+  "active": false
+},{
+  "name": "bishopdale",
+  "active": false
+},{
+  "name": "rangiora",
+  "active": false
+},{
+  "name": "avonhead",
+  "active": false
+},{
+  "name": "russley",
+  "active": false
+},{
+  "name": "burnside",
+  "active": false
+},{
+  "name": "westmorland",
+  "active": false
+},{
+  "name": "Phillipstown/Linwood",
+  "alt": "phillipstown",
+  "active": false
+}]

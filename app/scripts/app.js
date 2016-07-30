@@ -44,7 +44,7 @@ angular
   }).run(function($rootScope, $interval, $timeout, $http) {
     // Detect adblockers
     $rootScope.hasAdblocker = false;
-    
+
     var adDetector = new BlockAdBlock({
       checkOnLoad: true,
       resetOnEnd: true
@@ -54,18 +54,6 @@ angular
       $rootScope.$broadcast('adblock:state', $rootScope.hasAdblocker);
     });
     $rootScope.$broadcast('adblock:state', $rootScope.hasAdblocker);
-    (function() {
-      var test = document.createElement('div');
-      test.innerHTML = '&nbsp;';
-      test.className = 'adsbox';
-      document.body.appendChild(test);
-      window.setTimeout(function() {
-        if (test.offsetHeight === 0 || test.css()) {
-
-        }
-        test.remove();
-      }, 100);
-    })();
     $rootScope.serverStats = null;
     $http.get('https://go.jooas.com/status').then(function(res) {
       var status = res.data;

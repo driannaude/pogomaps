@@ -1,12 +1,14 @@
+<snap-dragger style="width:0;height:0"></snap-dragger>
 <div snap-content snap-options="snapOpts" snap-opt-disable="'left'" snap-opt-tap-to-close="!isNotMobile()">
   <div class="map-container">
     <ui-gmap-google-map center='map.center' zoom='map.zoom' options='map.options'>
-      <ui-gmap-marker coords="userMarker.coords" options="userMarker.options" events="userMarker.events" idkey="'userMarker'">
-        <ui-gmap-marker ng-repeat="marker in visiblePokemon()" coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
-          <ui-gmap-window show="marker.infoWindow.show" options="marker.infoWindow.options">
-            <div>{{marker.infoWindow.content}}</div>
-          </ui-gmap-window>
-        </ui-gmap-marker>
+      <ui-gmap-marker coords="userMarker.coords" options="userMarker.options" events="userMarker.events" idkey="'userMarker'"></ui-gmap-marker>
+        <ui-gmap-markers models="mapMarkers.pokemon" coords="'coords'" options="'options'" events="'events'" idkey="'id'">
+          <!-- <ui-gmap-windows show="show" idkey="'id'" do-rebuild-all="false">
+            <div ng-non-bindable>{{title}}</div>
+          </ui-gmap-windows> -->
+        </ui-gmap-markers>
+
     </ui-gmap-google-map>
   </div>
 </div>
