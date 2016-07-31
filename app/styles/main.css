@@ -163,7 +163,8 @@ body {
 .poke-label {
   z-index: -1 !important;
   color: #444;
-  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
   margin-top: -20px !important;
   border: 1px solid #ccc;
   background: #fff;
@@ -185,6 +186,7 @@ body {
   border: none;
   border-bottom: 2px solid transparent;
   margin-bottom: 5px;
+  -webkit-transition: all 0.2s;
   transition: all 0.2s;
 }
 .nav-tabs> li.active> a {
@@ -239,7 +241,8 @@ body {
   position: relative;
   width: auto;
   margin: 50% 10px;
-  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
 }
 .adcontainer {
   z-index: 999999999999;
@@ -284,13 +287,16 @@ snap-drawer,
   width: 275px;
 }
 body > .header > .navbar-fixed-top,body > .footer {
+  -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
 body > .header > .navbar-fixed-top.open {
-  transform: translateX(-275px);
+  transform: translateX(-275px) !important;
+  -webkit-transform: translateX(-275px) !important;
 }
 body > .footer.open {
-  transform: translateX(-275px);
+  transform: translateX(-275px) !important;
+  -webkit-transform: translateX(-275px) !important;
 }
 
 .nav.nav-tabs {
