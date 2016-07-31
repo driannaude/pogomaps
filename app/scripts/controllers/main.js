@@ -8,6 +8,9 @@
  */
 angular.module('ngApp')
   .controller('MainCtrl', function($rootScope, $scope, $http, $interval, $timeout, $q, $localStorage, uiGmapGoogleMapApi, moment, snapRemote) {
+
+    // get domain info, check if timaru
+    var _domain = window.location.host.split('.');
     // Proper localStorage Sync
     $scope.$storage = $localStorage;
     // Adblocker detection
@@ -25,9 +28,12 @@ angular.module('ngApp')
       });
     });
     $scope.clearCache = function(){
+      window.location.reload(true);
+    };
+    $scope.clearCacheAndStorage = function(){
       $localStorage.$reset();
       window.location.reload(true);
-    }
+    };
     $scope.snapOpts = {
       disable: 'left',
       maxPosition: 275,
@@ -95,8 +101,12 @@ angular.module('ngApp')
       }
       $scope.areaList = $scope.$storage.areaList || [];
       if (!$scope.$storage.areaList || reload) {
-        $http.get('areas.json').then(function(res) {
-          console.log('got areas');
+        var areaFile = 'areas.json';
+        if(_domain[0] === 'timaru'){
+          areaFile = 'timaru.json';
+        }
+        $http.get(areaFile).then(function(res) {
+          console.log('got areas for' + areaFile);
           console.warn(res.data);
           $scope.$storage.areaList = res.data;
           $scope.areaList = $scope.$storage.areaList;

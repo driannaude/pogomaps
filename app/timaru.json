@@ -1,0 +1,39 @@
+[{
+  "name": "ashbury",
+  "active": false
+}, {
+  "name": "marchwiel",
+  "active": false
+}, {
+  "name": "highfield",
+  "active": false
+}, {
+  "name": "West End",
+  "alt": "westend",
+  "active": false
+}, {
+  "name": "Wai-Iti",
+  "alt": "waiiti",
+  "active": false
+}, {
+  "name": "Caroline Bay",
+  "alt": "cbay",
+  "active": false
+}, {
+  "name": "downtown",
+  "active": false
+},{
+  "name": "parkside",
+  "active": false
+},{
+  "name": "Botanical Garden",
+  "alt": "gardens",
+  "active": false
+},{
+  "name": "watlington",
+  "active": false
+},{
+  "name": "Scenic Reserve",
+  "alt": "scenic",
+  "active": false
+}]
