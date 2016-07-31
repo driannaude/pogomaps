@@ -55,26 +55,29 @@
         <button type="button" class="navbar-toggle" snap-toggle="right">
           <i class="fa fa-filter"></i>&nbsp;Filter
         </button>
-        <a class="navbar-brand middle-xs" href="#/"><img src="icon-36x36.png" class="pull-left" style="margin-top:-2px;max-height:25px" />&nbsp;Pok&eacute;Map Christchurch</a>
+        <a class="navbar-brand middle-xs" href="#/"><img src="icon-36x36.png" class="pull-left" style="margin-top:-2px;max-height:25px" />&nbsp;Pok&eacute;Map</a>
       </div>
     </div>
   </div>
-  <div class="footer {{serverStatus}} toggle-with-snap">
+  <div class="footer toggle-with-snap">
     <div class="row middle-xs">
       <div class="col-xs-7 start-xs">
-        <p><i class="fa fa-heartbeat" ng-class="{'text-danger': serverStatus === 'CRITICAL',
-                             'text-warning': serverStatus === 'UNSTABLE',
-                             'text-success': serverStatus === 'STABLE'}"></i> SERVERS: <strong>{{serverStatus}}</strong></p>
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="margin:0;padding:0;">
+          <input type="hidden" name="cmd" value="_s-xclick">
+          <input type="hidden" name="hosted_button_id" value="2W7UGG6QGZ5HL">
+          <button class="btn btn-donate btn-sm" style="margin:0"><i class="fa fa-money" type="submit"></i>&nbsp;Donate</button>
+          <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+        </form>
       </div>
       <div class="col-xs end-xs">
-        <p>
+
           <button type="button" class="btn btn-default btn-sm" ng-disabled="geolocationTimeout()" ng-click="getMyLocation()" uib-tooltip="Unable to get your Location" tooltip-placement="top" tooltip-trigger="'outsideClick'" tooltip-popup-close-delay="1000" tooltip-popup-delay="0"
               tooltip-enable="geoLocationError">
             <i class="fa" ng-class="{'fa-location-arrow': !geoLocationInProgress && !geoLocationError,
                                     'fa-cog fa-spin': geoLocationInProgress,
                                     'fa-exclamation-triangle': !geoLocationInProgress && geoLocationError === true}"></i>&nbsp;Find Me
           </button>
-        </p>
+        
       </div>
     </div>
   </div>
