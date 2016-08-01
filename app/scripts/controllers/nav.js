@@ -51,18 +51,23 @@ angular.module('ngApp')
       }).then(function(res){
         // jscs:disable
         var firstResult = res.data.results[0];
-        var suburb = false;
+        var suburb = false,
+            city = false;
         // Extract the suburb by iterating over the first resultset and checking
         // if each is a sublocality (suburb); leave as false if no suburb.
         _.each(firstResult.address_components, function(component){
+          console.log(component);
           if(_.includes(component.types,'sublocality')){
             suburb = component;
+          } else if(_.includes(component.types,'locality')) {
+            city = component;
           }
+
         });
         $scope.geoLocationInProgress = false;
         var ts = new Date().getTime();
         $localStorage.geoTimeout = ts + 30000;
-        $rootScope.$broadcast('location:coords:available', coords, suburb);
+        $rootScope.$broadcast('location:coords:available', coords, suburb, city);
         // jscs:enable
       }, function(err){
         $scope.geoLocationInProgress = false;

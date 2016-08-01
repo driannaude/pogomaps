@@ -138,8 +138,12 @@ angular.module('ngApp')
       $scope.showLoader = false;
       $scope.viewContentLoaded = true;
     });
-    $scope.$on('location:coords:available', function(evt, coords, suburb) {
+    $scope.$on('location:coords:available', function(evt, coords, suburb, locality) {
       var subby = suburb.long_name.toLowerCase().replace(' ', '');
+      var city = locality.long_name.toLowerCase().replace(' ', '');
+      if(city === 'timaru'){
+        window.location = 'https://timaru.thepokemapapp.com/app/';
+      }
       var areaIndex = _.findIndex($scope.areaList, function(o) {
         if (o.hasOwnProperty('alt')) {
           return o.alt === subby;
