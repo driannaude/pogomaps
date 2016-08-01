@@ -413,6 +413,21 @@ body > .footer.open {
     -webkit-transform: scaleY(1.0);
   }
 }
+@-webkit-keyframes zoomOut {
+  from {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+    -webkit-transform: scale3d(.3, .3, .3);
+            transform: scale3d(.3, .3, .3);
+  }
+
+  to {
+    opacity: 0;
+  }
+}
 @keyframes zoomOut {
   from {
     opacity: 1;
@@ -420,7 +435,8 @@ body > .footer.open {
 
   50% {
     opacity: 0;
-    transform: scale3d(.3, .3, .3);
+    -webkit-transform: scale3d(.3, .3, .3);
+            transform: scale3d(.3, .3, .3);
   }
 
   to {
@@ -429,14 +445,18 @@ body > .footer.open {
 }
 
 .zoomOut {
-  animation-name: zoomOut;
+  -webkit-animation-name: zoomOut;
+          animation-name: zoomOut;
 }
 .fade-in-out {
+  -webkit-transition: 1s linear all;
   transition: 1s linear all;
+
   opacity: 1;
 }
 
 .fade-in-out.ng-hide {
   opacity: 0;
-  animation-name: zoomOut;
+  -webkit-animation-name: zoomOut;
+          animation-name: zoomOut;
 }

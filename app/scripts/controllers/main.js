@@ -139,8 +139,14 @@ angular.module('ngApp')
       $scope.viewContentLoaded = true;
     });
     $scope.$on('location:coords:available', function(evt, coords, suburb, locality) {
-      var subby = suburb.long_name.toLowerCase().replace(' ', '');
-      var city = locality.long_name.toLowerCase().replace(' ', '');
+      var subby = false,
+          city = false;
+      if(suburb){
+        subby = suburb.long_name.toLowerCase().replace(' ', '');
+      }
+      if(locality){
+        city = locality.long_name.toLowerCase().replace(' ', '');
+      }
       if(city === 'timaru'){
         window.location = 'https://timaru.thepokemapapp.com/app/';
       }
