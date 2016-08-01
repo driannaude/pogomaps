@@ -153,7 +153,7 @@ angular.module('ngApp')
       if (areaIndex >= 0) {
         $scope.areaList[areaIndex].active = true;
       } else {
-        console.warn('AREA NOT ADDED: ', subby);
+        console.warn('AREA NOT ADDED: [' +subby+ ']');
       }
       console.log('found user at: ', coords);
       $scope.userMarker.coords.latitude = coords.lat;
