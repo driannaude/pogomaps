@@ -8,7 +8,9 @@
  */
 angular.module('ngApp')
   .controller('MainCtrl', function($rootScope, $scope, $http, $interval, $timeout, $q, $localStorage, uiGmapGoogleMapApi, moment, snapRemote) {
-
+    // loading
+    $scope.viewContentLoaded = false;
+    $scope.showLoader = true;
     // get domain info, check if timaru
     var _domain = window.location.host.split('.');
     // Proper localStorage Sync
@@ -61,6 +63,14 @@ angular.module('ngApp')
       },
       options: {
         disableDefaultUI: true
+      },
+      events: {
+        idle: function(){
+
+          $scope.viewContentLoaded = true;
+          console.log('idle');
+
+        }
       },
       zoom: 12
     };
@@ -123,7 +133,12 @@ angular.module('ngApp')
       options: {},
       events: {}
     };
-    $scope.$on('location:coords', function(evt, coords, suburb) {
+    $scope.$on('location:coords:unavailable', function() {
+      console.log('no location');
+      $scope.showLoader = false;
+      $scope.viewContentLoaded = true;
+    });
+    $scope.$on('location:coords:available', function(evt, coords, suburb) {
       var subby = suburb.long_name.toLowerCase().replace(' ', '');
       var areaIndex = _.findIndex($scope.areaList, function(o) {
         if (o.hasOwnProperty('alt')) {
@@ -143,6 +158,7 @@ angular.module('ngApp')
       $scope.map.center.longitude = coords.long;
       $scope.map.zoom = 15;
       _getPokemonData(true);
+      $scope.showLoader = false;
     });
     $scope.radioModel = 'All';
     $scope.radioModelArea = 'None';

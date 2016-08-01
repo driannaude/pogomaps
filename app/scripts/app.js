@@ -23,7 +23,7 @@ angular
     'geolocation',
     'ngStorage',
     'angular.filter',
-    'uiSwitch',
+    'uiSwitch'
   ]).config(function($urlRouterProvider, $stateProvider, uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
       key: 'AIzaSyBrKIantJrntUGd4L3CQ7pmmkJ-qUMFWxc',
@@ -41,7 +41,7 @@ angular
         controller: 'ThankYouCtrl'
       });
     $urlRouterProvider.otherwise('/');
-  }).run(function($rootScope, $interval, $timeout, $http) {
+  }).run(function($rootScope) {
     // Detect adblockers
     $rootScope.hasAdblocker = false;
 
@@ -55,7 +55,7 @@ angular
     });
     $rootScope.$broadcast('adblock:state', $rootScope.hasAdblocker);
     $rootScope.serverStats = null;
-    
+
     var adsLoaded = false;
     $rootScope.$on('$viewContentLoaded', function() {
       if (!adsLoaded) {

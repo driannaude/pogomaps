@@ -7,7 +7,7 @@
  * Controller of the ngApp
  */
 angular.module('ngApp')
-  .controller('NavCtrl', function($rootScope, $scope, $http, $q, geolocation, $localStorage, uiGmapGoogleMapApi) {
+  .controller('NavCtrl', function($rootScope, $scope, $http, $q, geolocation, $timeout, $localStorage, uiGmapGoogleMapApi) {
     $localStorage.geoTimeout = 0;
     // Do server status things
     $scope.serversAreDown = false;
@@ -62,11 +62,15 @@ angular.module('ngApp')
         $scope.geoLocationInProgress = false;
         var ts = new Date().getTime();
         $localStorage.geoTimeout = ts + 30000;
-        $rootScope.$broadcast('location:coords', coords, suburb);
+        $rootScope.$broadcast('location:coords:available', coords, suburb);
         // jscs:enable
       }, function(err){
         $scope.geoLocationInProgress = false;
         $scope.geoLocationError = true;
+        $timeout(function(){
+          $rootScope.$broadcast('location:coords:unavailable');
+        },250);
+
         console.error(err);
       });
     };

@@ -1,18 +1,31 @@
-<snap-dragger style="width:0;height:0"></snap-dragger>
-<div snap-content snap-options="snapOpts" snap-opt-disable="'left'" snap-opt-tap-to-close="!isNotMobile()">
+<div class="snap-content" snap-content snap-options="snapOpts" snap-opt-disable="'left'" snap-opt-tap-to-close="!isNotMobile()" ng-cloak>
+  <snap-dragger style="width:0;height:0"></snap-dragger>
+  <div class="loader fade-in-out" ng-show="!viewContentLoaded && showLoader === true">
+    <div class="row center-xs middle-xs">
+      <div class="col-xs-12">
+        <div class="spinner">
+          <div class="rect1"></div>
+          <div class="rect2"></div>
+          <div class="rect3"></div>
+          <div class="rect4"></div>
+          <div class="rect5"></div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="map-container">
-    <ui-gmap-google-map center='map.center' zoom='map.zoom' options='map.options'>
+    <ui-gmap-google-map pan="true" center='map.center' zoom='map.zoom' options='map.options' data-snap-ignore="true">
       <ui-gmap-marker coords="userMarker.coords" options="userMarker.options" events="userMarker.events" idkey="'userMarker'"></ui-gmap-marker>
-        <ui-gmap-markers models="mapMarkers.pokemon" coords="'coords'" options="'options'" events="'events'" idkey="'id'">
-          <!-- <ui-gmap-windows show="show" idkey="'id'" do-rebuild-all="false">
+      <ui-gmap-markers models="mapMarkers.pokemon" coords="'coords'" options="'options'" events="'events'" idkey="'id'">
+        <!-- <ui-gmap-windows show="show" idkey="'id'" do-rebuild-all="false">
             <div ng-non-bindable>{{title}}</div>
           </ui-gmap-windows> -->
-        </ui-gmap-markers>
+      </ui-gmap-markers>
 
     </ui-gmap-google-map>
   </div>
 </div>
-<div snap-drawer="right" class="sidebar" ng-init="activeTabs = 0">
+<div snap-drawer="right" class="sidebar" ng-init="activeTabs = 0" ng-cloak>
   <uib-tabset active="activeTabs">
     <uib-tab index="0" heading="Areas">
       <div class="row padding-vertical search-box-container">
@@ -34,10 +47,7 @@
         <div class="col-xs-12 ad-block">
           <!-- Adsense -->
           <div google-adsense>
-            <ins class="adsbygoogle"
-                style="display:inline-block;width:234px;height:60px;float:right;"
-                data-ad-client="ca-pub-2131940670944575"
-                data-ad-slot="1054953974"></ins>
+            <ins class="adsbygoogle" style="display:inline-block;width:234px;height:60px;float:right;" data-ad-client="ca-pub-2131940670944575" data-ad-slot="1054953974"></ins>
           </div>
         </div>
         <div class="col-xs-12">
@@ -81,13 +91,10 @@
         </div>
         <div class="col-xs-12 ad-block">
           <!-- Adsense -->
-            <div google-adsense>
+          <div google-adsense>
 
-              <ins class="adsbygoogle"
-                  style="display:inline-block;width:234px;height:60px;float:right;"
-                  data-ad-client="ca-pub-2131940670944575"
-                  data-ad-slot="2671287977"></ins>
-            </div>
+            <ins class="adsbygoogle" style="display:inline-block;width:234px;height:60px;float:right;" data-ad-client="ca-pub-2131940670944575" data-ad-slot="2671287977"></ins>
+          </div>
         </div>
         <div class="col-xs-12">
           <div class="btn-group">
