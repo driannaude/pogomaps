@@ -13,8 +13,16 @@
 }, {
   "name": "brighton",
   "active": false
+},{
+  "name": "City Centre",
+  "alt": "central",
+  "active": false
 }, {
   "name": "Central (East)",
+  "alt": "cbdeast",
+  "active": false
+},{
+  "name": "Central (South)",
   "alt": "cbdeast",
   "active": false
 }, {

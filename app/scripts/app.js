@@ -55,18 +55,7 @@ angular
     });
     $rootScope.$broadcast('adblock:state', $rootScope.hasAdblocker);
     $rootScope.serverStats = null;
-    $http.get('https://go.jooas.com/status').then(function(res) {
-      var status = res.data;
-      if (status !== $rootScope.serverStats) {
-        $rootScope.serverStats = status;
-        $rootScope.$broadcast('server:statusChange', status);
-      } else {
-        $rootScope.serversAreDown = status;
-      }
-      _startPolling();
-    }, function(err) {
-      console.error(err);
-    });
+    
     var adsLoaded = false;
     $rootScope.$on('$viewContentLoaded', function() {
       if (!adsLoaded) {
@@ -86,21 +75,6 @@ angular
       }
     });
 
-    function _startPolling() {
-      $interval(function() {
-        $http.get('https://go.jooas.com/status').then(function(res) {
-          var status = res.data;
-          if (status !== $rootScope.serverStats) {
-            $rootScope.serverStats = status;
-            $rootScope.$broadcast('server:statusChange', status);
-          } else {
-            $rootScope.serversAreDown = status;
-          }
-        }, function(err) {
-          console.error(err);
-        });
-      }, 60000);
-    }
   })
   .directive('script', function() {
     // jshint ignore:start
