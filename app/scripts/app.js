@@ -23,7 +23,8 @@ angular
     'geolocation',
     'ngStorage',
     'angular.filter',
-    'uiSwitch'
+    'uiSwitch',
+    'ng-mfb'
   ]).config(function($urlRouterProvider, $stateProvider, uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
       key: 'AIzaSyBrKIantJrntUGd4L3CQ7pmmkJ-qUMFWxc',
@@ -66,7 +67,6 @@ angular
             enable_page_level_ads: true
           });
           adsLoaded = true;
-          console.log('loaded ads', window.adsbygoogle);
           //jshint ignore:end
         } catch (e) {
           console.error('Could Not Load Adsense');
@@ -101,7 +101,6 @@ angular
           //jshint ignore:start
           try {
             (adsbygoogle = window.adsbygoogle || []).push({});
-            console.log(window.adsbygoogle);
           } catch (ex) {
             console.warn(ex);
           }

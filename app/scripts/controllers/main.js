@@ -11,6 +11,21 @@ angular.module('ngApp')
     // loading
     $scope.viewContentLoaded = false;
     $scope.showLoader = true;
+    // View states
+    $scope.viewStates = {
+      gyms: 'on',
+      pokestops: 'on',
+      pokemon: 'on',
+    };
+    $scope.viewBools = {
+      gyms: true,
+      pokestops: true,
+      pokemon: true,
+    };
+    $scope.toggleViewStates = function(item) {
+      $scope.viewStates[item] = ($scope.viewStates[item] === 'on') ? 'off' : 'on';
+      $scope.viewBools[item] = ($scope.viewBools[item]) ? false : true;
+    };
     // get domain info, check if timaru
     var _domain = window.location.host.split('.');
     // Proper localStorage Sync
@@ -29,10 +44,10 @@ angular.module('ngApp')
         $('.toggle-with-snap').removeClass('open');
       });
     });
-    $scope.clearCache = function(){
+    $scope.clearCache = function() {
       window.location.reload(true);
     };
-    $scope.clearCacheAndStorage = function(){
+    $scope.clearCacheAndStorage = function() {
       $localStorage.$reset();
       window.location.reload(true);
     };
@@ -65,16 +80,16 @@ angular.module('ngApp')
         disableDefaultUI: true
       },
       events: {
-        idle: function(){
-
+        idle: function() {
           $scope.viewContentLoaded = true;
           console.log('idle');
-
         }
       },
       zoom: 12
     };
     $scope.markers = [];
+    $scope.pokestops = [];
+    $scope.gyms = [];
     $scope.appConfig = {};
     $http.get('config.json').then(function(res) {
       var config = res.data;
@@ -93,6 +108,7 @@ angular.module('ngApp')
     });
     $scope.areaList = [];
     $scope.pokemonList = [];
+
     function getfromCache(reload) {
       // Get full list of pokemon defaults
       $scope.areaList = $scope.$storage.pokemonList || [];
@@ -112,7 +128,7 @@ angular.module('ngApp')
       $scope.areaList = $scope.$storage.areaList || [];
       if (!$scope.$storage.areaList || reload) {
         var areaFile = 'areas.json';
-        if(_domain[0] === 'timaru'){
+        if (_domain[0] === 'timaru') {
           areaFile = 'timaru.json';
         }
         $http.get(areaFile).then(function(res) {
@@ -140,14 +156,14 @@ angular.module('ngApp')
     });
     $scope.$on('location:coords:available', function(evt, coords, suburb, locality) {
       var subby = false,
-          city = false;
-      if(suburb){
+        city = false;
+      if (suburb) {
         subby = suburb.long_name.toLowerCase().replace(' ', '');
       }
-      if(locality){
+      if (locality) {
         city = locality.long_name.toLowerCase().replace(' ', '');
       }
-      if(city === 'timaru' && window.location.href.indexOf('timaru') === -1){
+      if (city === 'timaru' && window.location.href.indexOf('timaru') === -1) {
         window.location = 'https://timaru.thepokemapapp.com/app/';
       }
       var areaIndex = _.findIndex($scope.areaList, function(o) {
@@ -159,7 +175,7 @@ angular.module('ngApp')
       if (areaIndex >= 0) {
         $scope.areaList[areaIndex].active = true;
       } else {
-        console.warn('AREA NOT ADDED: [' +subby+ ']');
+        console.warn('AREA NOT ADDED: [' + subby + ']');
       }
       console.log('found user at: ', coords);
       $scope.userMarker.coords.latitude = coords.lat;
@@ -184,16 +200,41 @@ angular.module('ngApp')
     };
     $scope.mapMarkers = {};
     $scope.mapMarkers.pokemon = [];
+    $scope.mapMarkers.pokestops = [];
+    $scope.mapMarkers.gyms = [];
     $scope.infoWindows = {};
     $scope.infoWindows.pokemon = [];
     $scope.visiblePokemon = function() {
       var returnList = [];
+      if(!$scope.viewBools.pokemon){
+        return [];
+      }
       _.each($scope.markers, function(marker) {
         _.each($scope.pokemonList, function(pokemon) {
           if (pokemon.id === marker.pokemon.pokemon_id && pokemon.active === true) {
             returnList.push(marker);
           }
         });
+      });
+      return returnList;
+    };
+    $scope.visiblePokestops = function() {
+      var returnList = [];
+      if(!$scope.viewBools.pokestops){
+        return [];
+      }
+      _.each($scope.pokestops, function(marker) {
+        returnList.push(marker);
+      });
+      return returnList;
+    };
+    $scope.visibleGyms = function() {
+      var returnList = [];
+      if(!$scope.viewBools.gyms){
+        return [];
+      }
+      _.each($scope.gyms, function(marker) {
+        returnList.push(marker);
       });
       return returnList;
     };
@@ -208,9 +249,6 @@ angular.module('ngApp')
       $interval(function() {
         _getPokemonData();
       }, 1000);
-      // $interval(function(){
-      //   _processPokemons($scope.pokemons);
-      // }, 1000);
     }
 
     function _getPokemonIcon(p) {
@@ -228,6 +266,7 @@ angular.module('ngApp')
         }
       }
     }
+
 
     function removeStalePokemonMarkers() {
       var ts = moment();
@@ -253,6 +292,44 @@ angular.module('ngApp')
             removeStalePokemonListItem(pokemon);
             $scope.markers.splice(index, 1);
           }
+        }
+      });
+    }
+    function removeStalePokestopMarkers() {
+
+      _.each($scope.pokestops, function(marker, index) {
+        if (!marker) {
+          return;
+        }
+        var pokestop = marker.pokestop;
+        var originArea = pokestop.suburb;
+        var area = _.find($scope.areaList, function(o) {
+          if (o.hasOwnProperty('alt')) {
+            return o.alt === originArea;
+          }
+          return o.name === originArea;
+        });
+        if (!area.active) {
+          $scope.pokestops.splice(index, 1);
+        }
+      });
+    }
+    function removeStaleGymMarkers() {
+
+      _.each($scope.gyms, function(marker, index) {
+        if (!marker) {
+          return;
+        }
+        var gym = marker.gym;
+        var originArea = gym.suburb;
+        var area = _.find($scope.areaList, function(o) {
+          if (o.hasOwnProperty('alt')) {
+            return o.alt === originArea;
+          }
+          return o.name === originArea;
+        });
+        if (!area.active) {
+          $scope.gyms.splice(index, 1);
         }
       });
     }
@@ -327,8 +404,90 @@ angular.module('ngApp')
       });
       $scope.mapMarkers.pokemon = $scope.visiblePokemon();
     }
+
+    function _getPokestopIcon(stop) {
+      if (stop.lure_expiration === null) {
+        return 'images/pokestop.png';
+      }
+      return 'images/pokestop-lured.png';
+    }
+
+    function _processPokeStops(stops) {
+      _.each(stops, function(stop, i) {
+        var existingMarkerIndex = _.findIndex($scope.pokestops, function(o) {
+          return (o.stop.pokestop_id === stop.pokestop_id);
+        });
+        var newMarker = {
+          id: stop.pokestop_id,
+          coords: {
+            latitude: stop.latitude,
+            longitude: stop.longitude
+          },
+          options: {
+            draggable: false,
+            icon: _getPokestopIcon(stop)
+          },
+          stop: stop,
+          show: false
+        };
+        if (existingMarkerIndex < 0) {
+          $scope.pokestops.push(newMarker);
+        } else {
+          $scope.pokestops[i].options.icon = _getPokestopIcon(stop);
+        }
+      });
+      $scope.mapMarkers.pokestops = $scope.visiblePokestops();
+    }
+
+    function _getGymIcon(gym) {
+      switch (gym.team_id) {
+        case 0:
+          // uncontested
+          return 'images/gym-open.png';
+        case 1:
+          // mystic
+          return 'images/gym-mystic.png';
+        case 2:
+          // valor
+          return 'images/gym-valor.png';
+        case 3:
+          // instinct
+          return 'images/gym-instinct.png';
+        default:
+          return false;
+      }
+    }
+
+    function _processGyms(gyms) {
+      _.each(gyms, function(gym, i) {
+        var existingMarkerIndex = _.findIndex($scope.gyms, function(o) {
+          return (o.gym.gym_id === gym.gym_id);
+        });
+        var newMarker = {
+          id: gym.gym_id,
+          coords: {
+            latitude: gym.latitude,
+            longitude: gym.longitude
+          },
+          options: {
+            draggable: false,
+            icon: _getGymIcon(gym)
+          },
+          gym: gym,
+          show: false
+        };
+        if (existingMarkerIndex < 0) {
+          $scope.gyms.push(newMarker);
+        } else {
+          $scope.gyms[i].options.icon = _getGymIcon(gym);
+        }
+      });
+      $scope.mapMarkers.gyms = $scope.visibleGyms();
+    }
     var _iterations = 0;
     var pokemons = [];
+    var pokestops = [];
+    var gyms = [];
     var requestActive = false;
 
     function _getPokemonInfo(id) {
@@ -342,6 +501,8 @@ angular.module('ngApp')
       // Only fetch new pokemon every 30 secs to save battery/data
       if (_iterations < 30 && !init) {
         _iterations++;
+        _processPokeStops(pokestops);
+        _processGyms(gyms);
         _processPokemons(pokemons);
         return false;
       }
@@ -358,6 +519,10 @@ angular.module('ngApp')
           console.log('Looking in ' + name);
           var ts = new Date().toUTCString();
           var uri = 'https://api.thepokemapapp.com/pokemon?filter[where][and][0][suburb]=' + name + '&filter[where][and][1][disappear_time][gt]=' + ts;
+          var uriStops = 'https://api.thepokemapapp.com/pokestops?filter[where][and][0][suburb]=' + name + '&filter[where][and][1][enabled]=1&t=' + ts;
+          var uriGyms = 'https://api.thepokemapapp.com/gyms?filter[where][and][0][suburb]=' + name + '&filter[where][and][1][enabled]=true&ts=' + ts;
+          requestUrls.push(uriStops);
+          requestUrls.push(uriGyms);
           requestUrls.push(uri);
         }
       });
@@ -367,13 +532,25 @@ angular.module('ngApp')
           return $http.get(request);
         })).then(function(results) {
           pokemons = [];
+          pokestops = [];
+          gyms = [];
           // parse results array
           _.each(results, function(payload) {
-            _.each(payload.data, function(p) {
-              p.area = p.suburb;
-              p.pokemon_name = _getPokemonInfo(p.pokemon_id).name;
-              pokemons.push(p);
-            });
+            if (payload.config.url.indexOf('pokemon?') !== -1) {
+              _.each(payload.data, function(p) {
+                p.area = p.suburb;
+                p.pokemon_name = _getPokemonInfo(p.pokemon_id).name;
+                pokemons.push(p);
+              });
+            } else if (payload.config.url.indexOf('pokestops?') !== -1) {
+              //pokestops
+              pokestops = payload.data;
+              _processPokeStops(pokestops);
+            } else if (payload.config.url.indexOf('gyms?') !== -1) {
+              //gyms
+              gyms = payload.data;
+              _processGyms(gyms);
+            }
           });
           requestActive = false;
           _iterations = 0;
@@ -385,5 +562,4 @@ angular.module('ngApp')
         });
       }
     }
-    
   });

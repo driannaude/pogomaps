@@ -50,6 +50,7 @@ module.exports = function(config) {
       'app/bower_components/angular-filter/dist/angular-filter.js',
       'app/bower_components/angular-ui-switch/angular-ui-switch.js',
       'app/bower_components/blockadblock/blockadblock.js',
+      'app/bower_components/ng-material-floating-button/src/mfb-directive.js',
       'app/bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

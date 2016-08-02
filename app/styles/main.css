@@ -460,3 +460,32 @@ body > .footer.open {
   -webkit-animation-name: zoomOut;
           animation-name: zoomOut;
 }
+
+.mfb-component--br {
+  bottom:40px;
+}
+
+.mfb-component__button--child.enabled {
+    background: #4cae4c;
+}
+.mfb-component__button--child.disabled {
+    background: #d04038;
+}
+.mfb-component__button--main {
+  background: #d04038;
+}
+
+.mfb-component__button--child {
+  background: #efefef;
+}
+.mfb-component__button--child > i {
+  -webkit-transition: all 0.25s;
+  transition: all 0.25s;
+  color: #d04038;
+}
+
+.mfb-component__main-icon--resting, .mfb-component__main-icon--active, .mfb-component__child-icon {
+  color: white;
+  font-size:28px;
+  line-height:57px;
+}

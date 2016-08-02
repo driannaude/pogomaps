@@ -16,13 +16,15 @@
   <div class="map-container">
     <ui-gmap-google-map pan="true" center='map.center' zoom='map.zoom' options='map.options'>
       <ui-gmap-marker coords="userMarker.coords" options="userMarker.options" events="userMarker.events" idkey="'userMarker'"></ui-gmap-marker>
-      <ui-gmap-markers models="mapMarkers.pokemon" coords="'coords'" options="'options'" events="'events'" idkey="'id'">
-        <!-- <ui-gmap-windows show="show" idkey="'id'" do-rebuild-all="false">
-            <div ng-non-bindable>{{title}}</div>
-          </ui-gmap-windows> -->
-      </ui-gmap-markers>
-
+      <ui-gmap-markers models="mapMarkers.pokemon" coords="'coords'" options="'options'" events="'events'" idkey="'id'"></ui-gmap-markers>
+      <ui-gmap-markers models="mapMarkers.pokestops" coords="'coords'" options="'options'" events="'events'" idkey="'id'"></ui-gmap-markers>
+      <ui-gmap-markers models="mapMarkers.gyms" coords="'coords'" options="'options'" events="'events'" idkey="'id'"></ui-gmap-markers>
     </ui-gmap-google-map>
+    <nav mfb-menu position="br" effect="zoomin" label="Filter Types" active-icon="fa fa-times" resting-icon="fa fa-filter" toggling-method="click">
+      <button mfb-button icon="fa fa-toggle-{{viewStates.gyms}}" label="Gyms: {{viewStates.gyms}}" ng-click="toggleViewStates('gyms')"></button>
+      <button mfb-button icon="fa fa-toggle-{{viewStates.pokestops}}" label="Pokestops: {{viewStates.pokestops}}" ng-click="toggleViewStates('pokestops')"></button>
+      <button mfb-button icon="fa fa-toggle-{{viewStates.pokemon}}" label="Pokemon: {{viewStates.pokemon}}" ng-click="toggleViewStates('pokemon')"></button>
+    </nav>
   </div>
 </div>
 <div snap-drawer="right" class="sidebar" ng-init="activeTabs = 0" ng-cloak>

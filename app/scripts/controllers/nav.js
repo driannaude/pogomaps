@@ -56,7 +56,7 @@ angular.module('ngApp')
         // Extract the suburb by iterating over the first resultset and checking
         // if each is a sublocality (suburb); leave as false if no suburb.
         _.each(firstResult.address_components, function(component){
-          console.log(component);
+        
           if(_.includes(component.types,'sublocality')){
             suburb = component;
           } else if(_.includes(component.types,'locality')) {
