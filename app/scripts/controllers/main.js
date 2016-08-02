@@ -301,7 +301,7 @@ angular.module('ngApp')
         if (!marker) {
           return;
         }
-        var pokestop = marker.pokestop;
+        var pokestop = marker.stop;
         var originArea = pokestop.suburb;
         var area = _.find($scope.areaList, function(o) {
           if (o.hasOwnProperty('alt')) {
@@ -413,6 +413,7 @@ angular.module('ngApp')
     }
 
     function _processPokeStops(stops) {
+      removeStalePokestopMarkers();
       _.each(stops, function(stop, i) {
         var existingMarkerIndex = _.findIndex($scope.pokestops, function(o) {
           return (o.stop.pokestop_id === stop.pokestop_id);
@@ -459,6 +460,7 @@ angular.module('ngApp')
     }
 
     function _processGyms(gyms) {
+      removeStaleGymMarkers();
       _.each(gyms, function(gym, i) {
         var existingMarkerIndex = _.findIndex($scope.gyms, function(o) {
           return (o.gym.gym_id === gym.gym_id);
