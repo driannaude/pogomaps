@@ -147,7 +147,7 @@ angular.module('ngApp')
       if(locality){
         city = locality.long_name.toLowerCase().replace(' ', '');
       }
-      if(city === 'timaru'){
+      if(city === 'timaru' && window.location.href.indexOf('timaru') === -1){
         window.location = 'https://timaru.thepokemapapp.com/app/';
       }
       var areaIndex = _.findIndex($scope.areaList, function(o) {
@@ -385,4 +385,5 @@ angular.module('ngApp')
         });
       }
     }
+    
   });
