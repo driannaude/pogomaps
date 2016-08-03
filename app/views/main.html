@@ -1,6 +1,6 @@
 <div class="snap-content" snap-content snap-options="snapOpts" snap-opt-disable="'left'" snap-opt-tap-to-close="!isNotMobile()" ng-cloak>
   <snap-dragger style="width:0;height:0"></snap-dragger>
-  <div class="loader fade-in-out" ng-show="!viewContentLoaded && showLoader === true">
+  <!-- <div class="loader fade-in-out" ng-show="!viewContentLoaded && showLoader === true">
     <div class="row center-xs middle-xs">
       <div class="col-xs-12">
         <div class="spinner">
@@ -12,8 +12,21 @@
         </div>
       </div>
     </div>
+  </div> -->
+  <div class="loader fade-in-out" ng-show="true">
+    <div class="row center-xs middle-xs">
+      <div class="col-xs-10">
+        <h1><i class="fa fa-frown-o"></i></h1>
+        <p class="lead">
+          Niantic have made a big change to their API as of August 4. I'm working hard, along with many other devs in the community, to restore our access.
+        </p>
+        <p class="lead">
+          Sorry for any inconvenience this may cause. Until this is resolved, the map will be unavailable. Should not be more than a few days.
+        </p>
+      </div>
+    </div>
   </div>
-  <div class="map-container">
+  <div class="map-container" ng-if="false">
     <ui-gmap-google-map pan="true" center='map.center' zoom='map.zoom' options='map.options'>
       <ui-gmap-marker coords="userMarker.coords" options="userMarker.options" events="userMarker.events" idkey="'userMarker'"></ui-gmap-marker>
       <ui-gmap-markers models="mapMarkers.pokemon" coords="'coords'" options="'options'" events="'events'" idkey="'id'"></ui-gmap-markers>
