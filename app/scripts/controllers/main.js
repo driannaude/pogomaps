@@ -91,7 +91,9 @@ angular.module('ngApp')
     $scope.pokestops = [];
     $scope.gyms = [];
     $scope.appConfig = {};
-    $http.get('config.json').then(function(res) {
+    var ts = new Date().getTime();
+    var configFile = 'config.json?=' + ts;
+    $http.get(configFile).then(function(res) {
       var config = res.data;
       $scope.appConfig = config;
       var ts = moment($scope.$storage.lastUpdated);

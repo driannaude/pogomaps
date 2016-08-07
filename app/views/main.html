@@ -13,7 +13,7 @@
       </div>
     </div>
   </div> -->
-  <div class="loader fade-in-out" ng-show="true">
+  <div class="loader fade-in-out" ng-if="false">
     <div class="row center-xs middle-xs">
       <div class="col-xs-10">
         <h1><i class="fa fa-frown-o"></i></h1>
@@ -26,7 +26,7 @@
       </div>
     </div>
   </div>
-  <div class="map-container" ng-if="false">
+  <div class="map-container">
     <ui-gmap-google-map pan="true" center='map.center' zoom='map.zoom' options='map.options'>
       <ui-gmap-marker coords="userMarker.coords" options="userMarker.options" events="userMarker.events" idkey="'userMarker'"></ui-gmap-marker>
       <ui-gmap-markers models="mapMarkers.pokemon" coords="'coords'" options="'options'" events="'events'" idkey="'id'"></ui-gmap-markers>
