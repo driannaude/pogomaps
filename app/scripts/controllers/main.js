@@ -11,17 +11,7 @@ angular.module('ngApp')
     // loading
     $scope.viewContentLoaded = false;
     $scope.showLoader = true;
-    // View states
-    $scope.viewStates = {
-      gyms: 'on',
-      pokestops: 'on',
-      pokemon: 'on',
-    };
-    $scope.viewBools = {
-      gyms: true,
-      pokestops: true,
-      pokemon: true,
-    };
+
     $scope.toggleViewStates = function(item) {
       $scope.viewStates[item] = ($scope.viewStates[item] === 'on') ? 'off' : 'on';
       $scope.viewBools[item] = ($scope.viewBools[item]) ? false : true;
@@ -112,6 +102,25 @@ angular.module('ngApp')
     $scope.pokemonList = [];
 
     function getfromCache(reload) {
+      // View states
+
+      if ((!$scope.$storage.viewBools || !$scope.$storage.viewStates) || reload) {
+        $scope.viewBools = {
+          gyms: true,
+          pokestops: true,
+          pokemon: true,
+        };
+        $scope.viewStates = {
+          gyms: 'on',
+          pokestops: 'on',
+          pokemon: 'on',
+        };
+        $scope.$storage.viewBools = $scope.viewBools;
+        $scope.$storage.viewStates = $scope.viewStates;
+      } else {
+        $scope.viewBools = $scope.$storage.viewBools;
+        $scope.viewStates = $scope.$storage.viewStates;
+      }
       // Get full list of pokemon defaults
       $scope.areaList = $scope.$storage.pokemonList || [];
       if (!$scope.$storage.pokemonList || $scope.$storage.pokemonList.length < 151 || reload) {
@@ -208,7 +217,7 @@ angular.module('ngApp')
     $scope.infoWindows.pokemon = [];
     $scope.visiblePokemon = function() {
       var returnList = [];
-      if(!$scope.viewBools.pokemon){
+      if (!$scope.viewBools.pokemon) {
         return [];
       }
       _.each($scope.markers, function(marker) {
@@ -222,7 +231,7 @@ angular.module('ngApp')
     };
     $scope.visiblePokestops = function() {
       var returnList = [];
-      if(!$scope.viewBools.pokestops){
+      if (!$scope.viewBools.pokestops) {
         return [];
       }
       _.each($scope.pokestops, function(marker) {
@@ -232,7 +241,7 @@ angular.module('ngApp')
     };
     $scope.visibleGyms = function() {
       var returnList = [];
-      if(!$scope.viewBools.gyms){
+      if (!$scope.viewBools.gyms) {
         return [];
       }
       _.each($scope.gyms, function(marker) {
@@ -269,7 +278,6 @@ angular.module('ngApp')
       }
     }
 
-
     function removeStalePokemonMarkers() {
       var ts = moment();
       _.each($scope.markers, function(marker, index) {
@@ -297,8 +305,8 @@ angular.module('ngApp')
         }
       });
     }
-    function removeStalePokestopMarkers() {
 
+    function removeStalePokestopMarkers() {
       _.each($scope.pokestops, function(marker, index) {
         if (!marker) {
           return;
@@ -316,8 +324,8 @@ angular.module('ngApp')
         }
       });
     }
-    function removeStaleGymMarkers() {
 
+    function removeStaleGymMarkers() {
       _.each($scope.gyms, function(marker, index) {
         if (!marker) {
           return;
