@@ -24,10 +24,6 @@
   "name": "Central (East)",
   "alt": "cbdeast",
   "active": false
-},{
-  "name": "Central (South)",
-  "alt": "cbdsouth",
-  "active": false
 }, {
   "name": "ilam",
   "active": false

@@ -511,7 +511,7 @@ angular.module('ngApp')
 
     function _getPokemonData(init) {
       // Only fetch new pokemon every 30 secs to save battery/data
-      if (_iterations < 30 && !init) {
+      if (_iterations < 10 && !init) {
         _iterations++;
         _processPokeStops(pokestops);
         _processGyms(gyms);
