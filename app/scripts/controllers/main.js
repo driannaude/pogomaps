@@ -217,7 +217,7 @@ angular.module('ngApp')
     $scope.infoWindows.pokemon = [];
     $scope.visiblePokemon = function() {
       var returnList = [];
-      if (!$scope.viewBools.pokemon) {
+      if (!$scope.viewBools || !$scope.viewBools.pokemon) {
         return [];
       }
       _.each($scope.markers, function(marker) {
@@ -231,7 +231,7 @@ angular.module('ngApp')
     };
     $scope.visiblePokestops = function() {
       var returnList = [];
-      if (!$scope.viewBools.pokestops) {
+      if (!$scope.viewBools || !$scope.viewBools.pokestops) {
         return [];
       }
       _.each($scope.pokestops, function(marker) {
@@ -241,7 +241,7 @@ angular.module('ngApp')
     };
     $scope.visibleGyms = function() {
       var returnList = [];
-      if (!$scope.viewBools.gyms) {
+      if (!$scope.viewBools || !$scope.viewBools.gyms) {
         return [];
       }
       _.each($scope.gyms, function(marker) {
@@ -518,6 +518,7 @@ angular.module('ngApp')
         _processPokemons(pokemons);
         return false;
       }
+
       // var ts = new Date().getTime().toString();
       var requestUrls = [];
       _.each($scope.areaList, function(area) {
@@ -528,7 +529,7 @@ angular.module('ngApp')
           } else {
             name = area.name;
           }
-          console.log('Looking in ' + name);
+
           var ts = new Date().toUTCString();
           var uri = 'https://api.thepokemapapp.com/pokemon?filter[where][and][0][suburb]=' + name + '&filter[where][and][1][disappear_time][gt]=' + ts;
           var uriStops = 'https://api.thepokemapapp.com/pokestops?filter[where][and][0][suburb]=' + name + '&filter[where][and][1][enabled]=1&t=' + ts;
@@ -539,7 +540,9 @@ angular.module('ngApp')
         }
       });
       if (!requestActive) {
+
         $q.all(requestUrls.map(function(request) {
+          console.log('setting requestactive to true');
           requestActive = true;
           return $http.get(request);
         })).then(function(results) {
