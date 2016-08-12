@@ -22,7 +22,6 @@ angular.module('ngApp')
     $scope.$storage = $localStorage;
     // Adblocker detection
     $scope.$on('adblock:state', function() {
-      console.log('Adblock state change.');
       $scope.hasAdblocker = $rootScope.hasAdblocker;
     });
     // Register event listeners on snap events so we can add/remove classes
@@ -542,7 +541,6 @@ angular.module('ngApp')
       if (!requestActive) {
 
         $q.all(requestUrls.map(function(request) {
-          console.log('setting requestactive to true');
           requestActive = true;
           return $http.get(request);
         })).then(function(results) {
