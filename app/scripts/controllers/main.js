@@ -311,7 +311,7 @@ angular.module('ngApp')
           return;
         }
         var pokestop = marker.stop;
-        var originArea = pokestop.suburb;
+        var originArea = pokestop.district;
         var area = _.find($scope.areaList, function(o) {
           if (o.hasOwnProperty('alt')) {
             return o.alt === originArea;
