@@ -137,7 +137,7 @@ angular.module('ngApp')
       }
       $scope.areaList = $scope.$storage.areaList || [];
       if (!$scope.$storage.areaList || reload) {
-        var areaFile = 'areas.json';
+        var areaFile = 'districts.json';
         if (_domain[0] === 'timaru') {
           areaFile = 'timaru.json';
         }
@@ -284,7 +284,7 @@ angular.module('ngApp')
           return;
         }
         var pokemon = marker.pokemon;
-        var originArea = pokemon.suburb;
+        var originArea = pokemon.district;
         var area = _.find($scope.areaList, function(o) {
           if (o.hasOwnProperty('alt')) {
             return o.alt === originArea;
@@ -330,7 +330,7 @@ angular.module('ngApp')
           return;
         }
         var gym = marker.gym;
-        var originArea = gym.suburb;
+        var originArea = gym.district;
         var area = _.find($scope.areaList, function(o) {
           if (o.hasOwnProperty('alt')) {
             return o.alt === originArea;
@@ -360,13 +360,16 @@ angular.module('ngApp')
     function _processPokemons(pokemons) {
       removeStalePokemonMarkers();
       updateTimers();
+      var pkmnCounter = 1;
       _.each(pokemons, function(pokemon) {
         var ts = moment();
+
         var time = new Date(pokemon.disappear_time).getTime();
         var tsLeft = moment.utc(time);
         if (!tsLeft.isAfter(ts)) {
           return false;
         }
+        pkmnCounter++;
         var countdownTimer = moment.duration(tsLeft - ts).format('mm:ss', {
           trim: false
         });
@@ -530,9 +533,9 @@ angular.module('ngApp')
           }
 
           var ts = new Date().toUTCString();
-          var uri = 'https://api.thepokemapapp.com/pokemon?filter[where][and][0][suburb]=' + name + '&filter[where][and][1][disappear_time][gt]=' + ts;
-          var uriStops = 'https://api.thepokemapapp.com/pokestops?filter[where][and][0][suburb]=' + name + '&filter[where][and][1][enabled]=1&t=' + ts;
-          var uriGyms = 'https://api.thepokemapapp.com/gyms?filter[where][and][0][suburb]=' + name + '&filter[where][and][1][enabled]=true&ts=' + ts;
+          var uri = 'https://api.thepokemapapp.com/pokemon?filter[where][and][0][district]=' + name + '&filter[where][and][1][disappear_time][gt]=' + ts;
+          var uriStops = 'https://api.thepokemapapp.com/pokestops?filter[where][and][0][district]=' + name + '&filter[where][and][1][enabled]=1&t=' + ts;
+          var uriGyms = 'https://api.thepokemapapp.com/gyms?filter[where][and][0][district]=' + name + '&filter[where][and][1][enabled]=true&ts=' + ts;
           requestUrls.push(uriStops);
           requestUrls.push(uriGyms);
           requestUrls.push(uri);
@@ -551,7 +554,7 @@ angular.module('ngApp')
           _.each(results, function(payload) {
             if (payload.config.url.indexOf('pokemon?') !== -1) {
               _.each(payload.data, function(p) {
-                p.area = p.suburb;
+                p.area = p.district;
                 p.pokemon_name = _getPokemonInfo(p.pokemon_id).name;
                 pokemons.push(p);
               });

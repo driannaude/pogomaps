@@ -1,0 +1,37 @@
+[{
+  "name": "central",
+  "active": false
+},{
+  "name": "east",
+  "active": false
+},{
+  "name": "halswell",
+  "active": false
+},{
+  "name": "hornby",
+  "active": false
+},{
+  "name": "ilam",
+  "active": false
+},{
+  "name": "linwood",
+  "active": false
+},{
+  "name": "north",
+  "active": false
+},{
+  "name": "papanui",
+  "active": false
+},{
+  "name": "shirley",
+  "active": false
+},{
+  "name": "south",
+  "active": false
+},{
+  "name": "sumner",
+  "active": false
+},{
+  "name": "west",
+  "active": false
+}]
