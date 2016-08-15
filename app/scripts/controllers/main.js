@@ -617,8 +617,10 @@ angular.module('ngApp')
       });
       return p;
     }
-
+    var lastStopRequest = new Date(0).getTime();
+    var lastGymRequest = new Date(0).getTime();
     function _getPokemonData(init) {
+
       // Only fetch new pokemon every 30 secs to save battery/data
       if (_iterations < 10 && !init) {
         _iterations++;
@@ -638,12 +640,24 @@ angular.module('ngApp')
             name = area.name;
           }
           var ts = new Date().toUTCString();
-          var uri = 'https://api.thepokemapapp.com/pokemon?filter[where][and][0][district]=' + name + '&filter[where][and][1][disappear_time][gt]=' + ts;
-          var uriStops = 'https://api.thepokemapapp.com/pokestops?filter[where][and][0][district]=' + name + '&filter[where][and][1][enabled]=1&t=' + ts;
+          // As per Matt's suggestions, probably best to limit no of requests for stops and gyms, and not request them at all
+          var uriMons = 'https://api.thepokemapapp.com/pokemon?filter[where][and][0][district]=' + name + '&filter[where][and][1][disappear_time][gt]=' + ts;
+          var uriStops = 'https://api.thepokemapapp.com/pokestops?filter[where][and][0][district]=' + name + '&filter[where][and][1][enabled]=true&t=' + ts;
           var uriGyms = 'https://api.thepokemapapp.com/gyms?filter[where][and][0][district]=' + name + '&filter[where][and][1][enabled]=true&ts=' + ts;
-          requestUrls.push(uriStops);
-          requestUrls.push(uriGyms);
-          requestUrls.push(uri);
+          var now = new Date().getTime();
+          if($scope.viewBools.pokestops && (now - lastStopRequest) >= (1000 * 60 * 2)){ // update stops every 2 minutes (lures)
+            requestUrls.push(uriStops);
+            // set time so we don't double up on requests, will reset it again when request returns
+            lastStopRequest = new Date().getTime();
+          }
+          if($scope.viewBools.gyms && (now - lastGymRequest) >= (1000 * 60 * 5)){ //update gyms every 5 minutes
+            requestUrls.push(uriGyms);
+            // set time so we don't double up on requests, will reset it again when request returns
+            lastGymRequest = new Date().getTime();
+          }
+          if($scope.viewBools.pokemon){
+            requestUrls.push(uriMons);
+          }
         }
       });
       if (!requestActive) {
@@ -666,10 +680,12 @@ angular.module('ngApp')
               //pokestops
               pokestops = payload.data;
               _processPokeStops(pokestops);
+              lastStopRequest = new Date().getTime();
             } else if (payload.config.url.indexOf('gyms?') !== -1) {
               //gyms
               gyms = payload.data;
               _processGyms(gyms);
+              lastGymRequest = new Date().getTime();
             }
           });
           requestActive = false;
