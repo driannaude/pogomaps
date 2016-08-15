@@ -48,7 +48,7 @@ angular.module('ngApp')
           baselayers: {
             xyz: {
               name: 'PokeMap',
-              url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+              url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
               type: 'xyz'
             }
           },

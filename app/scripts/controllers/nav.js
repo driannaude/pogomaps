@@ -25,7 +25,7 @@ angular.module('ngApp')
             lon=position.coords.longitude;
           curPos.latitude = lat;
           curPos.longitude = lon;
-        return $http.get('http://nominatim.openstreetmap.org/reverse?lat='+lat+'&lon='+lon+'&format=json');
+        return $http.get('https://nominatim.openstreetmap.org/reverse?lat='+lat+'&lon='+lon+'&format=json');
       }, function(err){
         return $q.reject(err);
       }).then(function(res){
