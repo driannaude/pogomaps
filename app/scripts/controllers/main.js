@@ -7,19 +7,92 @@
  * Controller of the ngApp
  */
 angular.module('ngApp')
-  .controller('MainCtrl', function($rootScope, $scope, $http, $interval, $timeout, $q, $localStorage, uiGmapGoogleMapApi, moment, snapRemote) {
+  .controller('MainCtrl', function($rootScope, $scope, $http, $interval, $timeout, $q, $localStorage, moment, snapRemote) {
     // loading
     $scope.viewContentLoaded = false;
     $scope.showLoader = true;
-
+    // Proper localStorage Sync
+    $scope.$storage = $localStorage;
+    if (!$scope.$storage.viewBools || !$scope.$storage.viewStates) {
+      $scope.viewBools = {
+        gyms: true,
+        pokestops: true,
+        pokemon: true,
+      };
+      $scope.viewStates = {
+        gyms: 'on',
+        pokestops: 'on',
+        pokemon: 'on',
+      };
+      $scope.$storage.viewBools = $scope.viewBools;
+      $scope.$storage.viewStates = $scope.viewStates;
+    } else {
+      $scope.viewBools = $scope.$storage.viewBools;
+      $scope.viewStates = $scope.$storage.viewStates;
+    }
+    // leaflet setup
+    $scope.center = {
+      lat: -43.530323,
+      lng: 172.615795,
+      zoom: 10
+    };
+    angular.extend($scope, {
+      leaflet: {
+        center: {
+          autoDiscover: true,
+          lat: -43.530323,
+          lng: 172.615795,
+          zoom: 12
+        },
+        layers: {
+          baselayers: {
+            xyz: {
+              name: 'PokeMap',
+              url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+              type: 'xyz'
+            }
+          },
+          overlays: {
+            user: {
+              name: 'User',
+              type: 'group',
+              visible: true
+            },
+            pokemon: {
+              name: 'Pokemon',
+              type: 'group',
+              visible: $scope.$storage.viewBools.pokemon || true
+            },
+            pokestops: {
+              name: 'Pokestops',
+              type: 'group',
+              visible: $scope.$storage.viewBools.pokestops || false
+            },
+            gyms: {
+              name: 'Gyms',
+              type: 'group',
+              visible: $scope.$storage.viewBools.gyms || false
+            }
+          },
+        },
+        markers: {},
+        defaults: {
+          scrollWheelZoom: true
+        },
+        events: {
+          map: {
+            enable: ['load', 'zoomstart', 'drag', 'click', 'mousemove'],
+            logic: 'emit'
+          }
+        }
+      }
+    });
     $scope.toggleViewStates = function(item) {
       $scope.viewStates[item] = ($scope.viewStates[item] === 'on') ? 'off' : 'on';
       $scope.viewBools[item] = ($scope.viewBools[item]) ? false : true;
     };
     // get domain info, check if timaru
     var _domain = window.location.host.split('.');
-    // Proper localStorage Sync
-    $scope.$storage = $localStorage;
     // Adblocker detection
     $scope.$on('adblock:state', function() {
       $scope.hasAdblocker = $rootScope.hasAdblocker;
@@ -57,28 +130,24 @@ angular.module('ngApp')
     };
     // uiGmapGoogleMapApi is a promise.
     // The "then" callback function provides the google.maps object.
-    uiGmapGoogleMapApi.then(function() {
+    $scope.$on('leafletDirectiveMap.load', function() {
+      $scope.viewContentLoaded = true;
+      console.log('idle');
       main();
     });
-    $scope.map = {
-      center: {
-        latitude: -43.5321,
-        longitude: 172.6362
-      },
-      options: {
-        disableDefaultUI: true
-      },
-      events: {
-        idle: function() {
-          $scope.viewContentLoaded = true;
-          console.log('idle');
-        }
-      },
-      zoom: 12
-    };
+    $scope.$on('leafletDirectiveMap.click', function(){
+      if(!$scope.isNotMobile()){
+        snapRemote.close();
+      }
+
+    });
+    // Data containers
     $scope.markers = [];
     $scope.pokestops = [];
     $scope.gyms = [];
+    $scope.areaList = [];
+    $scope.pokemonList = [];
+    // Config file
     $scope.appConfig = {};
     var ts = new Date().getTime();
     var configFile = 'config.json?=' + ts;
@@ -97,12 +166,9 @@ angular.module('ngApp')
       console.error(err);
       getfromCache();
     });
-    $scope.areaList = [];
-    $scope.pokemonList = [];
 
     function getfromCache(reload) {
       // View states
-
       if ((!$scope.$storage.viewBools || !$scope.$storage.viewStates) || reload) {
         $scope.viewBools = {
           gyms: true,
@@ -154,33 +220,19 @@ angular.module('ngApp')
       }
       _getPokemonData(true);
     }
-    $scope.userMarker = {
-      coords: {},
-      options: {},
-      events: {}
-    };
     $scope.$on('location:coords:unavailable', function() {
       console.log('no location');
       $scope.showLoader = false;
       $scope.viewContentLoaded = true;
     });
     $scope.$on('location:coords:available', function(evt, coords, suburb, locality) {
-      var subby = false,
-        city = false;
-      if (suburb) {
-        subby = suburb.long_name.toLowerCase().replace(' ', '');
-      }
-      if (locality) {
-        city = locality.long_name.toLowerCase().replace(' ', '');
-      }
+      var subby = suburb || false,
+        city = locality.toLowerCase() || false;
       if (city === 'timaru' && window.location.href.indexOf('timaru') === -1) {
         window.location = 'https://timaru.thepokemapapp.com/app/';
       }
       var areaIndex = _.findIndex($scope.areaList, function(o) {
-        if (o.hasOwnProperty('alt')) {
-          return o.alt === subby;
-        }
-        return o.name === subby;
+        return _.includes(o.areas,subby);
       });
       if (areaIndex >= 0) {
         $scope.areaList[areaIndex].active = true;
@@ -188,14 +240,16 @@ angular.module('ngApp')
         console.warn('AREA NOT ADDED: [' + subby + ']');
       }
       console.log('found user at: ', coords);
-      $scope.userMarker.coords.latitude = coords.lat;
-      $scope.userMarker.coords.longitude = coords.long;
-      $scope.map.center.latitude = coords.lat;
-      $scope.map.center.longitude = coords.long;
-      $scope.map.zoom = 15;
+      var userMarker = {
+        lat: coords.latitude,
+        lng: coords.longitude,
+      };
+      $scope.leaflet.markers.user = [userMarker];
+      $scope.leaflet.center.zoom = 14;
       _getPokemonData(true);
       $scope.showLoader = false;
     });
+    // End of geolocation block
     $scope.radioModel = 'All';
     $scope.radioModelArea = 'None';
     $scope.select = function(value) {
@@ -262,7 +316,14 @@ angular.module('ngApp')
     }
 
     function _getPokemonIcon(p) {
-      return 'images/icons/' + p.pokemon_id + '.png';
+      var id = 0;
+      if(_.isObject(p)){
+        id = p.pokemon_id;
+      } else {
+        id = p;
+      }
+
+      return 'images/icons/' + id + '.png';
     }
 
     function removeStalePokemonListItem(pokemon) {
@@ -352,8 +413,13 @@ angular.module('ngApp')
         var countdownTimer = moment.duration(tsLeft - ts).format('mm:ss', {
           trim: false
         });
-        $scope.markers[i].options.labelContent = countdownTimer;
-        $scope.markers[i].title = '<strong>' + pokemon.pokemon_name + '</strong><br />' + countdownTimer + ' until despawn<br /><span class="text-muted">Lat: ' + pokemon.latitude + '</span><br /><span class="text-muted">Lng: ' + pokemon.longitude + '</span>';
+        $scope.markers[i].message = '<strong>' + pokemon.pokemon_name + '</strong><br/>' + 'Will despawn in ' + countdownTimer;
+        $scope.markers[i].label = {
+          message: countdownTimer,
+          options: {
+            noHide: true
+          }
+        };
       });
     }
 
@@ -363,7 +429,6 @@ angular.module('ngApp')
       var pkmnCounter = 1;
       _.each(pokemons, function(pokemon) {
         var ts = moment();
-
         var time = new Date(pokemon.disappear_time).getTime();
         var tsLeft = moment.utc(time);
         if (!tsLeft.isAfter(ts)) {
@@ -375,25 +440,22 @@ angular.module('ngApp')
         });
         var newMarker = {
           id: pokemon.encounter_id,
-          coords: {
-            latitude: pokemon.latitude,
-            longitude: pokemon.longitude
-          },
-          options: {
-            draggable: false,
-            icon: _getPokemonIcon(pokemon),
-            labelContent: countdownTimer,
-            labelClass: 'poke-label'
-          },
-          events: {
-            click: function(marker, eventName, model) {
-              console.log('Clicked!', model);
-              model.show = (model.show) ? false : true;
+          lat: pokemon.latitude,
+          lng: pokemon.longitude,
+          message: '<strong>' + pokemon.pokemon_name + '</strong><br/>' + 'Will despawn in ' + countdownTimer,
+          label: {
+            message: countdownTimer,
+            options: {
+              noHide: true
             }
           },
+          icon: {
+            iconUrl: _getPokemonIcon(pokemon),
+            iconSize: [72, 72], // size of the icon
+            iconAnchor: [36, 94], // point of the icon which will correspond to marker's location
+            popupAnchor: [0, -72] // point from which the popup should open relative to the iconAnchor
+          },
           pokemon: pokemon,
-          show: false,
-          title: '<strong>' + pokemon.pokemon_name + '</strong><br />' + countdownTimer + ' until despawn<br /><span class="text-muted">Lat: ' + pokemon.latitude + '</span><br /><span class="text-muted">Lng: ' + pokemon.longitude + '</span>'
         };
         var existingMarkerIndex = _.findIndex($scope.markers, function(o) {
           return (o.pokemon.encounter_id === newMarker.pokemon.encounter_id);
@@ -414,7 +476,13 @@ angular.module('ngApp')
           }
         }
       });
-      $scope.mapMarkers.pokemon = $scope.visiblePokemon();
+      $scope.mapMarkers.pokemon = _.extend($scope.visiblePokemon());
+      _populateMap();
+    }
+
+    function _populateMap() {
+      // do stuff
+      $scope.leaflet.markers = _.extend($scope.mapMarkers);
     }
 
     function _getPokestopIcon(stop) {
@@ -432,71 +500,110 @@ angular.module('ngApp')
         });
         var newMarker = {
           id: stop.pokestop_id,
-          coords: {
-            latitude: stop.latitude,
-            longitude: stop.longitude
+          lat: stop.latitude,
+          lng: stop.longitude,
+          icon: {
+            iconUrl: _getPokestopIcon(stop),
+            iconSize: [32, 32], // size of the icon
+            iconAnchor: [16, 42], // point of the icon which will correspond to marker's location
+            popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
           },
-          options: {
-            draggable: false,
-            icon: _getPokestopIcon(stop)
-          },
-          stop: stop,
-          show: false
+          stop: stop
         };
         if (existingMarkerIndex < 0) {
           $scope.pokestops.push(newMarker);
         } else {
-          $scope.pokestops[i].options.icon = _getPokestopIcon(stop);
+          $scope.pokestops[i].icon = {
+            iconUrl: _getPokestopIcon(stop),
+            iconSize: [24, 24], // size of the icon
+            iconAnchor: [12, 32], // point of the icon which will correspond to marker's location
+            popupAnchor: [0, -24] // point from which the popup should open relative to the iconAnchor
+          };
         }
       });
       $scope.mapMarkers.pokestops = $scope.visiblePokestops();
+      _populateMap();
     }
 
-    function _getGymIcon(gym) {
+    function _getGymInfo(gym){
+      if(!gym){
+        return false;
+      }
+      var gymData = {
+        level: 1,
+        next_level: 0,
+        team: false,
+        icon: false
+      };
+
+      var level = parseInt(gym.gym_points / 2000);
+      if(level < 1){
+        level = 1;
+      }
+      gymData.level = level;
+      gym.next_level = (level + 1) * 2000;
       switch (gym.team_id) {
         case 0:
           // uncontested
-          return 'images/gym-open.png';
+          gymData.team = 'Open';
+          gymData.icon = 'images/gym-open.png';
+          break;
         case 1:
           // mystic
-          return 'images/gym-mystic.png';
+          gymData.team = 'Mystic';
+          gymData.icon = 'images/gym-mystic.png';
+          break;
         case 2:
           // valor
-          return 'images/gym-valor.png';
+          gymData.team = 'Valor';
+          gymData.icon = 'images/gym-valor.png';
+          break;
         case 3:
           // instinct
-          return 'images/gym-instinct.png';
+          gymData.team = 'Instinct';
+          gymData.icon = 'images/gym-instinct.png';
+          break;
         default:
           return false;
       }
+
+      return gymData;
     }
 
     function _processGyms(gyms) {
       removeStaleGymMarkers();
-      _.each(gyms, function(gym, i) {
+      _.each(gyms, function(gym) {
         var existingMarkerIndex = _.findIndex($scope.gyms, function(o) {
           return (o.gym.gym_id === gym.gym_id);
         });
+        var gymInfo = _getGymInfo(gym);
         var newMarker = {
           id: gym.gym_id,
-          coords: {
-            latitude: gym.latitude,
-            longitude: gym.longitude
+          lat: gym.latitude,
+          lng: gym.longitude,
+          message: '<div class="row center-xs middle-xs"><div class="col-xs-12"><img src="' + _getPokemonIcon(gym.guard_pokemon_id) + '"><br/><strong>Owned by ' + gymInfo.team + '</strong><br/><span class="text-muted">Gym Level: ' + gymInfo.level + '<br/>Gym Prestige: ' + gym.gym_points + '/' + gym.next_level + '</span></div></div>',
+          icon: {
+            iconUrl: gymInfo.icon,
+            iconSize: [32, 32], // size of the icon
+            iconAnchor: [16, 42], // point of the icon which will correspond to marker's location
+            popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
           },
-          options: {
-            draggable: false,
-            icon: _getGymIcon(gym)
-          },
-          gym: gym,
-          show: false
+          gym: gym
         };
         if (existingMarkerIndex < 0) {
           $scope.gyms.push(newMarker);
         } else {
-          $scope.gyms[i].options.icon = _getGymIcon(gym);
+          $scope.gyms[existingMarkerIndex].icon = {
+            iconUrl: gymInfo.icon,
+            iconSize: [32, 32], // size of the icon
+            iconAnchor: [16, 42], // point of the icon which will correspond to marker's location
+            popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
+          };
+          $scope.gyms[existingMarkerIndex].message = '<div class="row center-xs middle-xs"><div class="col-xs-12"><img src="' + _getPokemonIcon(gym.guard_pokemon_id) + '"><br/><strong>Owned by ' + gymInfo.team + '</strong><br/><span class="text-muted">Gym Level: ' + gymInfo.level + '<br/>Gym Prestige: ' + gym.gym_points + '/' + gym.next_level + '</span></div></div>';
         }
       });
       $scope.mapMarkers.gyms = $scope.visibleGyms();
+      _populateMap();
     }
     var _iterations = 0;
     var pokemons = [];
@@ -520,7 +627,6 @@ angular.module('ngApp')
         _processPokemons(pokemons);
         return false;
       }
-
       // var ts = new Date().getTime().toString();
       var requestUrls = [];
       _.each($scope.areaList, function(area) {
@@ -531,7 +637,6 @@ angular.module('ngApp')
           } else {
             name = area.name;
           }
-
           var ts = new Date().toUTCString();
           var uri = 'https://api.thepokemapapp.com/pokemon?filter[where][and][0][district]=' + name + '&filter[where][and][1][disappear_time][gt]=' + ts;
           var uriStops = 'https://api.thepokemapapp.com/pokestops?filter[where][and][0][district]=' + name + '&filter[where][and][1][enabled]=1&t=' + ts;
@@ -542,7 +647,6 @@ angular.module('ngApp')
         }
       });
       if (!requestActive) {
-
         $q.all(requestUrls.map(function(request) {
           requestActive = true;
           return $http.get(request);

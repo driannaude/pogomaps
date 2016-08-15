@@ -1,6 +1,6 @@
 <div class="snap-content" snap-content snap-options="snapOpts" snap-opt-disable="'left'" snap-opt-tap-to-close="!isNotMobile()" ng-cloak>
   <snap-dragger style="width:0;height:0"></snap-dragger>
-  <!-- <div class="loader fade-in-out" ng-show="!viewContentLoaded && showLoader === true">
+  <div class="loader fade-in-out" ng-show="!viewContentLoaded && showLoader === true">
     <div class="row center-xs middle-xs">
       <div class="col-xs-12">
         <div class="spinner">
@@ -12,8 +12,8 @@
         </div>
       </div>
     </div>
-  </div> -->
-  <div class="loader fade-in-out" ng-if="false">
+  </div>
+  <!-- <div class="loader fade-in-out" ng-if="false">
     <div class="row center-xs middle-xs">
       <div class="col-xs-10">
         <h1><i class="fa fa-frown-o"></i></h1>
@@ -25,14 +25,15 @@
         </p>
       </div>
     </div>
-  </div>
+  </div> -->
   <div class="map-container">
-    <ui-gmap-google-map pan="true" center='map.center' zoom='map.zoom' options='map.options'>
+    <!-- <ui-gmap-google-map pan="true" center='map.center' zoom='map.zoom' options='map.options'>
       <ui-gmap-marker coords="userMarker.coords" options="userMarker.options" events="userMarker.events" idkey="'userMarker'"></ui-gmap-marker>
       <ui-gmap-markers models="mapMarkers.pokemon" coords="'coords'" options="'options'" events="'events'" idkey="'id'"></ui-gmap-markers>
       <ui-gmap-markers models="mapMarkers.pokestops" coords="'coords'" options="'options'" events="'events'" idkey="'id'"></ui-gmap-markers>
       <ui-gmap-markers models="mapMarkers.gyms" coords="'coords'" options="'options'" events="'events'" idkey="'id'"></ui-gmap-markers>
-    </ui-gmap-google-map>
+    </ui-gmap-google-map> -->
+    <leaflet center="leaflet.center" markers="mapMarkers" layers="leaflet.layers" markers-nested="true" event-broadcast="leaflet.events"></leaflet>
     <nav mfb-menu position="br" effect="zoomin" label="Filter Types" active-icon="fa fa-times" resting-icon="fa fa-filter" toggling-method="click">
       <button mfb-button icon="fa fa-toggle-{{viewStates.gyms}}" label="Gyms: {{viewStates.gyms}}" ng-click="toggleViewStates('gyms')"></button>
       <button mfb-button icon="fa fa-toggle-{{viewStates.pokestops}}" label="Pokestops: {{viewStates.pokestops}}" ng-click="toggleViewStates('pokestops')"></button>

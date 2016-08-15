@@ -112,12 +112,13 @@ body {
   z-index:9999;
 }
 
-.angular-google-map-container {
+.angular-google-map-container, .angular-leaflet-map  {
   height: 100%;
   width: 100%;
   position: absolute;
-  top: 0;
+  top: 50px !important;
   bottom: 0;
+  margin-bottom:-50px;
   left: 0;
   right: 0;
 }
@@ -488,4 +489,55 @@ body > .footer.open {
   color: white;
   font-size:28px;
   line-height:57px;
+}
+
+.leaflet-label {
+
+  color: #444;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  margin-top: -25px !important;
+  margin-left:-36px;
+  border: 1px solid #ccc;
+  background: #fff;
+  opacity: 0.75;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-weight: bold;
+
+}
+
+.leaflet-label:before {
+    border-right: none;
+    border-right-color: inherit;
+    left: 0;
+}
+.leaflet-label:before, .leaflet-label:after {
+    border-top: 0;
+    border-bottom: 0;
+    content: none;
+    position: absolute;
+    top: 0;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 3px;
+}
+
+[data-mfb-label]:after {
+    content: attr(data-mfb-label);
+    opacity: 0;
+    transition: all 0.5s;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 4px 10px;
+    border-radius: 3px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    font-weight: normal;
+    pointer-events: none;
+    line-height: normal;
+    position: absolute;
+    top: 50%;
+    margin-top: -11px;
+    transition: all 0.5s;
 }

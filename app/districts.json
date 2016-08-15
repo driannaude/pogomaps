@@ -1,37 +1,125 @@
 [{
   "name": "central",
-  "active": false
+  "active": false,
+  "areas": [
+    "Christchurch Central",
+    "Waltham"
+  ]
 },{
   "name": "east",
-  "active": false
+  "active": false,
+  "areas": [
+    "New Brighton",
+    "North New Brighton",
+    "South New Brighton",
+    "Southshore"
+  ]
 },{
   "name": "halswell",
-  "active": false
+  "active": false,
+  "areas": [
+    "Halswell",
+    "Kennedys Bush"
+  ]
 },{
   "name": "hornby",
-  "active": false
+  "active": false,
+  "areas": [
+    "Hornby",
+    "Wigram"
+  ]
 },{
   "name": "ilam",
-  "active": false
+  "active": false,
+  "areas": [
+    "Addington",
+    "Avonhead",
+    "Broomfield",
+    "Ilam",
+    "Riccarton",
+    "Sockburn",
+    "Upper Riccarton"
+  ]
 },{
   "name": "linwood",
-  "active": false
+  "active": false,
+  "areas": [
+    "Bexley",
+    "Bromley",
+    "Linwood",
+    "Phillipstown",
+    "Woolston"
+  ]
 },{
   "name": "north",
-  "active": false
+  "active": false,
+  "areas": [
+    "Belfast",
+    "Bottle Lake",
+    "Marshland",
+    "Northwood",
+    "Parklands",
+    "Redwood"
+  ]
 },{
   "name": "papanui",
-  "active": false
+  "active": false,
+  "areas": [
+    "Bishopdale",
+    "Bryndwr",
+    "Burnside",
+    "Casebrook",
+    "Fendalton",
+    "Harewood",
+    "Merivale",
+    "Northcote",
+    "Papanui",
+    "Saint Albans",
+    "Strowan"
+  ]
 },{
   "name": "shirley",
-  "active": false
+  "active": false,
+  "areas": [
+    "Aranui",
+    "Avondale",
+    "Avonside",
+    "Burwood",
+    "Edgeware",
+    "Mairehau",
+    "Richmond",
+    "Shirley"
+  ]
 },{
   "name": "south",
-  "active": false
+  "active": false,
+  "areas": [
+    "Beckenham",
+    "Cashmere",
+    "Cracroft",
+    "Ferrymead",
+    "Hillsborough",
+    "Hoon Hay",
+    "Opawa",
+    "Somerfield",
+    "Spreydon",
+    "Sydenham",
+    "Westmorland"
+  ]
 },{
   "name": "sumner",
-  "active": false
+  "active": false,
+  "areas": [
+    "Clifton",
+    "Heathcote Valley",
+    "Mount Pleasant",
+    "Redcliffs"
+  ]
 },{
   "name": "west",
-  "active": false
+  "active": false,
+  "areas": [
+    "Christchurch Airport",
+    "Yaldhurst"
+  ]
 }]

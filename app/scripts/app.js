@@ -15,22 +15,19 @@ angular
     'ngSanitize',
     'ngTouch',
     'ui.router',
-    'uiGmapgoogle-maps',
+    'nemLogging',
+    'ui-leaflet',
     'angularMoment',
     'snap',
     'ui.bootstrap',
     'ngFuzzySearch',
-    'geolocation',
     'ngStorage',
     'angular.filter',
     'uiSwitch',
-    'ng-mfb'
-  ]).config(function($urlRouterProvider, $stateProvider, uiGmapGoogleMapApiProvider) {
-    uiGmapGoogleMapApiProvider.configure({
-      key: 'AIzaSyBrKIantJrntUGd4L3CQ7pmmkJ-qUMFWxc',
-      v: '3.23', //defaults to latest 3.X anyhow
-      libraries: 'weather,geometry,visualization'
-    });
+    'ng-mfb',
+    'ngGeolocation'
+  ]).config(function($urlRouterProvider, $stateProvider) {
+
     $stateProvider.state('main', {
         url: '/',
         templateUrl: 'views/main.html',
