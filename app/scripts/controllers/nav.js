@@ -29,7 +29,6 @@ angular.module('ngApp')
       }, function(err){
         return $q.reject(err);
       }).then(function(res){
-        console.log(res);
         var suburb = res.data.address.suburb,
             city = res.data.address.city;
 

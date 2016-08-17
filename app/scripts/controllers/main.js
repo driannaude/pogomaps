@@ -134,7 +134,6 @@ angular.module('ngApp')
     // The "then" callback function provides the google.maps object.
     $scope.$on('leafletDirectiveMap.load', function() {
       $scope.viewContentLoaded = true;
-      console.log('idle');
       main();
     });
     $scope.$on('leafletDirectiveMap.click', function() {
@@ -154,7 +153,6 @@ angular.module('ngApp')
 
 
     function _checkForUpdates(file) {
-      console.log(file);
       $http.get(file).then(function(res) {
         var config = res.data;
         $scope.appConfig = config;
@@ -165,8 +163,6 @@ angular.module('ngApp')
           console.warn('new version available, reloading');
           getfromCache(true);
         } else {
-          console.log($scope.$storage.lastUpdated);
-          console.log(config.lastUpdated);
           getfromCache();
         }
       }, function(err) {
@@ -259,7 +255,6 @@ angular.module('ngApp')
       } else {
         console.warn('AREA NOT ADDED: [' + subby + ']');
       }
-      console.log('found user at: ', coords);
       var userMarker = {
         lat: coords.latitude,
         lng: coords.longitude,
@@ -691,8 +686,6 @@ angular.module('ngApp')
             requestUrls.push(uriStops);
             // set time so we don't double up on requests, will reset it again when request returns
             lastStopRequest = new Date().getTime();
-          } else {
-            console.log('no stops for you cunt');
           }
           if (($scope.viewBools.gyms && (now - lastGymRequest) >= (1000 * 60 * 5)) || init) { //update gyms every 5 minutes
             requestUrls.push(uriGyms);
