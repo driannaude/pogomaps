@@ -61,17 +61,17 @@ angular.module('ngApp')
             pokemon: {
               name: 'Pokemon',
               type: 'group',
-              visible: $scope.$storage.viewBools.pokemon || true
+              visible: $scope.$storage.viewBools.pokemon
             },
             pokestops: {
               name: 'Pokestops',
               type: 'group',
-              visible: $scope.$storage.viewBools.pokestops || false
+              visible: $scope.$storage.viewBools.pokestops
             },
             gyms: {
               name: 'Gyms',
               type: 'group',
-              visible: $scope.$storage.viewBools.gyms || false
+              visible: $scope.$storage.viewBools.gyms
             }
           },
         },
@@ -90,6 +90,8 @@ angular.module('ngApp')
     $scope.toggleViewStates = function(item) {
       $scope.viewStates[item] = ($scope.viewStates[item] === 'on') ? 'off' : 'on';
       $scope.viewBools[item] = ($scope.viewBools[item]) ? false : true;
+      $scope.leaflet.layers.overlays[item].visible = $scope.viewBools[item];
+      _resetTimers(item);
     };
     // get domain info, check if timaru
     var _domain = window.location.host.split('.');
@@ -135,11 +137,10 @@ angular.module('ngApp')
       console.log('idle');
       main();
     });
-    $scope.$on('leafletDirectiveMap.click', function(){
-      if(!$scope.isNotMobile()){
+    $scope.$on('leafletDirectiveMap.click', function() {
+      if (!$scope.isNotMobile()) {
         snapRemote.close();
       }
-
     });
     // Data containers
     $scope.markers = [];
@@ -149,23 +150,39 @@ angular.module('ngApp')
     $scope.pokemonList = [];
     // Config file
     $scope.appConfig = {};
-    var ts = new Date().getTime();
-    var configFile = 'config.json?=' + ts;
-    $http.get(configFile).then(function(res) {
-      var config = res.data;
-      $scope.appConfig = config;
-      var ts = moment($scope.$storage.lastUpdated);
-      var updated = moment(config.lastUpdated);
-      if (config.dev || updated.isAfter(ts)) {
-        $scope.$storage.lastUpdated = config.lastUpdated;
-        getfromCache(true);
-      } else {
+
+
+
+    function _checkForUpdates(file) {
+      console.log(file);
+      $http.get(file).then(function(res) {
+        var config = res.data;
+        $scope.appConfig = config;
+        var ts = moment($scope.$storage.lastUpdated);
+        var updated = moment(config.lastUpdated);
+        if (config.dev || updated.isAfter(ts) || !$scope.$storage.lastUpdated) {
+          $scope.$storage.lastUpdated = config.lastUpdated;
+          console.warn('new version available, reloading');
+          getfromCache(true);
+        } else {
+          console.log($scope.$storage.lastUpdated);
+          console.log(config.lastUpdated);
+          getfromCache();
+        }
+      }, function(err) {
+        console.error(err);
         getfromCache();
-      }
-    }, function(err) {
-      console.error(err);
-      getfromCache();
-    });
+      });
+    }
+    var tsInit = new Date().getTime();
+    var configFileInit = 'config.json?=' + tsInit;
+    _checkForUpdates(configFileInit);
+    $interval(function(){
+      var ts = new Date().getTime();
+      var configFile = 'config.json?=' + ts;
+      _checkForUpdates(configFile);
+    },1000 * 60 * 10);
+
 
     function getfromCache(reload) {
       // View states
@@ -187,7 +204,7 @@ angular.module('ngApp')
         $scope.viewStates = $scope.$storage.viewStates;
       }
       // Get full list of pokemon defaults
-      $scope.areaList = $scope.$storage.pokemonList || [];
+      $scope.pokemonList = $scope.$storage.pokemonList || [];
       if (!$scope.$storage.pokemonList || $scope.$storage.pokemonList.length < 151 || reload) {
         $http.get('pokemon.json').then(function(res) {
           $scope.$storage.pokemonList = res.data;
@@ -218,6 +235,9 @@ angular.module('ngApp')
       } else {
         $scope.areaList = $scope.$storage.areaList;
       }
+      if(reload === true){
+        window.location.reload();
+      }
       _getPokemonData(true);
     }
     $scope.$on('location:coords:unavailable', function() {
@@ -232,7 +252,7 @@ angular.module('ngApp')
         window.location = 'https://timaru.thepokemapapp.com/app/';
       }
       var areaIndex = _.findIndex($scope.areaList, function(o) {
-        return _.includes(o.areas,subby);
+        return _.includes(o.areas, subby);
       });
       if (areaIndex >= 0) {
         $scope.areaList[areaIndex].active = true;
@@ -317,12 +337,11 @@ angular.module('ngApp')
 
     function _getPokemonIcon(p) {
       var id = 0;
-      if(_.isObject(p)){
+      if (_.isObject(p)) {
         id = p.pokemon_id;
       } else {
         id = p;
       }
-
       return 'images/icons/' + id + '.png';
     }
 
@@ -525,8 +544,26 @@ angular.module('ngApp')
       _populateMap();
     }
 
-    function _getGymInfo(gym){
-      if(!gym){
+    function _getGymLevelData(prestige) {
+      var lvl = 0,
+        nextlevel = 0;
+      var map = [0, 2000, 4000, 8000, 12000, 16000, 20000, 30000, 40000, 50000];
+      _.each(map, function(item) {
+        if (prestige > item) {
+          lvl++;
+        } else {
+          nextlevel = item;
+          return false;
+        }
+      });
+      return {
+        level: lvl,
+        next: nextlevel
+      };
+    }
+
+    function _getGymInfo(gym) {
+      if (!gym) {
         return false;
       }
       var gymData = {
@@ -535,13 +572,8 @@ angular.module('ngApp')
         team: false,
         icon: false
       };
-
-      var level = parseInt(gym.gym_points / 2000);
-      if(level < 1){
-        level = 1;
-      }
-      gymData.level = level;
-      gym.next_level = (level + 1) * 2000;
+      gymData.level = _getGymLevelData(gym.gym_points).level;
+      gym.next_level = _getGymLevelData(gym.gym_points).next;
       switch (gym.team_id) {
         case 0:
           // uncontested
@@ -566,7 +598,6 @@ angular.module('ngApp')
         default:
           return false;
       }
-
       return gymData;
     }
 
@@ -619,8 +650,19 @@ angular.module('ngApp')
     }
     var lastStopRequest = new Date(0).getTime();
     var lastGymRequest = new Date(0).getTime();
-    function _getPokemonData(init) {
 
+    function _resetTimers(item){
+
+      if(item === 'gyms'){
+        console.warn('activating gyms');
+        lastGymRequest = new Date(0).getTime();
+      } else if(item === 'pokestops'){
+        console.warn('activating stops');
+        lastStopRequest = new Date(0).getTime();
+      }
+    }
+
+    function _getPokemonData(init) {
       // Only fetch new pokemon every 30 secs to save battery/data
       if (_iterations < 10 && !init) {
         _iterations++;
@@ -645,17 +687,19 @@ angular.module('ngApp')
           var uriStops = 'https://api.thepokemapapp.com/pokestops?filter[where][and][0][district]=' + name + '&filter[where][and][1][enabled]=true&t=' + ts;
           var uriGyms = 'https://api.thepokemapapp.com/gyms?filter[where][and][0][district]=' + name + '&filter[where][and][1][enabled]=true&ts=' + ts;
           var now = new Date().getTime();
-          if($scope.viewBools.pokestops && (now - lastStopRequest) >= (1000 * 60 * 2)){ // update stops every 2 minutes (lures)
+          if (($scope.viewBools.pokestops && (now - lastStopRequest) >= (1000 * 60 * 2)) || init) { // update stops every 2 minutes (lures)
             requestUrls.push(uriStops);
             // set time so we don't double up on requests, will reset it again when request returns
             lastStopRequest = new Date().getTime();
+          } else {
+            console.log('no stops for you cunt');
           }
-          if($scope.viewBools.gyms && (now - lastGymRequest) >= (1000 * 60 * 5)){ //update gyms every 5 minutes
+          if (($scope.viewBools.gyms && (now - lastGymRequest) >= (1000 * 60 * 5)) || init) { //update gyms every 5 minutes
             requestUrls.push(uriGyms);
             // set time so we don't double up on requests, will reset it again when request returns
             lastGymRequest = new Date().getTime();
           }
-          if($scope.viewBools.pokemon){
+          if ($scope.viewBools.pokemon) {
             requestUrls.push(uriMons);
           }
         }
