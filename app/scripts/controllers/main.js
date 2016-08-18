@@ -324,6 +324,7 @@ angular.module('ngApp')
     }, 500);
 
     function main() {
+      return false;
       _getPokemonData(true);
       $interval(function() {
         _getPokemonData();

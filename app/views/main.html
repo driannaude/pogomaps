@@ -1,6 +1,6 @@
 <div class="snap-content" snap-content snap-options="snapOpts" snap-opt-disable="'left'" snap-opt-tap-to-close="!isNotMobile()" ng-cloak>
   <snap-dragger style="width:0;height:0"></snap-dragger>
-  <div class="loader fade-in-out" ng-show="!viewContentLoaded && showLoader === true">
+  <!-- <div class="loader fade-in-out" ng-show="!viewContentLoaded && showLoader === true">
     <div class="row center-xs middle-xs">
       <div class="col-xs-12">
         <div class="spinner">
@@ -12,34 +12,29 @@
         </div>
       </div>
     </div>
-  </div>
-  <!-- <div class="loader fade-in-out" ng-if="false">
+  </div> -->
+  <div class="loader fade-in-out" ng-if="true">
     <div class="row center-xs middle-xs">
       <div class="col-xs-10">
         <h1><i class="fa fa-frown-o"></i></h1>
         <p class="lead">
-          Niantic have made a big change to their API as of August 4. I'm working hard, along with many other devs in the community, to restore our access.
+          We've just been IP Banned on every single one of our servers. We will be back shortly while we do a tactical retreat and figure out a solution.
         </p>
         <p class="lead">
-          Sorry for any inconvenience this may cause. Until this is resolved, the map will be unavailable. Should not be more than a few days.
+          Sorry for any inconvenience this may cause. Until this is resolved, the map will be unavailable. Please see our facebook page for updates. <br />
+          <a href="https://facebook.com/thepokemapapp" class="btn btn-donate"><i class="fa fa-facebook-official"></i> Go To Facebook</a>
         </p>
       </div>
     </div>
-  </div> -->
-  <div class="map-container">
-    <!-- <ui-gmap-google-map pan="true" center='map.center' zoom='map.zoom' options='map.options'>
-      <ui-gmap-marker coords="userMarker.coords" options="userMarker.options" events="userMarker.events" idkey="'userMarker'"></ui-gmap-marker>
-      <ui-gmap-markers models="mapMarkers.pokemon" coords="'coords'" options="'options'" events="'events'" idkey="'id'"></ui-gmap-markers>
-      <ui-gmap-markers models="mapMarkers.pokestops" coords="'coords'" options="'options'" events="'events'" idkey="'id'"></ui-gmap-markers>
-      <ui-gmap-markers models="mapMarkers.gyms" coords="'coords'" options="'options'" events="'events'" idkey="'id'"></ui-gmap-markers>
-    </ui-gmap-google-map> -->
+  </div>
+  <!-- <div class="map-container">
     <leaflet center="leaflet.center" markers="mapMarkers" layers="leaflet.layers" markers-nested="true" event-broadcast="leaflet.events"></leaflet>
     <nav mfb-menu position="br" effect="zoomin" label="Filter Types" active-icon="fa fa-times" resting-icon="fa fa-filter" toggling-method="click">
       <button mfb-button icon="fa fa-toggle-{{viewStates.gyms}}" label="Gyms: {{viewStates.gyms}}" ng-click="toggleViewStates('gyms')"></button>
       <button mfb-button icon="fa fa-toggle-{{viewStates.pokestops}}" label="Pokestops: {{viewStates.pokestops}}" ng-click="toggleViewStates('pokestops')"></button>
       <button mfb-button icon="fa fa-toggle-{{viewStates.pokemon}}" label="Pokemon: {{viewStates.pokemon}}" ng-click="toggleViewStates('pokemon')"></button>
     </nav>
-  </div>
+  </div>-->
 </div>
 <div snap-drawer="right" class="sidebar" ng-init="activeTabs = 0" ng-cloak>
   <uib-tabset active="activeTabs">
